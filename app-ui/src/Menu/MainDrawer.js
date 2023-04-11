@@ -1,5 +1,5 @@
 import React, {Fragment, useState} from 'react';
-import { styled, useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -17,8 +17,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
 import {presentationComponents}  from './MenuPresentationComponents';
-import {createTheme, ListItemButton, ThemeProvider} from "@mui/material";
-import {ExpandLess, ExpandMore} from "@mui/icons-material";
+import {createTheme, ThemeProvider} from "@mui/material";
+import {useNavigate} from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -93,7 +93,7 @@ const TopBar = ({open, handleDrawerOpen, title, user, logoutAction}) => {
                         </Typography>
                     </Box>
                     <Box width="100%" justifyContent="right" flex={1}>
-                        <Typography variant="h7" noWrap component="div" align="right" onClick={() => logoutAction()}>
+                        <Typography variant="h7" noWrap component="div" align="right" onClick={(e) => logoutAction()}>
                             Logout
                         </Typography>
                     </Box>
@@ -133,7 +133,7 @@ const findSelectedComponent = (selectedItem, currentCycle) => {
     }
 };
 
-export default function MainDrawer({title, user, logoutAction, currentCycle}) {
+export default function MainDrawer({title, user, currentCycle}) {
     const theme = createTheme({
         palette: {
             primary: {
@@ -161,11 +161,10 @@ export default function MainDrawer({title, user, logoutAction, currentCycle}) {
         setSelectedItem(title)
     };
 
-    const [transOpen, setTransOpen] = React.useState(false);
-
-    const handleTransClick = () => {
-        setTransOpen(!transOpen);
-    };
+    const navigate = useNavigate()
+    function logoutAction() {
+        navigate("/");
+    }
 
     return (
         <ThemeProvider theme={theme}>
