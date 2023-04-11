@@ -133,7 +133,7 @@ const findSelectedComponent = (selectedItem, currentCycle) => {
     }
 };
 
-export default function MainDrawer({title, user, currentCycle}) {
+export default function MainDrawer({title="Food Trace", user, currentCycle}) {
     const theme = createTheme({
         palette: {
             primary: {
