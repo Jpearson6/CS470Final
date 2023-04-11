@@ -1,4 +1,4 @@
-import MainDrawer from "./Menu/MainDrawer";
+import MainDrawer from "./Menu/MainDrawer.js";
 import './App.css';
 import Login from './Login';
 import SignUp from './SignUp';
