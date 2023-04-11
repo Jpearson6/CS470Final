@@ -3,12 +3,9 @@ import './App.css';
 import Login from './Login';
 import SignUp from './SignUp';
 import SignUpPage2 from './SignUpPage2';
-import {Navigation} from "@mui/icons-material";
-import * as PropTypes from "prop-types";
 import React from 'react';
-import ReactDOM from 'react-dom';
 import './index.css';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 
 function App() {
