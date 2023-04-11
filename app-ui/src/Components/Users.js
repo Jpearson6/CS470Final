@@ -1,8 +1,7 @@
 import {Typography} from "@mui/material";
 
-export default function Homepage() {
+export default function Users() {
     return <Typography>
-        Hello World!
-        Homepage Here.
+        Users here
     </Typography>
 }
