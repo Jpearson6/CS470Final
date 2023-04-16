@@ -1,5 +1,5 @@
 import React, {Fragment, useState} from 'react';
-import { styled, useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -17,8 +17,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
 import {presentationComponents}  from './MenuPresentationComponents';
-import {ListItemButton} from "@mui/material";
-import {ExpandLess, ExpandMore} from "@mui/icons-material";
+import {createTheme, ThemeProvider} from "@mui/material";
+import {useNavigate} from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -73,7 +73,7 @@ const TopBar = ({open, handleDrawerOpen, title, user, logoutAction}) => {
 
     return (
         <Fragment>
-            <AppBar position="fixed" open={open} >
+            <AppBar position="fixed" open={open} color='secondary'>
                 <Toolbar>
                     <IconButton
                         color="inherit"
@@ -93,7 +93,7 @@ const TopBar = ({open, handleDrawerOpen, title, user, logoutAction}) => {
                         </Typography>
                     </Box>
                     <Box width="100%" justifyContent="right" flex={1}>
-                        <Typography variant="h7" noWrap component="div" align="right" onClick={() => logoutAction()}>
+                        <Typography variant="h7" noWrap component="div" align="right" onClick={(e) => logoutAction()}>
                             Logout
                         </Typography>
                     </Box>
@@ -107,9 +107,12 @@ const TopBar = ({open, handleDrawerOpen, title, user, logoutAction}) => {
 const PresentationListItems = (props) => {
     return <div>
         {
-            props.menuItemTitles.map(title =>
+            props.menuItemTitles.map((title, idx) =>
                 <ListItem button onClick={() => props.onClick(title)} key={title}>
                     <ListItemText primary={title} key={title}/>
+                    {
+                        props.menuItemIcons[idx]
+                    }
                     {
                         props.selectedItem === title && <ListItemIcon><ChevronRightIcon/></ListItemIcon>
                     }
@@ -130,8 +133,17 @@ const findSelectedComponent = (selectedItem, currentCycle) => {
     }
 };
 
-export default function MainDrawer({title, user, logoutAction, currentCycle}) {
-    const theme = useTheme();
+export default function MainDrawer({title="Food Trace", user, currentCycle}) {
+    const theme = createTheme({
+        palette: {
+            primary: {
+                main: '#EC5800',
+            },
+            secondary: {
+                main: '#EC5800',
+            },
+        },
+    });
     const [open, setOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState('Homepage');
 
@@ -149,13 +161,13 @@ export default function MainDrawer({title, user, logoutAction, currentCycle}) {
         setSelectedItem(title)
     };
 
-    const [transOpen, setTransOpen] = React.useState(false);
-
-    const handleTransClick = () => {
-        setTransOpen(!transOpen);
-    };
+    const navigate = useNavigate()
+    function logoutAction() {
+        navigate("/");
+    }
 
     return (
+        <ThemeProvider theme={theme}>
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
             <TopBar title={title} open={open} handleDrawerOpen={handleDrawerOpen} user={user} logoutAction={logoutAction} />
@@ -182,6 +194,7 @@ export default function MainDrawer({title, user, logoutAction, currentCycle}) {
                     <PresentationListItems selectedItem={selectedItem}
                                            onClick={handleSelectedItem}
                                            menuItemTitles={presentationComponents().map(comp => comp.title)}
+                                           menuItemIcons={presentationComponents().map(comp => comp.icon)}
                     />
                 </List>
 
@@ -191,5 +204,6 @@ export default function MainDrawer({title, user, logoutAction, currentCycle}) {
                 {findSelectedComponent(selectedItem, currentCycle).component}
             </Main>
         </Box>
+        </ThemeProvider>
     );
 }
