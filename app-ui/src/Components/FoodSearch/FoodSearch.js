@@ -9,27 +9,15 @@ import Paper from '@mui/material/Paper';
 import { Container, InputAdornment, TextField } from "@mui/material";
 import { useState , Fragment, useEffect } from "react";
 import SearchIcon from "@mui/icons-material/Search";
-import Axios from 'axios';
-
-
-const params = {
-    api_key: 'lsbtkmq13XtiD3eAfTGpbhJbJFUGwX8UToxafkaJ',
-    pageSize: 5,
-    dataType: ["Survey (FNDDS)"]
-}
+import API from '../../API_Interface/API_Interface'
 
 
 function SearchBar( props ) {
-    const {searchFood, getApiUrl, searchTerm, setSearchTerm} = props;
+    const {searchFood, searchTerm, setSearchTerm} = props;
 
-  const handleClick = () => {
-    //console.log("Api Url is " , api_url);
-    //searchFood();
-  };
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
-    //let tempApiUrl = getApiUrl(event.target.value);
     searchFood(event.target.value);
   };
 
@@ -45,7 +33,7 @@ function SearchBar( props ) {
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">
-              <SearchIcon onClick={handleClick}/>
+              <SearchIcon/>
             </InputAdornment>
           ),
         }}
@@ -69,19 +57,19 @@ function DisplayFood (props) {
             </TableHead>
             <TableBody>
                 {
-                        foodList.map((food, idx) => {
-                            return(
-                            <TableRow
-                                    sx={{'&:last-child td, &:last-child th': {border: 0}}}
-                            >
-                                <TableCell key={idx}>
-                                    {
-                                        food['description']
-                                    }
-                                </TableCell>
-                            </TableRow>
-                        )})
-                    }
+                    foodList.map((food, idx) => {
+                        return(
+                        <TableRow
+                                sx={{'&:last-child td, &:last-child th': {border: 0}}}
+                        >
+                            <TableCell key={idx}>
+                                {
+                                    food['description']
+                                }
+                            </TableCell>
+                        </TableRow>
+                    )})
+                }
             </TableBody>
         </Table>
     </TableContainer>
@@ -99,15 +87,11 @@ export default function FoodSearch() {
         console.log("foodList contains ", foodList);
     }, [foodList]);
 
-    const searchFood = (food) => {
-        let api_url = getApiUrl(food);
-        Axios.get(api_url).then((response) => {
-            let tempList = response.data.foods;
-            setFoodList(tempList);
-        });
-    }
-    const getApiUrl = (food) => {
-        return(`https://api.nal.usda.gov/fdc/v1/foods/search?api_key=${encodeURIComponent(params.api_key)}&query=${encodeURIComponent(food)}&dataType=${encodeURIComponent(params.dataType)}&pageSize=5`)
+    async function searchFood(food) {
+        const api = new API();
+        const foodJSONString = await api.searchFood(food);
+        console.log(`Food from the API Call ${JSON.stringify(foodJSONString.data.foods)}`);
+        setFoodList(foodJSONString.data.foods);
     }
 
     return (
@@ -117,7 +101,6 @@ export default function FoodSearch() {
             </Typography>
             <SearchBar 
                 searchFood={(food) => searchFood(food)}
-                getApiUrl={(food) => getApiUrl(food)}
                 searchTerm={searchTerm}
                 setSearchTerm={setSearchTerm}
                 />
