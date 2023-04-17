@@ -28,6 +28,17 @@ const axiosAgent = AxiosConfigured();
 
 export default class APIInterface {
 
+    
+    async getUserInfo(Email,Password) {
+        return axiosAgent.get(`login/${Email}/${Password}`)
+            .then(userInfo => userInfo.data)
+            .catch(error => (
+                {
+                    error,
+                    user: undefined
+                 }));
+    }
+
     async allUsers() {
         return axiosAgent.get(`user/all-users`);
     }
