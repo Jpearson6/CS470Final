@@ -24,6 +24,10 @@ function Login({setUser}) {
     const handleEmailInputChange = event => {
         setUserInput(event.target.value);
         setAuthFailed(false);
+        if(event.key === "Enter") {
+            console.log("handleKeyPress: Verify user input.");
+            setVerifyUser(true);
+        }
     };
 
     useEffect(()=>{
@@ -35,8 +39,10 @@ function Login({setUser}) {
                     console.log(`api returns user info: ${JSON.stringify(userInfo)}`)
                     const user = userInfo.user;
                     if(userInfo.status === 'OK'){
+                        navigate("/home");
                         setUser(user);
                     }else {
+                        console.log("Wrong username or pass word")
                         setVerifyUser(false)
                         setAuthFailed(true)
                     }
@@ -48,6 +54,7 @@ function Login({setUser}) {
     
 
     const handlePasswordInputChange = event => {
+        
         setUserInput2(event.target.value);
         setAuthFailed(false);
 
@@ -59,13 +66,12 @@ function Login({setUser}) {
     const navigate = useNavigate();
 
     function handleClick() {
-        if (verifyUser) {        
-            navigate("/home");
+        if (userInput && userInput2) {
+            setVerifyUser(true);
         } else {
-            console.log("Wrong User Or Password")
             setAuthFailed(true);
         }
-       
+        
     };
 
     function handleSignUpClick() {
@@ -111,7 +117,7 @@ function Login({setUser}) {
                 <Button
                     variant="contained"
                     size="medium"
-                    onClick={handleClick}
+                    onClick= {handleClick}
                 >
                     Sign In
                 </Button>
