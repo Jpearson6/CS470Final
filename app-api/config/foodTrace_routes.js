@@ -21,11 +21,25 @@ const userRouter = require('koa-router')({
     prefix: '/user'
 });
 
-userRouter.get('/all-users', UserController.allUsers, err => console.log(`allUsers ran into an error: ${err}`))
+userRouter.get('/all-users', UserController.allUsers, err => console.log(`allUsers ran into an error: ${err}`));
+/*
+|--------------------------------------------------------------------------
+| FoodLog router
+|--------------------------------------------------------------------------
+|
+| FoodLog router is ised for all information in the food log table.
+|
+*/
+const FoodLogController = require('../app/Controllers/FoodLogController.js');
+const foodLogRouter = require('koa-router')({
+    prefix: '/foodlog'
+})
+foodLogRouter.get('/:UserId' , FoodLogController.allFoodByDate, err => console.log(`allFoodbyDate ran into an error: ${err}`));
 
 router.use(
     '',
-    userRouter.routes()
+    userRouter.routes(),
+    foodLogRouter.routes()
 );
 
 module.exports = function (app) {
