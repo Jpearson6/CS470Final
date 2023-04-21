@@ -35,9 +35,9 @@ export default function Graphs() {
                     onChange={handleChange}
                 >
                     <MenuItem value={"Calorie Count"}>Calories</MenuItem>
-                    <MenuItem value={"Fat"}>Fat</MenuItem>
-                    <MenuItem value={"Protien"}>Protien</MenuItem>
-                    <MenuItem value={"Carb"}>Carbs</MenuItem>
+                    <MenuItem value={"Fat Count"}>Fat</MenuItem>
+                    <MenuItem value={"Protein Count"}>Protein</MenuItem>
+                    <MenuItem value={"Carb Count"}>Carbs</MenuItem>
                 </Select>
             </FormControl>
             {findSelectedComponent(selectedItem).component}

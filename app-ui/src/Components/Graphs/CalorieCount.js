@@ -1,14 +1,59 @@
 import React, {useEffect, useRef, useState} from "react";
-import * as d3 from "d3";
 import * as Plot from "@observablehq/plot";
+
+const placeholderData = () => {
+    return [
+            {
+                "date":new Date("2023-04-14"),
+                "calories":1500,
+                "food": "burger"
+            },
+            {
+                "date":new Date("2023-04-14"),
+                "calories":746,
+                "food": "fries"
+            },
+            {
+                "date":new Date("2023-04-14"),
+                "calories":230,
+                "food": "coke"
+            },
+            {
+                "date":new Date("2023-04-15"),
+                "calories":2765,
+                "food": "burger"
+            },
+            {
+                "date":new Date("2023-04-16"),
+                "calories":2357,
+                "food": "burger"
+            },
+            {
+                "date":new Date("2023-04-17"),
+                "calories":2486,
+                "food": "burger"
+            },
+            {
+                "date":new Date("2023-04-18"),
+                "calories":2149,
+                "food": "burger"
+            },
+            {
+                "date":new Date("2023-04-19"),
+                "calories":3205,
+                "food": "burger"
+            },
+            {
+                "date":new Date("2023-04-20"),
+                "calories":2759,
+                "food": "burger"
+            }
+    ]
+}
 
 function CalorieCount() {
     const chartRef = useRef();
-    const [data, setData] = useState();
-
-    useEffect(() => {
-        d3.csv("/calories.csv", d3.autoType).then(setData);
-    }, []);
+    const [data, setData] = useState(placeholderData);
 
     useEffect(() => {
         if (data === undefined) return;
@@ -21,16 +66,7 @@ function CalorieCount() {
                 ticks: 7
             },
             marks: [
-                Plot.ruleY([0,4000]),
-                Plot.line(data, {
-                    x: "date",
-                    y: "count",
-                    curve: "linear"
-                }),
-                Plot.dot(data, {
-                    x: "date",      // feature for the x channel
-                    y: "count",     // feature for the y channel
-                }),
+                Plot.barY(data, {x: "date", y: "calories", fill: "food"})
             ]
         });
         chartRef.current.append(chart);
