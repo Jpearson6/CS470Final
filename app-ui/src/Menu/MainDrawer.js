@@ -121,7 +121,7 @@ const PresentationListItems = (props) => {
         }
     </div>;
 };
-const findSelectedComponent = (selectedItem, currentCycle) => {
+const findSelectedComponent = (selectedItem) => {
     const component = [...presentationComponents()].filter(comp => comp.title === selectedItem);
     if(component.length === 1)
         return component[0];
@@ -133,7 +133,7 @@ const findSelectedComponent = (selectedItem, currentCycle) => {
     }
 };
 
-export default function MainDrawer({title="Food Trace", user, currentCycle}) {
+export default function MainDrawer({title="Food Trace", user}) {
     const theme = createTheme({
         palette: {
             primary: {
@@ -147,7 +147,7 @@ export default function MainDrawer({title="Food Trace", user, currentCycle}) {
     const [open, setOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState('Homepage');
 
-    console.log('in MainDrawer', currentCycle);
+    console.log('in MainDrawer');
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -201,7 +201,7 @@ export default function MainDrawer({title="Food Trace", user, currentCycle}) {
             </Drawer>
             <Main open={open}>
                 <DrawerHeader />
-                {findSelectedComponent(selectedItem, currentCycle).component}
+                {findSelectedComponent(selectedItem).component}
             </Main>
         </Box>
         </ThemeProvider>

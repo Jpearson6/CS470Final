@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/app-ui.iml" filepath="$PROJECT_DIR$/.idea/app-ui.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../plot-create-react-app-example/.idea/plot-create-react-app-example.iml" filepath="$PROJECT_DIR$/../../plot-create-react-app-example/.idea/plot-create-react-app-example.iml" />
     </modules>
   </component>
 </project>
