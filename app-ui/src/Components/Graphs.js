@@ -28,7 +28,7 @@ export default function Graphs() {
         const api = new API();
 
         async function getFood() {
-            const foodJSONString = await api.allFoodByUser();
+            const foodJSONString = await api.allFoodByUser(1);
             console.log(foodJSONString.data);
             setFoodLog(foodJSONString.data);
         }

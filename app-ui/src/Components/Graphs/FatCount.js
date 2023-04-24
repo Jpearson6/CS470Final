@@ -4,7 +4,7 @@ import * as Plot from "@observablehq/plot";
 const updateDate = (item) => {
     const date = new Date(item['LogDate']);
 
-    const dayString = (date.getMonth() + 1).toString() + "/" + (date.getDay() + 1).toString();
+    const dayString = (date.getMonth() + 1).toString() + "/" + (date.getDate()).toString();
 
     return {...item, "dayString":dayString}
 }
@@ -27,7 +27,7 @@ function FatCount(props) {
                 legend: true
             },
             marks: [
-                Plot.barY(foodData, {x: "LogDate", y: "Fat", fill: "FoodName"})
+                Plot.barY(foodData, {x: "dayString", y: "Fat", fill: "FoodName"})
             ]
         });
         chartRef.current.append(chart);
