@@ -35,6 +35,8 @@ const foodLogRouter = require('koa-router')({
     prefix: '/foodlog'
 })
 foodLogRouter.get('/:UserId' , FoodLogController.allFoodByDate, err => console.log(`allFoodbyDate ran into an error: ${err}`));
+foodLogRouter.post('/:UserId/:FoodName/:Calories/:Protein/:Fat/:Carbohydrates' , FoodLogController.addFoodByUser, err => console.log(`addFoodByUser ran into an error: ${err}`));
+
 
 router.use(
     '',

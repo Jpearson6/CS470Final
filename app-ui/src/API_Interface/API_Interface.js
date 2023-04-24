@@ -32,12 +32,16 @@ export default class APIInterface {
         return axiosAgent.get(`user/all-users`);
     }
 
-    async allFoodByUser() {
-        return axiosAgent.get(`foodlog/1`);
+    async allFoodByUser(userId) {
+        return axiosAgent.get(`foodlog/${userId}`);
     }
 
     async searchFood(food) {
         return axios.get(`https://api.nal.usda.gov/fdc/v1/foods/search?api_key=${encodeURIComponent(params.api_key)}&query=${encodeURIComponent(food)}&dataType=${encodeURIComponent(params.dataType)}&pageSize=10`)
+    }
+
+    async addFoodByUser(UserId, FoodName, Calories, Protein, Carbohydrates, Fat){
+        return axiosAgent.post(`foodlog/${UserId}/${FoodName}/${Calories}/${Protein}/${Carbohydrates}/${Fat}`)
     }
 
 }
