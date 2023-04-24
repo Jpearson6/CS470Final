@@ -34,29 +34,31 @@ const allUsers = async (ctx) => {
 }
 
 
-const addUser = async (ctx, email, password, name, age, sex, height, weight, activityLevel, fitnessGoal) => {
-    console.log('Adding new user to database.');
-  
-    const query = `
-      INSERT 
-        INTO 
-            User 
-      (email, password, name, age, sex, height, weight, activityLevel, fitnessGoal)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `;
-  
-    const values = [email, password, name, age, sex, height, weight, activityLevel, fitnessGoal];
-  
-    try {
-      await dbConnection.query(query, values);
-      ctx.status = 201;
-      ctx.body = { message: 'User created successfully.' };
-    } catch (error) {
-      console.log("Connection error in UserController::addUser", error);
-      ctx.status = 500;
-      ctx.body = { message: 'Failed to create user.' };
-    }
+const addUser = async (ctx) => {
+  console.log('Adding new user to database.');
+
+  const { Email, Name, Password } = ctx.request.body;
+
+  const query = `
+    INSERT 
+      INTO 
+          User 
+    (Email,Name, Password)
+    VALUES (?, ?, ?);
+  `;
+
+  const values = [Email, Name, Password];
+
+  try {
+    await dbConnection.query(query, values);
+    ctx.status = 201;
+    ctx.body = { message: 'User created successfully.' };
+  } catch (error) {
+    console.log("Connection error in UserController::addUser", error);
+    ctx.status = 500;
+    ctx.body = { message: 'Failed to create user.' };
   }
+}
 
 
 
