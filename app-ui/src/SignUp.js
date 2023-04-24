@@ -26,17 +26,10 @@ export default function SignUp() {
         const api = new API();
         async function signUp(){
             api.addUser(email,name,password)
-                .then(userInfo => {
+               .then(userInfo => { 
                     console.log(`api returns user info: ${JSON.stringify(userInfo)}`)
-                    const user = userInfo.user;
-                    if(userInfo.status === 'OK'){
-                        navigate("/");
-                       
-                    }else {
-                        console.log("Wrong username or password")
-                        setVerifyUser(false)
-                        setAuthFailed(true)
-                    }
+                    navigate("/");  
+                 
                 })
         }
         signUp()

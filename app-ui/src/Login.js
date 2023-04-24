@@ -135,12 +135,12 @@ function Login({setUser}) {
             </Box>
 
             <Box display="flex" justifyContent="center" alignItems="center" width="100%" mt={2}>
-                <p>
+                <Typography variant="body1">
                     Don't have an account?{" "}
-                    <span className='link' onClick={handleSignUpClick}>
+                    <Link href="#" onClick={handleSignUpClick} color="primary">
                         Sign up
-                    </span>
-                </p>
+                    </Link>
+                </Typography>
             </Box>
         </Fragment>
     );
