@@ -2,6 +2,8 @@ import Homepage from "../Components/Homepage";
 import Food from "../Components/Food";
 import Graphs from "../Components/Graphs";
 import Users from "../Components/Users";
+import Macros from "../Components/Macros";
+import Goals from "../Components/Goals";
 import LocalDiningIcon from '@mui/icons-material/LocalDining';
 import SsidChartIcon from '@mui/icons-material/SsidChart';
 import HomeIcon from '@mui/icons-material/Home';
@@ -30,6 +32,16 @@ const presentationComponents = () => {
             component: <Users />,
             icon: <SupervisedUserCircleIcon />
         },
+        {
+            title: 'Macros',
+            component: <Macros />,
+            icon: <SupervisedUserCircleIcon />
+        },
+        {
+            title: 'Goals',
+            component: <Goals />,
+            icon: <SupervisedUserCircleIcon />
+        }
     ];
 };
 
