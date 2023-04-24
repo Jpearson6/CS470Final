@@ -7,25 +7,73 @@ import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import {Link, Typography} from "@mui/material";
 import {useNavigate} from "react-router-dom";
+import API from './API_Interface/API_Interface'
+
 
 
 export default function SignUp() {
-    const [userInput, setUserInput] = useState('');
-    const [userInput2, setUserInput2] = useState('');
-    const [userInput3, setUserInput3] = useState('');
-    const [userInput4, setUserInput4] = useState('');
-    const [userInput5, setUserInput5] = useState('');
-    const [userInput6, setUserInput6] = useState('');
+    const [name, setName] = useState('');
+    const [email,setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [passConfirm, setPassConfirm] = useState('');
+    const [signUp, setSignUp] = useState(false)
+    const [noitice, setNotice] = useState('');
     const [verifyUser, setVerifyUser] = useState(false);
     const [authFailed, setAuthFailed] = useState(false);
+    
+    const navigate = useNavigate();
+  
 
-    const handleFirstNameInputChange = event => {
+
+    useEffect(() => {
+        if (!verifyUser || email.length === 0 || name.length === 0 || password.length === 0) return;
+      
+        const api = new API();
+      
+        async function signUp() {
+          try {
+            const userInfo = await api.addUser(email, name, password);
+            console.log(`api returns user info: ${JSON.stringify(userInfo)}`);
+      
+            if (userInfo.status === 'OK') {
+              navigate("/");
+             
+            } else {
+              console.log('Wrong username or password');
+              setVerifyUser(false);
+              setAuthFailed(true);
+            }
+          } catch (error) {
+            console.error(error);
+            setVerifyUser(false);
+            setAuthFailed(true);
+          }
+        }
+      
+        signUp();
+      }, [verifyUser, email, name, password, navigate]);
+      
+
+
+    function handleClick(password,passConfirm) {
+        if(password !== passConfirm){
+          setNotice('Password not match, please enter again !')
+        } else if( signUp === true) {
+            navigate("/")
+        }
+        
+     };
+
+
+
+
+    const handleNameInputChange = event => {
         console.log("handleInputChange called.");
 
         // event.stopPropagation();
         // event.preventDefault();
 
-        setUserInput(event.target.value);
+        setName(event.target.value);
         setAuthFailed(false);
 
         if(event.key === "Enter") {
@@ -34,35 +82,6 @@ export default function SignUp() {
         }
     };
 
-    const handleLastNameInputChange = event => {
-        console.log("handleInputChange called.");
-
-        // event.stopPropagation();
-        // event.preventDefault();
-
-        setUserInput2(event.target.value);
-        setAuthFailed(false);
-
-        if(event.key === "Enter") {
-            console.log("handleKeyPress: Verify user input.");
-            setVerifyUser(true);
-        }
-    };
-
-    const handleUsernameInputChange = event => {
-        console.log("handleInputChange called.");
-
-        // event.stopPropagation();
-        // event.preventDefault();
-
-        setUserInput3(event.target.value);
-        setAuthFailed(false);
-
-        if(event.key === "Enter") {
-            console.log("handleKeyPress: Verify user input.");
-            setVerifyUser(true);
-        }
-    };
 
     const handleEmailInputChange = event => {
         console.log("handleInputChange called.");
@@ -70,7 +89,7 @@ export default function SignUp() {
         // event.stopPropagation();
         // event.preventDefault();
 
-        setUserInput4(event.target.value);
+        setEmail(event.target.value);
         setAuthFailed(false);
 
         if(event.key === "Enter") {
@@ -85,7 +104,7 @@ export default function SignUp() {
         // event.stopPropagation();
         // event.preventDefault();
 
-        setUserInput5(event.target.value);
+        setPassword(event.target.value);
         setAuthFailed(false);
 
         if(event.key === "Enter") {
@@ -100,7 +119,7 @@ export default function SignUp() {
         // event.stopPropagation();
         // event.preventDefault();
 
-        setUserInput6(event.target.value);
+        setPassConfirm(event.target.value);
         setAuthFailed(false);
 
         if(event.key === "Enter") {
@@ -109,10 +128,12 @@ export default function SignUp() {
         }
     };
 
-    const navigate = useNavigate();
-    function handleClick() {
-        navigate("/signUp/signUpPage2");
-    };
+
+
+  
+    
+
+
 
 
     return (
@@ -128,45 +149,12 @@ export default function SignUp() {
 
             <Box display="flex" justifyContent="center" alignItems="center" width="100%" mt={2}>
 
-                <TextField
-                    error={authFailed}
-                    id="outlined-error-helper-text"
-                    label="First Name"
-                    placeholder=""
-                    value={userInput}
-                    onChange={handleFirstNameInputChange}
-                    style = {{width: 300}}
-                />
-                <Divider/>
+                <Typography variant="h5" sx={{ fontFamily: 'Monospace' }}>
+                    {noitice}
+                </Typography>
+              
             </Box>
 
-            <Box display="flex" justifyContent="center" alignItems="center" width="100%" mt={2}>
-
-                <TextField
-                    error={authFailed}
-                    id="outlined-error-helper-text"
-                    label="Last Name"
-                    placeholder=""
-                    value={userInput2}
-                    onChange={handleLastNameInputChange}
-                    style = {{width: 300}}
-                />
-                <Divider/>
-            </Box>
-
-            <Box display="flex" justifyContent="center" alignItems="center" width="100%" mt={2}>
-
-                <TextField
-                    error={authFailed}
-                    id="outlined-error-helper-text"
-                    label="Username"
-                    placeholder=""
-                    value={userInput3}
-                    onChange={handleUsernameInputChange}
-                    style = {{width: 300}}
-                />
-                <Divider/>
-            </Box>
 
             <Box display="flex" justifyContent="center" alignItems="center" width="100%" mt={2}>
 
@@ -175,12 +163,30 @@ export default function SignUp() {
                     id="outlined-error-helper-text"
                     label="Email Address"
                     placeholder=""
-                    value={userInput4}
+                    value={email}
                     onChange={handleEmailInputChange}
+                    style = {{width: 300}}
+                />
+            <Divider/>
+            </Box>
+
+
+
+            <Box display="flex" justifyContent="center" alignItems="center" width="100%" mt={2}>
+
+                <TextField
+                    error={authFailed}
+                    id="outlined-error-helper-text"
+                    label="First Name"
+                    placeholder=""
+                    value={name}
+                    onChange={handleNameInputChange}
                     style = {{width: 300}}
                 />
                 <Divider/>
             </Box>
+
+
 
             <Box display="flex" justifyContent="center" alignItems="center" width="100%" mt={1}>
 
@@ -189,7 +195,7 @@ export default function SignUp() {
                     id="outlined-error-helper-text"
                     label="Password"
                     placeholder=""
-                    value={userInput5}
+                    value={password}
                     onChange={handlePasswordInputChange}
                     style = {{width: 300}}
                 />
@@ -203,7 +209,7 @@ export default function SignUp() {
                     id="outlined-error-helper-text"
                     label="Confirm Password"
                     placeholder=""
-                    value={userInput6}
+                    value={passConfirm}
                     onChange={handleRepeatPasswordInputChange}
                     style = {{width: 300}}
                 />
@@ -214,8 +220,8 @@ export default function SignUp() {
                 <Button
                     variant="contained"
                     size="medium"
-                    onClick={(e) => handleClick()}
-                >Next</Button>
+                    onClick={(e) => handleClick(password,passConfirm)}
+                >Sign Up</Button>
             </Box>
 
         </Fragment>

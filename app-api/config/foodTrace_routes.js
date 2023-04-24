@@ -33,6 +33,8 @@ const userRouter = require('koa-router')({
 });
 
 userRouter.get('/all-users', UserController.allUsers, err => console.log(`allUsers ran into an error: ${err}`))
+userRouter.post('/sign-up',UserController.addUser, err => console.log(`sign-up error: ${err}`))
+
 
 router.use(
     '',

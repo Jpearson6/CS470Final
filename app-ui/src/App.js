@@ -13,8 +13,7 @@ function App() {
   return (
 
       <Routes>
-          <Route path="/" element={ <Login user={user} setUser={setUser} />} />
-          
+            <Route path="/" element={ <Login user={user} setUser={setUser} />} />     
           <Route path="/home" element={<MainDrawer/>}/>
           <Route path="/signUp" element={<SignUp/>} />
           <Route path="/signUp/signUpPage2" element ={<SignUpPage2/>}/>

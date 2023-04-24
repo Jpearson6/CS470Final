@@ -1,5 +1,4 @@
 import React, {useState, useEffect, Fragment} from 'react';
-
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -18,6 +17,7 @@ import MainDrawer from "./Menu/MainDrawer";
 function Login({setUser}) {
     const [userInput, setUserInput] = useState(''); //Email
     const [userInput2, setUserInput2] = useState(''); //Password
+    const [noitice, setNotice] = useState('');
     const [verifyUser, setVerifyUser] = useState(false);
     const [authFailed, setAuthFailed] = useState(false);
 
@@ -42,7 +42,8 @@ function Login({setUser}) {
                         navigate("/home");
                         setUser(user);
                     }else {
-                        console.log("Wrong username or pass word")
+                        console.log("Wrong username or password")
+                        setNotice('Wrong user or password')
                         setVerifyUser(false)
                         setAuthFailed(true)
                     }
@@ -85,6 +86,14 @@ function Login({setUser}) {
                    FoodTrace
                </Typography>
                 <Divider/>
+            </Box>
+
+            <Box display="flex" justifyContent="center" alignItems="center" width="100%" mt={2}>
+
+                <Typography variant="h5" sx={{ fontFamily: 'Monospace' }}>
+                    {noitice}
+                </Typography>
+
             </Box>
 
             <Box display="flex" justifyContent="center" alignItems="center" width="100%" mt={2}>

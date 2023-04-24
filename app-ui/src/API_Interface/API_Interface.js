@@ -39,9 +39,30 @@ export default class APIInterface {
                  }));
     }
 
+
+    async addUser(email, name, password) {
+        try {
+          const response = await axiosAgent.post('/user/sign-up', {
+            Email: email,
+            Name: name,
+            Password: password
+          });
+          return response.data;
+        } catch (error) {
+          console.error(`Error adding user: ${error}`);
+          throw error;
+        }
+      }
+
+
     async allUsers() {
         return axiosAgent.get(`user/all-users`);
     }
+
+
+   
+
+
 
     async searchFood(food) {
         return axios.get(`https://api.nal.usda.gov/fdc/v1/foods/search?api_key=${encodeURIComponent(params.api_key)}&query=${encodeURIComponent(food)}&dataType=${encodeURIComponent(params.dataType)}&pageSize=10`)
