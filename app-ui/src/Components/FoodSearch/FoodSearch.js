@@ -90,7 +90,7 @@ export default function FoodSearch() {
     async function searchFood(food) {
         const api = new API();
         const foodJSONString = await api.searchFood(food);
-        console.log(`Food from the API Call ${JSON.stringify(foodJSONString.data.foods)}`);
+        //console.log(`Food from the API Call ${JSON.stringify(foodJSONString.data.foods)}`);
         setFoodList(foodJSONString.data.foods);
     }
 
