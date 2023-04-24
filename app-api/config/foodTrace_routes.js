@@ -16,6 +16,17 @@ router.get('/', function (ctx) {
     return ctx.body = 'What is up?';
 });
 
+
+// Login router configuration.
+
+const LoginController = require('../app/Controllers/LoginController.js');
+const loginRouter = require('koa-router')({
+    prefix: '/login'
+});
+loginRouter.get('/:Email/:Password', LoginController.authorizeUser, (err) => console.log("login-route error:", err));
+
+
+
 const UserController = require('../app/Controllers/UserController.js');
 const userRouter = require('koa-router')({
     prefix: '/user'
@@ -37,11 +48,16 @@ const foodLogRouter = require('koa-router')({
 foodLogRouter.get('/:UserId' , FoodLogController.allFoodByDate, err => console.log(`allFoodbyDate ran into an error: ${err}`));
 foodLogRouter.post('/:UserId/:FoodName/:Calories/:Protein/:Fat/:Carbohydrates' , FoodLogController.addFoodByUser, err => console.log(`addFoodByUser ran into an error: ${err}`));
 
+userRouter.get('/all-users', UserController.allUsers, err => console.log(`allUsers ran into an error: ${err}`))
+userRouter.post('/sign-up',UserController.addUser, err => console.log(`sign-up error: ${err}`))
+
 
 router.use(
     '',
     userRouter.routes(),
-    foodLogRouter.routes()
+    foodLogRouter.routes(),
+    loginRouter.routes()
+
 );
 
 module.exports = function (app) {

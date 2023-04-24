@@ -10,4 +10,8 @@ var connection = mysql.createConnection({
     database: 'sql9612955'
 });
 
+connection.on('error', function(err) {
+    console.log('MySQL connection error:', err);
+});
+
 module.exports = connection;

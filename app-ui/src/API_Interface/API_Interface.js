@@ -28,6 +28,33 @@ const axiosAgent = AxiosConfigured();
 
 export default class APIInterface {
 
+    
+    async getUserInfo(Email,Password) {
+        return axiosAgent.get(`login/${Email}/${Password}`)
+            .then(userInfo => userInfo.data)
+            .catch(error => (
+                {
+                    error,
+                    user: undefined
+                 }));
+    }
+
+
+    async addUser(email, name, password) {
+        try {
+          const response = await axiosAgent.post('/user/sign-up', {
+            Email: email,
+            Name: name,
+            Password: password
+          });
+          return response.data;
+        } catch (error) {
+          console.error(`Error adding user: ${error}`);
+          throw error;
+        }
+      }
+
+
     async allUsers() {
         return axiosAgent.get(`user/all-users`);
     }

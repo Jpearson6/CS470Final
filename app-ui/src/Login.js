@@ -1,66 +1,86 @@
 import React, {useState, useEffect, Fragment} from 'react';
-
-import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import {Link, Typography} from "@mui/material";
 import {useNavigate} from 'react-router-dom';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import API from './API_Interface/API_Interface'
 
 
-import SignUp from './SignUp';
-import MainDrawer from "./Menu/MainDrawer";
 
 
-export default function Login({setUser}) {
-    const [userInput, setUserInput] = useState('');
-    const [userInput2, setUserInput2] = useState('');
+function Login({setUser}) {
+    const [email, setEmail] = useState(''); //Email
+    const [password, setPassword] = useState(''); //Password
+    const [noitice, setNotice] = useState('');
     const [verifyUser, setVerifyUser] = useState(false);
     const [authFailed, setAuthFailed] = useState(false);
+    const navigate = useNavigate();
 
     const handleEmailInputChange = event => {
-        console.log("handleInputChange called.");
-
-        // event.stopPropagation();
-        // event.preventDefault();
-
-        setUserInput(event.target.value);
+        setEmail(event.target.value);
         setAuthFailed(false);
-    };
-
-    const handlePasswordInputChange = event => {
-        console.log("handleInputChange called.");
-
-        // event.stopPropagation();
-        // event.preventDefault();
-
-        setUserInput2(event.target.value);
-        setAuthFailed(false);
-
         if(event.key === "Enter") {
             console.log("handleKeyPress: Verify user input.");
             setVerifyUser(true);
         }
     };
 
-    const navigate = useNavigate();
+    useEffect(()=>{
+        if (!verifyUser || email.length === 0 || password.length === 0) return
+        const api = new API();
+        async function getUserInfo(){
+            api.getUserInfo(email,password)
+                .then(userInfo => {
+                    console.log(`api returns user info: ${JSON.stringify(userInfo)}`)
+                    const user = userInfo.user;
+                    if(userInfo.status === 'OK'){
+                        
+                        setUser(user);
+//                        console.log(`User infor: ${user.Name}`)
+                        navigate("/home");
+                    }else {
+                        console.log("Wrong username or password")
+                        setNotice('Wrong user or password')
+                        setVerifyUser(false)
+                        setAuthFailed(true)
+                    }
+                })
+        }
+        getUserInfo()
+    
+    },[navigate,setUser,verifyUser,email,password])
+    
 
-    function handleClick(){
-        navigate("/home")
+    const handlePasswordInputChange = event => {
+        
+        setPassword(event.target.value);
+        setAuthFailed(false);
+
+        if (event.key === "Enter") {
+            setVerifyUser(true);
+        }
     };
 
-    function handleSignUpClick(){
-        navigate("/signUp")
+   
+
+    function handleClick() {
+        if (email && password) {
+            setVerifyUser(true);
+        } else {
+            setAuthFailed(true);
+        }
+        
     };
 
+    function handleSignUpClick() {
+        navigate("/signUp");
+    };
 
     return (
         <Fragment>
-
             <Box display="flex" justifyContent="center" alignItems="center" width="100%" mt={10}>
-
                <Typography variant="h3" sx={{ fontFamily: 'Monospace' }}>
                    FoodTrace
                </Typography>
@@ -69,28 +89,34 @@ export default function Login({setUser}) {
 
             <Box display="flex" justifyContent="center" alignItems="center" width="100%" mt={2}>
 
+                <Typography variant="h5" sx={{ fontFamily: 'Monospace' }}>
+                    {noitice}
+                </Typography>
+
+            </Box>
+
+            <Box display="flex" justifyContent="center" alignItems="center" width="100%" mt={2}>
                 <TextField
                     error={authFailed}
                     id="outlined-error-helper-text"
                     label="Email Address"
                     placeholder=""
-                    value={userInput}
+                    value={email}
                     onChange={handleEmailInputChange}
-                    style = {{width: 300}}
+                    style={{ width: 300 }}
                 />
                 <Divider/>
             </Box>
 
             <Box display="flex" justifyContent="center" alignItems="center" width="100%" mt={1}>
-
                 <TextField
                     error={authFailed}
                     id="outlined-error-helper-text"
                     label="Password"
                     placeholder=""
-                    value={userInput2}
+                    value={password}
                     onChange={handlePasswordInputChange}
-                    style = {{width: 300}}
+                    style={{ width: 300 }}
                 />
                 <Divider/>
             </Box>
@@ -99,21 +125,23 @@ export default function Login({setUser}) {
                 <Button
                     variant="contained"
                     size="medium"
-                    onClick={(e) => handleClick()}
-                >Sign In</Button>
+                    onClick= {handleClick}
+                >
+                    Sign In
+                </Button>
             </Box>
 
             <Box display="flex" justifyContent="center" alignItems="center" width="100%" mt={2}>
-                <p>
-                Don't have an account?{" "}
-                    <span className='link' onClick={(e) => handleSignUpClick()}>
+                <Typography variant="body1">
+                    Don't have an account?{" "}
+                    <Link href="#" onClick={handleSignUpClick} color="primary">
                         Sign up
-                    </span>
-                </p>
-
+                    </Link>
+                </Typography>
             </Box>
-
         </Fragment>
-
     );
 }
+
+
+export default Login;

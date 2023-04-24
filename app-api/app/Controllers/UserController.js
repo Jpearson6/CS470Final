@@ -34,6 +34,66 @@ const allUsers = async (ctx) => {
 }
 
 
+const addUser = async (ctx) => {
+  console.log('Adding new user to database.');
+
+  const { Email, Name, Password } = ctx.request.body;
+
+  const query = `
+    INSERT 
+      INTO 
+          User 
+    (Email,Name, Password)
+    VALUES (?, ?, ?);
+  `;
+
+  const values = [Email, Name, Password];
+
+  try {
+    await dbConnection.query(query, values);
+    ctx.status = 201;
+    ctx.body = { message: 'User created successfully.' };
+  } catch (error) {
+    console.log("Connection error in UserController::addUser", error);
+    ctx.status = 500;
+    ctx.body = { message: 'Failed to create user.' };
+  }
+}
+
+
+
+
+  const getUserById = async (ctx, userId) => {
+    console.log(`Retrieving user with ID ${userId} from database.`);
+  
+    const query = `
+      SELECT *
+      FROM User
+      WHERE id = ?
+    `;
+  
+    try {
+      const [result] = await dbConnection.query(query, [userId]);
+      if (result) {
+        ctx.status = 200;
+        ctx.body = result;
+      } else {
+        ctx.status = 404;
+        ctx.body = { message: `User with ID ${userId} not found.` };
+      }
+    } catch (error) {
+      console.log("Connection error in UserController::getUserById", error);
+      ctx.status = 500;
+      ctx.body = { message: 'Failed to retrieve user.' };
+    }
+  }
+  
+  
+
+
 module.exports = {
-    allUsers
+    allUsers,
+    addUser,
+    getUserById
+
 };
