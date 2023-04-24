@@ -10,7 +10,6 @@ import {useNavigate} from "react-router-dom";
 import API from './API_Interface/API_Interface'
 
 
-
 export default function SignUp() {
     const [name, setName] = useState('');
     const [email,setEmail] = useState('');
@@ -20,49 +19,38 @@ export default function SignUp() {
     const [noitice, setNotice] = useState('');
     const [verifyUser, setVerifyUser] = useState(false);
     const [authFailed, setAuthFailed] = useState(false);
-    
-    const navigate = useNavigate();
-  
 
 
-    useEffect(() => {
-        if (!verifyUser || email.length === 0 || name.length === 0 || password.length === 0) return;
-      
+    useEffect(()=>{
+        if (!verifyUser || email.length === 0 || name.length === 0, password.length === 0) return
         const api = new API();
-      
-        async function signUp() {
-          try {
-            const userInfo = await api.addUser(email, name, password);
-            console.log(`api returns user info: ${JSON.stringify(userInfo)}`);
-      
-            if (userInfo.status === 'OK') {
-              navigate("/");
-             
-            } else {
-              console.log('Wrong username or password');
-              setVerifyUser(false);
-              setAuthFailed(true);
-            }
-          } catch (error) {
-            console.error(error);
-            setVerifyUser(false);
-            setAuthFailed(true);
-          }
+        async function signUp(){
+            api.addUser(email,name,password)
+                .then(userInfo => {
+                    console.log(`api returns user info: ${JSON.stringify(userInfo)}`)
+                    const user = userInfo.user;
+                    if(userInfo.status === 'OK'){
+                        navigate("/");
+                       
+                    }else {
+                        console.log("Wrong username or password")
+                        setVerifyUser(false)
+                        setAuthFailed(true)
+                    }
+                })
         }
-      
-        signUp();
-      }, [verifyUser, email, name, password, navigate]);
-      
+        signUp()
+    
+    },[signUp])
 
 
     function handleClick(password,passConfirm) {
-        if(password !== passConfirm){
-          setNotice('Password not match, please enter again !')
-        } else if( signUp === true) {
-            navigate("/")
-        }
-        
-     };
+       if(password !== passConfirm){
+         setNotice('Password not match, please enter again !')
+       } else (
+        setSignUp(true)
+       )
+    };
 
 
 
@@ -130,7 +118,7 @@ export default function SignUp() {
 
 
 
-  
+    const navigate = useNavigate();
     
 
 
