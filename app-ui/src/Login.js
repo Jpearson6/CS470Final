@@ -5,7 +5,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
-import {Link, Typography} from "@mui/material";
+import {createTheme, Link, Typography} from "@mui/material";
 import {useNavigate} from 'react-router-dom';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -54,6 +54,17 @@ export default function Login({setUser}) {
     function handleSignUpClick(){
         navigate("/signUp")
     };
+
+    const theme = createTheme({
+        palette: {
+            primary: {
+                main: '#EC5800',
+            },
+            secondary: {
+                main: '#EC5800',
+            },
+        },
+    });
 
 
     return (
