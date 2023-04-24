@@ -1,28 +1,25 @@
 import React, {useState, useEffect, Fragment} from 'react';
-import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import {Link, Typography} from "@mui/material";
 import {useNavigate} from 'react-router-dom';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import API from './API_Interface/API_Interface'
 
 
-import SignUp from './SignUp';
-import MainDrawer from "./Menu/MainDrawer";
 
 
 function Login({setUser}) {
-    const [userInput, setUserInput] = useState(''); //Email
-    const [userInput2, setUserInput2] = useState(''); //Password
+    const [email, setEmail] = useState(''); //Email
+    const [password, setPassword] = useState(''); //Password
     const [noitice, setNotice] = useState('');
     const [verifyUser, setVerifyUser] = useState(false);
     const [authFailed, setAuthFailed] = useState(false);
+    const navigate = useNavigate();
 
     const handleEmailInputChange = event => {
-        setUserInput(event.target.value);
+        setEmail(event.target.value);
         setAuthFailed(false);
         if(event.key === "Enter") {
             console.log("handleKeyPress: Verify user input.");
@@ -31,10 +28,10 @@ function Login({setUser}) {
     };
 
     useEffect(()=>{
-        if (!verifyUser || userInput.length === 0 || userInput2.length === 0) return
+        if (!verifyUser || email.length === 0 || password.length === 0) return
         const api = new API();
         async function getUserInfo(){
-            api.getUserInfo(userInput,userInput2)
+            api.getUserInfo(email,password)
                 .then(userInfo => {
                     console.log(`api returns user info: ${JSON.stringify(userInfo)}`)
                     const user = userInfo.user;
@@ -53,12 +50,12 @@ function Login({setUser}) {
         }
         getUserInfo()
     
-    },[verifyUser,setUser,userInput,userInput2])
+    },[navigate,setUser,verifyUser,email,password])
     
 
     const handlePasswordInputChange = event => {
         
-        setUserInput2(event.target.value);
+        setPassword(event.target.value);
         setAuthFailed(false);
 
         if (event.key === "Enter") {
@@ -66,10 +63,10 @@ function Login({setUser}) {
         }
     };
 
-    const navigate = useNavigate();
+   
 
     function handleClick() {
-        if (userInput && userInput2) {
+        if (email && password) {
             setVerifyUser(true);
         } else {
             setAuthFailed(true);
@@ -104,7 +101,7 @@ function Login({setUser}) {
                     id="outlined-error-helper-text"
                     label="Email Address"
                     placeholder=""
-                    value={userInput}
+                    value={email}
                     onChange={handleEmailInputChange}
                     style={{ width: 300 }}
                 />
@@ -117,7 +114,7 @@ function Login({setUser}) {
                     id="outlined-error-helper-text"
                     label="Password"
                     placeholder=""
-                    value={userInput2}
+                    value={password}
                     onChange={handlePasswordInputChange}
                     style={{ width: 300 }}
                 />
