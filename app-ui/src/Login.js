@@ -39,8 +39,10 @@ function Login({setUser}) {
                     console.log(`api returns user info: ${JSON.stringify(userInfo)}`)
                     const user = userInfo.user;
                     if(userInfo.status === 'OK'){
-                        navigate("/home");
+                        
                         setUser(user);
+//                        console.log(`User infor: ${user.Name}`)
+                        navigate("/home");
                     }else {
                         console.log("Wrong username or pass word")
                         setVerifyUser(false)
