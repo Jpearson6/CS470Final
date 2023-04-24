@@ -43,7 +43,8 @@ function SearchBar( props ) {
 }
 
 function DisplayFood (props) {
-    const {foodList} = props;
+    const {foodList , selectedFood , addFood} = props;
+    let tempSelectedFood = [];
     return(
         foodList.length > 0 &&
         <TableContainer component={Paper}>
@@ -62,7 +63,19 @@ function DisplayFood (props) {
                         <TableRow
                                 sx={{'&:last-child td, &:last-child th': {border: 0}}}
                         >
-                            <TableCell key={idx}>
+                            <TableCell key={idx} onClick={() =>{
+                                tempSelectedFood = Object.keys(food['foodNutrients']).reduce((obj, i) => {
+                                    //console.log(i);
+                                    if(["0" , "1" , "2" , "3"].includes(i)){
+                                        obj[i] = food['foodNutrients'][i]
+                                    }
+                                    return obj;
+                                }, {});
+                                let tempSelectedFood1 = {foodName: food['description'] ,  ...tempSelectedFood}
+                                console.log(tempSelectedFood1);
+                                addFood(food['description'], tempSelectedFood['3']['value'], tempSelectedFood['0']['value'], tempSelectedFood['2']['value'], tempSelectedFood['1']['value'] )
+
+                            }}>
                                 {
                                     food['description']
                                 }
@@ -80,11 +93,12 @@ function DisplayFood (props) {
 export default function FoodSearch() {
     const [foodList, setFoodList] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
+    const [selectedFood, setSelectedFood] = useState([]);
 
     useEffect(() => {
         if(foodList.length === 0)
             return;
-        console.log("foodList contains ", foodList);
+        //console.log("foodList contains ", foodList);
     }, [foodList]);
 
     async function searchFood(food) {
@@ -92,6 +106,11 @@ export default function FoodSearch() {
         const foodJSONString = await api.searchFood(food);
         //console.log(`Food from the API Call ${JSON.stringify(foodJSONString.data.foods)}`);
         setFoodList(foodJSONString.data.foods);
+    }
+
+    async function addFood(FoodName, Calories, Protein, Carbohydrates, Fat) {
+        const api = new API();
+        api.addFoodByUser(1, FoodName, Calories, Protein, Carbohydrates, Fat);
     }
 
     return (
@@ -104,7 +123,7 @@ export default function FoodSearch() {
                 searchTerm={searchTerm}
                 setSearchTerm={setSearchTerm}
                 />
-            <DisplayFood foodList={foodList}/>
+            <DisplayFood foodList={foodList} selectedFood={selectedFood} addFood={addFood}/>
         </Fragment>
     )
 }

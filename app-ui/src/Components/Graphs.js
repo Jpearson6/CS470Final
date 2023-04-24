@@ -11,13 +11,13 @@ export default function Graphs() {
         useEffect(() => {
             const api = new API();
     
-            async function getEmployees() {
-                const employeesJSONString = await api.allFoodByUser();
+            async function getFoodLog() {
+                const employeesJSONString = await api.allFoodByUser(1);
                 console.log(employeesJSONString.data);
                 setFoodLog(employeesJSONString.data);
             }
     
-            getEmployees();
+            getFoodLog();
         }, []);
 
 
