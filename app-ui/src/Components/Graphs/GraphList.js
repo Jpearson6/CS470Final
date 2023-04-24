@@ -4,23 +4,23 @@ import ProteinCount from "./ProteinCount";
 import CarbCount from "./CarbCount";
 
 
-const GraphList = () => {
+const GraphList = (foodData) => {
     return [
         {
             title: 'Calorie Count',
-            component: <CalorieCount />
+            component: <CalorieCount foodData = {foodData} />
         },
         {
             title: 'Fat Count',
-            component: <FatCount />
+            component: <FatCount foodData = {foodData} />
         },
         {
             title: 'Protein Count',
-            component: <ProteinCount />
+            component: <ProteinCount foodData = {foodData} />
         },
         {
             title: 'Carb Count',
-            component: <CarbCount />
+            component: <CarbCount foodData = {foodData} />
         }
     ];
 };

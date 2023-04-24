@@ -1,63 +1,19 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef} from "react";
 import * as Plot from "@observablehq/plot";
 
-const placeholderData = () => {
-    return [
-        {
-            "date":new Date("2023-04-14"),
-            "protein":20,
-            "food": "burger"
-        },
-        {
-            "date":new Date("2023-04-14"),
-            "protein":4,
-            "food": "fries"
-        },
-        {
-            "date":new Date("2023-04-14"),
-            "protein":0,
-            "food": "coke"
-        },
-        {
-            "date":new Date("2023-04-15"),
-            "protein":21,
-            "food": "burger"
-        },
-        {
-            "date":new Date("2023-04-16"),
-            "protein":18,
-            "food": "burger"
-        },
-        {
-            "date":new Date("2023-04-17"),
-            "protein":24,
-            "food": "burger"
-        },
-        {
-            "date":new Date("2023-04-18"),
-            "protein":18,
-            "food": "burger"
-        },
-        {
-            "date":new Date("2023-04-19"),
-            "protein":16,
-            "food": "burger"
-        },
-        {
-            "date":new Date("2023-04-20"),
-            "protein":17,
-            "food": "burger"
-        }
-    ]
-}
+const updateDate = (item) => {
+    const date = new Date(item['LogDate']);
 
-function ProteinCount() {
+    const dayString = (date.getMonth() + 1).toString() + "/" + (date.getDay() + 1).toString();
+
+    return {...item, "dayString":dayString}
+}
+function ProteinCount(props) {
     const chartRef = useRef();
-    const [data, setData] = useState(placeholderData);
+    const foodData = props['foodData'].map(item => updateDate(item));
 
     useEffect(() => {
-        if (data === undefined) return;
-        console.log(data)
+        if (foodData === undefined) return;
         const chart = Plot.plot({
             y: {
                 grid: true
@@ -65,14 +21,17 @@ function ProteinCount() {
             x: {
                 ticks: 7
             },
+            color: {
+                legend: true
+            },
             marks: [
-                Plot.barY(data, {x: "date", y: "protein", fill: "food"})
+                Plot.barY(foodData, {x: "LogDate", y: "Protein", fill: "FoodName"})
             ]
         });
         chartRef.current.append(chart);
         console.log(chart)
         return () => chart.remove();
-    }, [data]);
+    }, [foodData]);
 
 
     return (

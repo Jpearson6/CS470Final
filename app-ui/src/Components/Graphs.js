@@ -1,11 +1,12 @@
 import {InputLabel, MenuItem, Stack, Typography} from "@mui/material";
-import {Fragment, useState} from "react";
+import {Fragment, useEffect, useState} from "react";
 import FormControl from "@mui/material/FormControl";
 import {GraphList} from "./Graphs/GraphList";
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import API from '../API_Interface/API_Interface'
 
-const findSelectedComponent = (selectedItem) => {
-    const component = [...GraphList()].filter(comp => comp.title === selectedItem);
+const findSelectedComponent = (selectedItem, foodData) => {
+    const component = [...GraphList(foodData)].filter(comp => comp.title === selectedItem);
     if(component.length === 1)
         return component[0];
 
@@ -19,11 +20,27 @@ const findSelectedComponent = (selectedItem) => {
 export default function Graphs() {
     const [selectedItem, setSelectedItem] = useState('');
 
+    const [foodLog, setFoodLog] = useState([]);
+    //console.log(`in EmployeeTable routes contains is ${JSON.stringify(employees)}`);
+
+
+    useEffect(() => {
+        const api = new API();
+
+        async function getFood() {
+            const foodJSONString = await api.allFoodByUser();
+            console.log(foodJSONString.data);
+            setFoodLog(foodJSONString.data);
+        }
+
+        getFood();
+    }, []);
+
     const handleChange = (event: SelectChangeEvent) => {
         setSelectedItem(event.target.value);
     };
 
-    return <Fragment>
+    return foodLog.length > 0 && <Fragment>
         <Stack>
             <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">Graph</InputLabel>
@@ -40,7 +57,7 @@ export default function Graphs() {
                     <MenuItem value={"Carb Count"}>Carbs</MenuItem>
                 </Select>
             </FormControl>
-            {findSelectedComponent(selectedItem).component}
+            {findSelectedComponent(selectedItem, foodLog).component}
 
         </Stack>
     </Fragment>
