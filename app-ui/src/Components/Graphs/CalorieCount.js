@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import * as Plot from "@observablehq/plot";
+import addTooltips from "./Tooltip"
 
 const updateDate = (item) => {
     const date = new Date(item['LogDate']);
@@ -17,20 +18,30 @@ function CalorieCount(props) {
 
     useEffect(() => {
         if (foodData === undefined) return;
-        const chart = Plot.plot({
-            y: {
-                grid: true
-            },
-            x: {
-                ticks: 7
-            },
-            color: {
-                legend: true
-            },
-            marks: [
-                Plot.barY(foodData, {x: "dayString", y: "Calories", fill: "FoodName"})
-            ]
-        });
+        const chart = addTooltips(
+                Plot.plot({
+                y: {
+                    grid: true
+                },
+                x: {
+                    ticks: 7
+                },
+                color: {
+                    legend: true
+                },
+                marks: [
+                    Plot.barY(foodData, {
+                        x: "dayString",
+                        y: "Calories",
+                        stroke: "Black",
+                        fill: "FoodName",
+                        fillOpacity: .75,
+                        title: (d) => `${d.FoodName} \n ${d.Calories}`,
+                    })
+                ]
+            }),
+            { fill: "lightgray", opacity: 0.5, "stroke-width": "3px", stroke: "red" }
+        )
         chartRef.current.append(chart);
         console.log(chart)
         return () => chart.remove();
