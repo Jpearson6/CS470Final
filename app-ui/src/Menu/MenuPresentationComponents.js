@@ -1,5 +1,4 @@
 import Homepage from "../Components/Homepage";
-import Food from "../Components/Food";
 import Graphs from "../Components/Graphs";
 import Users from "../Components/Users";
 import Macros from "../Components/Macros";
