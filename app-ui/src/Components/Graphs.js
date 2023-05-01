@@ -17,7 +17,8 @@ const findSelectedComponent = (selectedItem, foodData) => {
     }
 };
 
-export default function Graphs() {
+export default function Graphs(props) {
+    const { userId } = props;
     const [selectedItem, setSelectedItem] = useState('');
 
     const [foodLog, setFoodLog] = useState([]);
@@ -28,7 +29,7 @@ export default function Graphs() {
         const api = new API();
 
         async function getFood() {
-            const foodJSONString = await api.allFoodByUser(1);
+            const foodJSONString = await api.allFoodByUser(userId);
             console.log(foodJSONString.data);
             setFoodLog(foodJSONString.data);
         }

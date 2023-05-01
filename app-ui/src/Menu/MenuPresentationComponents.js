@@ -10,7 +10,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
 import FoodSearch from "../Components/FoodSearch/FoodSearch";
 
-const presentationComponents = () => {
+const presentationComponents = (userId) => {
     return [
         {
             title: 'Homepage',
@@ -19,27 +19,27 @@ const presentationComponents = () => {
         },
         {
             title: 'Food',
-            component: <FoodSearch />,
+            component: <FoodSearch userId={userId}/>,
             icon: <LocalDiningIcon />
         },
         {
             title: 'Graphs',
-            component: <Graphs />,
+            component: <Graphs userId={userId}/>,
             icon: <SsidChartIcon />
         },
         {
             title: 'Users',
-            component: <Users />,
+            component: <Users userId={userId}/>,
             icon: <SupervisedUserCircleIcon />
         },
         {
             title: 'Macros',
-            component: <Macros />,
+            component: <Macros userId={userId}/>,
             icon: <SupervisedUserCircleIcon />
         },
         {
             title: 'Goals',
-            component: <Goals />,
+            component: <Goals userId={userId}/>,
             icon: <SupervisedUserCircleIcon />
         }
     ];

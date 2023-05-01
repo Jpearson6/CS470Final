@@ -4,7 +4,7 @@ function now() {
     return dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss");
 }
 
-const allFoodByDate = async (ctx) => {
+const allFoodByUser = async (ctx) => {
     console.log('FoodLog food by date called.');
     return new Promise((resolve, reject) => {
         const query = `
@@ -67,6 +67,6 @@ const addFoodByUser = async (ctx) => {
 
 
 module.exports = {
-    allFoodByDate,
+    allFoodByUser,
     addFoodByUser
 };

@@ -90,10 +90,14 @@ function DisplayFood (props) {
 
 }
 
-export default function FoodSearch() {
+export default function FoodSearch(props) {
+    const { userId } = props;
     const [foodList, setFoodList] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedFood, setSelectedFood] = useState([]);
+    console.log(userId);
+    const api = new API();
+    api.updateMacros(userId, 25 , 35 , 40);
 
     useEffect(() => {
         if(foodList.length === 0)
@@ -110,8 +114,9 @@ export default function FoodSearch() {
 
     async function addFood(FoodName, Calories, Protein, Carbohydrates, Fat) {
         const api = new API();
-        api.addFoodByUser(1, FoodName, Calories, Protein, Carbohydrates, Fat);
+        api.addFoodByUser(userId, FoodName, Calories, Protein, Carbohydrates, Fat);
     }
+
 
     return (
         <Fragment>

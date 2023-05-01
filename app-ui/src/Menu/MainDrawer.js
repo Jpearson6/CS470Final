@@ -67,7 +67,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     justifyContent: 'flex-end',
 }));
 
-const TopBar = ({open, handleDrawerOpen, title, user, logoutAction}) => {
+const TopBar = ({open, handleDrawerOpen, title, Name, logoutAction}) => {
     // This component is responsible for rendering the Toolbar that is drawn
     // at the top of the drawer.
 
@@ -89,7 +89,7 @@ const TopBar = ({open, handleDrawerOpen, title, user, logoutAction}) => {
                     </Typography>
                     <Box width="100%" justifyContent="center" flex={1}>
                         <Typography variant="h6" noWrap component="div" align="center">
-                            {user}
+                            {Name}
                         </Typography>
                     </Box>
                     <Box width="100%" justifyContent="right" flex={1}>
@@ -121,8 +121,8 @@ const PresentationListItems = (props) => {
         }
     </div>;
 };
-const findSelectedComponent = (selectedItem) => {
-    const component = [...presentationComponents()].filter(comp => comp.title === selectedItem);
+const findSelectedComponent = (selectedItem , userId) => {
+    const component = [...presentationComponents(userId)].filter(comp => comp.title === selectedItem);
     if(component.length === 1)
         return component[0];
 
@@ -133,7 +133,8 @@ const findSelectedComponent = (selectedItem) => {
     }
 };
 
-export default function MainDrawer({title="Food Trace", user}) {
+export default function MainDrawer({title="Food Trace", Id, Name}) {
+    const navigate = useNavigate();
     const theme = createTheme({
         palette: {
             primary: {
@@ -148,6 +149,7 @@ export default function MainDrawer({title="Food Trace", user}) {
     const [selectedItem, setSelectedItem] = useState('Homepage');
 
     console.log('in MainDrawer');
+    //console.log(Id);
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -161,7 +163,6 @@ export default function MainDrawer({title="Food Trace", user}) {
         setSelectedItem(title)
     };
 
-    const navigate = useNavigate()
     function logoutAction() {
         navigate("/");
     }
@@ -170,7 +171,7 @@ export default function MainDrawer({title="Food Trace", user}) {
         <ThemeProvider theme={theme}>
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
-            <TopBar title={title} open={open} handleDrawerOpen={handleDrawerOpen} user={user} logoutAction={logoutAction} />
+            <TopBar title={title} open={open} handleDrawerOpen={handleDrawerOpen} Name={Name} logoutAction={logoutAction} />
             <Drawer
                 sx={{
                     width: drawerWidth,
@@ -201,7 +202,7 @@ export default function MainDrawer({title="Food Trace", user}) {
             </Drawer>
             <Main open={open}>
                 <DrawerHeader />
-                {findSelectedComponent(selectedItem).component}
+                {findSelectedComponent(selectedItem , Id).component}
             </Main>
         </Box>
         </ThemeProvider>
