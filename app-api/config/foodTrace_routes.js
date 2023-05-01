@@ -33,6 +33,9 @@ const userRouter = require('koa-router')({
 });
 
 userRouter.get('/all-users', UserController.allUsers, err => console.log(`allUsers ran into an error: ${err}`));
+userRouter.get('/:Id', UserController.getUserById, err => console.log(`user by id ran into an error: ${err}`));
+userRouter.get('/macros/:Id', UserController.getUserMacros, err => console.log(`user macros by id ran into an error: ${err}`));
+userRouter.post('/macros/:Id/:Fat/:Carbs/:Protein', UserController.setUserMacros, err => console.log(`set user macros by id ran into an error: ${err}`));
 /*
 |--------------------------------------------------------------------------
 | FoodLog router
@@ -45,7 +48,7 @@ const FoodLogController = require('../app/Controllers/FoodLogController.js');
 const foodLogRouter = require('koa-router')({
     prefix: '/foodlog'
 })
-foodLogRouter.get('/:UserId' , FoodLogController.allFoodByDate, err => console.log(`allFoodbyDate ran into an error: ${err}`));
+foodLogRouter.get('/:UserId' , FoodLogController.allFoodByUser, err => console.log(`allFoodbyDate ran into an error: ${err}`));
 foodLogRouter.post('/:UserId/:FoodName/:Calories/:Protein/:Fat/:Carbohydrates' , FoodLogController.addFoodByUser, err => console.log(`addFoodByUser ran into an error: ${err}`));
 
 userRouter.get('/all-users', UserController.allUsers, err => console.log(`allUsers ran into an error: ${err}`))

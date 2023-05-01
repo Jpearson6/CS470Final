@@ -71,4 +71,12 @@ export default class APIInterface {
         return axiosAgent.post(`foodlog/${UserId}/${FoodName}/${Calories}/${Protein}/${Carbohydrates}/${Fat}`)
     }
 
+    async updateMacros(UserId, Fat, Carbs, Protein){
+        return axiosAgent.post(`user/macros/${UserId}/${Fat}/${Carbs}/${Protein}`)
+    }
+
+    async getMacros(UserId){
+        return axiosAgent.get(`user/macros/${UserId}`)
+    }
+
 }

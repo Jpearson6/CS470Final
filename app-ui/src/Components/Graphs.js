@@ -17,9 +17,11 @@ const findSelectedComponent = (selectedItem, foodData, timeframe) => {
     }
 };
 
-export default function Graphs() {
+export default function Graphs(props) {
     const [selectedItem, setSelectedItem] = useState('Calorie Count');
-    const [timeframe, setTimeframe] = useState(7)
+    const [timeframe, setTimeframe] = useState(7);
+    const { userId } = props;
+
     const [foodLog, setFoodLog] = useState([]);
 
 
@@ -27,7 +29,7 @@ export default function Graphs() {
         const api = new API();
 
         async function getFood() {
-            const foodJSONString = await api.allFoodByUser(1);
+            const foodJSONString = await api.allFoodByUser(userId);
             console.log(foodJSONString.data);
             setFoodLog(foodJSONString.data);
         }

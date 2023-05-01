@@ -10,11 +10,12 @@ import { Routes, Route } from "react-router-dom";
 
 function App() {
     const [user, setUser] = useState(undefined);
+
   return (
 
       <Routes>
-          <Route path="/" element={ <Login user={user} setUser={setUser} />} />     
-          <Route path="/home" element={<MainDrawer/>}/>
+          <Route path="/" element={ <Login setUser={setUser} />} />     
+          <Route path="/home" element={<MainDrawer {...user}/>}/>
           <Route path="/signUp" element={<SignUp/>} />
           <Route path="/signUp/signUpPage2" element ={<SignUpPage2/>}/>
       </Routes>
