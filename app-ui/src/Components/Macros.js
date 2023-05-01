@@ -9,13 +9,19 @@ import API from '../API_Interface/API_Interface'
 
 export default function Macros(props) {
     const { userId } = props
+    const [macros , setMacros] = useState(null);
 
-    async function getMacros() {
+    useEffect(() => {
         const api = new API();
-        const macros = await api.getMacros(userId);
-        console.log(`macros from the API Call ${JSON.stringify(macros.data)}`);
-    }
-    getMacros();
+
+        async function getMacros() {
+            const macros = await api.getMacros(userId);
+            console.log(`macros from the API Call ${JSON.stringify(macros.data)}`);
+            setMacros(macros.data);
+        }
+
+        getMacros();
+    }, []);
 
     let fat = 30;
     let carbohydrates = 50;

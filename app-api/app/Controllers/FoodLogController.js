@@ -65,8 +65,41 @@ const addFoodByUser = async (ctx) => {
     });
 }
 
+const allFoodByUserNumDays = async (ctx) => {
+    console.log('FoodLog food fro last 7 days called.');
+    return new Promise((resolve, reject) => {
+        const query = `
+                        SELECT * 
+                        FROM FoodLog 
+                        WHERE UserId = ? AND
+                        LogDate BETWEEN DATE_SUB(NOW(), INTERVAL ? DAY) 
+                        AND NOW();
+                        `;
+        dbConnection.query({
+            sql: query,
+            values: [ctx.params.UserId, ctx.params.NumDays]
+        }, (error, tuples) => {
+            if (error) {
+                console.log("Connection error in Food Controller::allFoodByDate", error);
+                return reject(error);
+            }
+            ctx.body = tuples;
+            ctx.status = 200;
+            return resolve();
+        });
+    }).catch(err => {
+        console.log("Database connection error in allUsers.", err);
+        // The UI side will have to look for the value of status and
+        // if it is not 200, act appropriately.
+        ctx.body = [];
+        ctx.status = 500;
+    });
+}
+
+
 
 module.exports = {
     allFoodByUser,
-    addFoodByUser
+    addFoodByUser,
+    allFoodByUserNumDays
 };
