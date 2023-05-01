@@ -27,7 +27,14 @@ function FatCount(props) {
                 legend: true
             },
             marks: [
-                Plot.barY(foodData, {x: "dayString", y: "Fat", fill: "FoodName"})
+                Plot.barY(foodData, {
+                    x: "dayString",
+                    y: "Fat",
+                    stroke: "Black",
+                    fill: "Green",
+                    fillOpacity: .75,
+                    title: (d) => `${d.FoodName} \n ${d.Fat}`,
+                })
             ]
         });
         chartRef.current.append(chart);

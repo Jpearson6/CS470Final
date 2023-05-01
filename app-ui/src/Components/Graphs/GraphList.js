@@ -4,23 +4,23 @@ import ProteinCount from "./ProteinCount";
 import CarbCount from "./CarbCount";
 
 
-const GraphList = (foodData) => {
+const GraphList = (foodData, timeframe) => {
     return [
         {
             title: 'Calorie Count',
-            component: <CalorieCount foodData = {foodData} />
+            component: <CalorieCount foodData = {foodData} timeframe = {timeframe} />
         },
         {
             title: 'Fat Count',
-            component: <FatCount foodData = {foodData} />
+            component: <FatCount foodData = {foodData} timeframe = {timeframe}/>
         },
         {
             title: 'Protein Count',
-            component: <ProteinCount foodData = {foodData} />
+            component: <ProteinCount foodData = {foodData} timeframe = {timeframe}/>
         },
         {
             title: 'Carb Count',
-            component: <CarbCount foodData = {foodData} />
+            component: <CarbCount foodData = {foodData} timeframe = {timeframe}/>
         }
     ];
 };

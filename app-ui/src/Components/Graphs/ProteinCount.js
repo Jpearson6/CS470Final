@@ -25,7 +25,14 @@ function ProteinCount(props) {
                 legend: true
             },
             marks: [
-                Plot.barY(foodData, {x: "dayString", y: "Protein", fill: "FoodName"})
+                Plot.barY(foodData, {
+                    x: "dayString",
+                    y: "Protein",
+                    stroke: "Black",
+                    fill: "Green",
+                    fillOpacity: .75,
+                    title: (d) => `${d.FoodName} \n ${d.Protein}`,
+                })
             ]
         });
         chartRef.current.append(chart);

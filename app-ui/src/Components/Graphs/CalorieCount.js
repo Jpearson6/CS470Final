@@ -13,8 +13,9 @@ const updateDate = (item) => {
 function CalorieCount(props) {
     const chartRef = useRef();
     const foodData = props['foodData'].map(item => updateDate(item));
+    const timeframe = props['timeframe']
 
-    console.log(foodData);
+    console.log(timeframe);
 
     useEffect(() => {
         if (foodData === undefined) return;
@@ -34,13 +35,13 @@ function CalorieCount(props) {
                         x: "dayString",
                         y: "Calories",
                         stroke: "Black",
-                        fill: "FoodName",
+                        fill: "Green",
                         fillOpacity: .75,
                         title: (d) => `${d.FoodName} \n ${d.Calories}`,
                     })
                 ]
             }),
-            { fill: "lightgray", opacity: 0.5, "stroke-width": "3px", stroke: "red" }
+            { fill: "Purple", opacity: 0.5, "stroke-width": "3px", stroke: "red" }
         )
         chartRef.current.append(chart);
         console.log(chart)
