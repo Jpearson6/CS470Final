@@ -36,6 +36,8 @@ userRouter.get('/all-users', UserController.allUsers, err => console.log(`allUse
 userRouter.get('/:Id', UserController.getUserById, err => console.log(`user by id ran into an error: ${err}`));
 userRouter.get('/macros/:Id', UserController.getUserMacros, err => console.log(`user macros by id ran into an error: ${err}`));
 userRouter.post('/macros/:Id/:Fat/:Carbs/:Protein', UserController.setUserMacros, err => console.log(`set user macros by id ran into an error: ${err}`));
+userRouter.post('/wgoal/:Id/:Weight', UserController.setUserWeightGoal, err => console.log(`set user weight goal by id ran into an error: ${err}`));
+userRouter.post('/alevel/:Id/:Level', UserController.setUserActivityLevel, err => console.log(`set user activity level by id ran into an error: ${err}`));
 /*
 |--------------------------------------------------------------------------
 | FoodLog router
