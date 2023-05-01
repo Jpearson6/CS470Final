@@ -4,9 +4,19 @@ import * as d3 from 'd3';
 import {useState, useRef, useEffect} from 'react';
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
+import API from '../API_Interface/API_Interface'
 
 
-export default function Macros() {
+export default function Macros(props) {
+    const { userId } = props
+
+    async function getMacros() {
+        const api = new API();
+        const macros = await api.getMacros(userId);
+        console.log(`macros from the API Call ${JSON.stringify(macros.data)}`);
+    }
+    getMacros();
+
     let fat = 30;
     let carbohydrates = 50;
     let protein = 20;

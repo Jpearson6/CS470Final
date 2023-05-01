@@ -25,7 +25,14 @@ function CarbCount(props) {
                 legend: true
             },
             marks: [
-                Plot.barY(foodData, {x: "dayString", y: "Carbohydrates", fill: "FoodName"})
+                Plot.barY(foodData, {
+                    x: "dayString",
+                    y: "Carbohydrates",
+                    stroke: "Black",
+                    fill: "Green",
+                    fillOpacity: .75,
+                    title: (d) => `${d.FoodName} \n ${d.Carbs}`,
+                })
             ]
         });
         chartRef.current.append(chart);

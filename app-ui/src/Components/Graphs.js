@@ -5,8 +5,8 @@ import {GraphList} from "./Graphs/GraphList";
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import API from '../API_Interface/API_Interface'
 
-const findSelectedComponent = (selectedItem, foodData) => {
-    const component = [...GraphList(foodData)].filter(comp => comp.title === selectedItem);
+const findSelectedComponent = (selectedItem, foodData, timeframe) => {
+    const component = [...GraphList(foodData, timeframe)].filter(comp => comp.title === selectedItem);
     if(component.length === 1)
         return component[0];
 
@@ -17,18 +17,19 @@ const findSelectedComponent = (selectedItem, foodData) => {
     }
 };
 
-export default function Graphs() {
-    const [selectedItem, setSelectedItem] = useState('');
+export default function Graphs(props) {
+    const [selectedItem, setSelectedItem] = useState('Calorie Count');
+    const [timeframe, setTimeframe] = useState(7);
+    const { userId } = props;
 
     const [foodLog, setFoodLog] = useState([]);
-    //console.log(`in EmployeeTable routes contains is ${JSON.stringify(employees)}`);
 
 
     useEffect(() => {
         const api = new API();
 
         async function getFood() {
-            const foodJSONString = await api.allFoodByUser(1);
+            const foodJSONString = await api.allFoodByUser(userId);
             console.log(foodJSONString.data);
             setFoodLog(foodJSONString.data);
         }
@@ -36,20 +37,24 @@ export default function Graphs() {
         getFood();
     }, []);
 
-    const handleChange = (event: SelectChangeEvent) => {
+    const handleGraphChange = (event: SelectChangeEvent) => {
         setSelectedItem(event.target.value);
     };
 
+    const handleTimeChange = (event: SelectChangeEvent) => {
+        setTimeframe(event.target.value);
+    };
+
     return foodLog.length > 0 && <Fragment>
-        <Stack>
+        <Stack spacing={2}>
             <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Graph</InputLabel>
+                <InputLabel id="graph-label">Graph</InputLabel>
                 <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
+                    labelId="graph-label"
+                    id="graph-select"
                     value={selectedItem}
-                    label="Age"
-                    onChange={handleChange}
+                    label="Graph"
+                    onChange={handleGraphChange}
                 >
                     <MenuItem value={"Calorie Count"}>Calories</MenuItem>
                     <MenuItem value={"Fat Count"}>Fat</MenuItem>
@@ -57,7 +62,22 @@ export default function Graphs() {
                     <MenuItem value={"Carb Count"}>Carbs</MenuItem>
                 </Select>
             </FormControl>
-            {findSelectedComponent(selectedItem, foodLog).component}
+            <FormControl fullWidth>
+                <InputLabel id="timeframe-label">Timeframe</InputLabel>
+                <Select
+                    labelId="timeframe-label"
+                    id="timeframe-select"
+                    value={timeframe}
+                    label="Timeframe"
+                    onChange={handleTimeChange}
+                >
+                    <MenuItem value={7}>Last 7 days</MenuItem>
+                    <MenuItem value={14}>Last 14 days</MenuItem>
+                    <MenuItem value={30}>Last 30 days</MenuItem>
+                    <MenuItem value={90}>Last 90 days</MenuItem>
+                </Select>
+            </FormControl>
+            {findSelectedComponent(selectedItem, foodLog, timeframe).component}
 
         </Stack>
     </Fragment>

@@ -9,35 +9,16 @@ import { Routes, Route } from "react-router-dom";
 
 
 function App() {
-  const reducer = (state, action) => {
-    switch (action.type) {
-      case "Login":
-        if (action.user)
-          return {
-            ...state,
-            user: action.user,
-          };
-        return state;
-      default:
-        return state;
-    }
-  };
-
-  const initState = null;
-  const [state, dispatch] = useReducer(reducer, initState);
-
-  const setUser = (user) => {
-    dispatch({ type: "Login", user: user });
-  };
-  console.log(state)
+    const [user, setUser] = useState(undefined);
 
   return (
-    <Routes>
-      <Route path="/" element={<Login setUser={(user) => setUser(user)} />} />
-      <Route path="/home" element={<MainDrawer setUser={(user) => setUser(user)}/>} />
-      <Route path="/signUp" element={<SignUp />} />
-      <Route path="/signUp/signUpPage2" element={<SignUpPage2 />} />
-    </Routes>
-  );
+
+      <Routes>
+          <Route path="/" element={ <Login setUser={setUser} />} />     
+          <Route path="/home" element={<MainDrawer {...user}/>}/>
+          <Route path="/signUp" element={<SignUp/>} />
+          <Route path="/signUp/signUpPage2" element ={<SignUpPage2/>}/>
+      </Routes>
+  )
 }
 export default App;
