@@ -77,16 +77,6 @@ function Login({setUser}) {
     function handleSignUpClick() {
         navigate("/signUp");
     };
-    const theme = createTheme({
-        palette: {
-            primary: {
-                main: '#EC5800',
-            },
-            secondary: {
-                main: '#EC5800',
-            },
-        },
-    });
 
 
     return (
