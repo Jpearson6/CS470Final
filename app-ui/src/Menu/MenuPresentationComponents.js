@@ -8,7 +8,7 @@ import LocalDiningIcon from '@mui/icons-material/LocalDining';
 import SsidChartIcon from '@mui/icons-material/SsidChart';
 import HomeIcon from '@mui/icons-material/Home';
 import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
-import FoodSearch from "../Components/FoodSearch/FoodSearch";
+import AddMeal from "../Components/AddMeal";
 
 const presentationComponents = (userId) => {
     return [
@@ -18,8 +18,8 @@ const presentationComponents = (userId) => {
             icon: <HomeIcon />
         },
         {
-            title: 'Food',
-            component: <FoodSearch userId={userId}/>,
+            title: 'Add Meal',
+            component: <AddMeal userId={userId}/>,
             icon: <LocalDiningIcon />
         },
         {

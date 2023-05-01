@@ -19,7 +19,7 @@ const allFoodByUser = async (ctx) => {
             values: [ctx.params.UserId]
         }, (error, tuples) => {
             if (error) {
-                console.log("Connection error in Food Controller::allFoodByDate", error);
+                console.log("Connection error in AddMeal Controller::allFoodByDate", error);
                 return reject(error);
             }
             ctx.body = tuples;
@@ -80,7 +80,7 @@ const allFoodByUserNumDays = async (ctx) => {
             values: [ctx.params.UserId, ctx.params.NumDays]
         }, (error, tuples) => {
             if (error) {
-                console.log("Connection error in Food Controller::allFoodByDate", error);
+                console.log("Connection error in AddMeal Controller::allFoodByDate", error);
                 return reject(error);
             }
             ctx.body = tuples;
