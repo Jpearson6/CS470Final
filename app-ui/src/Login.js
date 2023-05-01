@@ -13,7 +13,7 @@ import API from './API_Interface/API_Interface'
 function Login({setUser}) {
     const [email, setEmail] = useState(''); //Email
     const [password, setPassword] = useState(''); //Password
-    const [noitice, setNotice] = useState('');
+    const [notice, setNotice] = useState('');
     const [verifyUser, setVerifyUser] = useState(false);
     const [authFailed, setAuthFailed] = useState(false);
     const navigate = useNavigate();
@@ -102,7 +102,7 @@ function Login({setUser}) {
             <Box display="flex" justifyContent="center" alignItems="center" width="100%" mt={2}>
 
                 <Typography variant="h5" sx={{ fontFamily: 'Monospace' }}>
-                    {noitice}
+                    {notice}
                 </Typography>
 
             </Box>

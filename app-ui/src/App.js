@@ -34,7 +34,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Login setUser={(user) => setUser(user)} />} />
-      <Route path="/home" element={<MainDrawer user = {state?.user}/>} />
+      <Route path="/home" element={<MainDrawer setUser={(user) => setUser(user)}/>} />
       <Route path="/signUp" element={<SignUp />} />
       <Route path="/signUp/signUpPage2" element={<SignUpPage2 />} />
     </Routes>
