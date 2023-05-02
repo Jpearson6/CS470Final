@@ -14,7 +14,7 @@ const presentationComponents = (userId) => {
     return [
         {
             title: 'Homepage',
-            component: <Homepage />,
+            component: <Homepage userId={userId}/>,
             icon: <HomeIcon />
         },
         {

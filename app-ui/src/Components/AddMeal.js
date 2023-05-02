@@ -10,7 +10,7 @@ import FoodSearch from "./FoodSearch/FoodSearch";
 const emails = ['username@gmail.com', 'user02@gmail.com'];
 
 function SimpleDialog(props) {
-    const { onClose, selectedValue, open } = props;
+    const { onClose, selectedValue, open, userId, addFoodList, setAddFoodList } = props;
 
     const handleClose = () => {
         onClose(selectedValue);
@@ -23,7 +23,7 @@ function SimpleDialog(props) {
     return (
         <Dialog onClose={handleClose} open={open}>
             <DialogTitle>Food Search</DialogTitle>
-            <FoodSearch onClick = {handleListItemClick}/>
+            <FoodSearch userId={userId} addFoodList={addFoodList} setAddFoodList={setAddFoodList} onClick = {handleListItemClick}/>
         </Dialog>
     );
 }
@@ -34,10 +34,11 @@ SimpleDialog.propTypes = {
     selectedValue: PropTypes.string.isRequired,
 };
 
-export default function AddMeal() {
+export default function AddMeal(props) {
+    const { userId } = props;
     const [open, setOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState(emails[1]);
-    const [foodList, setFoodList] = useState(["Apple", "Burger", "Coke"])
+    const [addFoodList, setAddFoodList] = useState([])
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -50,7 +51,7 @@ export default function AddMeal() {
     return <Fragment>
         <Stack>
             <List sx={{ pt: 0 }}>
-                {foodList.map((food) => (
+                {addFoodList.map((food) => (
                     <ListItem disableGutters>
                         <ListItemButton key={food}>
                             <ListItemText primary={food} />
@@ -64,6 +65,9 @@ export default function AddMeal() {
             <SimpleDialog
                 selectedValue={selectedValue}
                 open={open}
+                userId={userId}
+                addFoodList={addFoodList}
+                setAddFoodList={setAddFoodList}
                 onClose={handleClose}
             />
         </Stack>
