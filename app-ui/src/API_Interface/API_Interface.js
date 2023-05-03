@@ -40,6 +40,11 @@ export default class APIInterface {
     }
 
 
+    async getUserById(id) {
+        return axiosAgent.get(`user/${id}`)
+    }
+
+
     async addUser(email, name, password) {
         try {
           const response = await axiosAgent.post('/user/sign-up', {
