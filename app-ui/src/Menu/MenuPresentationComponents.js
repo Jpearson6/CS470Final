@@ -1,8 +1,8 @@
 import Homepage from "../Components/Homepage";
-import Food from "../Components/Food";
 import Graphs from "../Components/Graphs";
 import Users from "../Components/Users";
 import Macros from "../Components/Macros";
+import WeightGoals from "../Components/WeightGoals";
 import Goals from "../Components/Goals";
 import LocalDiningIcon from '@mui/icons-material/LocalDining';
 import SsidChartIcon from '@mui/icons-material/SsidChart';
@@ -41,7 +41,12 @@ const presentationComponents = (userId) => {
             title: 'Goals',
             component: <Goals userId={userId}/>,
             icon: <SupervisedUserCircleIcon />
-        }
+        },
+        {
+            title: 'Weight Goals',
+            component: <WeightGoals />,
+            icon: <SupervisedUserCircleIcon />
+        },
     ];
 };
 

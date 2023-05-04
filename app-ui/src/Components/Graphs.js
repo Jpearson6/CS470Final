@@ -29,13 +29,13 @@ export default function Graphs(props) {
         const api = new API();
 
         async function getFood() {
-            const foodJSONString = await api.allFoodByUser(userId);
+            const foodJSONString = await api.allFoodByUserTimeSpan(userId , timeframe);
             console.log(foodJSONString.data);
             setFoodLog(foodJSONString.data);
         }
 
         getFood();
-    }, []);
+    }, [timeframe]);
 
     const handleGraphChange = (event: SelectChangeEvent) => {
         setSelectedItem(event.target.value);

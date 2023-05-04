@@ -67,7 +67,9 @@ export default class APIInterface {
     async allFoodByUser(userId) {
         return axiosAgent.get(`foodlog/${userId}`);
     }
-
+    async allFoodByUserTimeSpan(userId , NumDays) {
+        return axiosAgent.get(`foodlog/${NumDays}/${userId}`);
+    }
     async searchFood(food) {
         return axios.get(`https://api.nal.usda.gov/fdc/v1/foods/search?api_key=${encodeURIComponent(params.api_key)}&query=${encodeURIComponent(food)}&dataType=${encodeURIComponent(params.dataType)}&pageSize=10`)
     }
