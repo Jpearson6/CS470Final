@@ -22,14 +22,14 @@ function SearchBar( props ) {
   };
 
   return (
-    <Container maxWidth="md" sx={{ mt: 20 }}>
+    <Container maxWidth="md">
       <TextField
         id="search"
         type="search"
         label="Search"
         value={searchTerm}
         onChange={handleChange}
-        sx={{ width: 600 }}
+        sx={{ width: "100%"}}
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">
@@ -48,7 +48,7 @@ function DisplayFood (props) {
     return(
         foodList.length > 0 &&
         <TableContainer component={Paper}>
-        <Table sx={{minWidth: 650}} aria-label="Employee table">
+        <Table sx={{minWidth: "100%"}} aria-label="Food table">
             <TableHead>
                 <TableRow>
                     <Typography>
@@ -116,16 +116,16 @@ export default function FoodSearch(props) {
 
     async function addFood(FoodName, Calories, Protein, Carbohydrates, Fat) {
         let tempList = [FoodName , ...addFoodList];
+        console.log(tempList)
         setAddFoodList(tempList);
     }
 
 
     return (
         <Fragment>
-            <Typography>
-                Search Food Here
-            </Typography>
-            <SearchBar 
+            <SearchBar sx={{
+                width:  400
+            }}
                 searchFood={(food) => searchFood(food)}
                 searchTerm={searchTerm}
                 setSearchTerm={setSearchTerm}
