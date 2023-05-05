@@ -1,26 +1,30 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {Fragment, useEffect, useRef, useState} from "react";
 import * as Plot from "@observablehq/plot";
 import addTooltips from "./Tooltip"
-
-const updateDate = (item) => {
-    const date = new Date(item['LogDate']);
-
-    const dayString = (date.getMonth() + 1).toString() + "/" + (date.getDate()).toString();
-
-    return {...item, "dayString":dayString}
-}
+import {addMissingDates, updateDate} from "./DataManip";
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+import FormControl from "@mui/material/FormControl";
+import {Stack} from "@mui/material";
 
 function CalorieCount(props) {
     const chartRef = useRef();
     const foodData = props['foodData'].map(item => updateDate(item));
-    const timeframe = props['timeframe']
+    const timeframe = props['timeframe'];
 
-    console.log(timeframe);
+    const graphByDay = addMissingDates(foodData.reduce((acc, item) => {
+        const key = item.dayString;
+        if (!acc[key]) {
+            acc[key] = [];
+        }
+        acc[key].push(item);
+        return acc;
+    }, {}), timeframe, foodData);
 
     useEffect(() => {
-        if (foodData === undefined) return;
+        if (graphByDay === undefined) return;
         const chart = addTooltips(
-                Plot.plot({
+            Plot.plot({
+                width: 1000,
                 y: {
                     grid: true
                 },
@@ -28,29 +32,33 @@ function CalorieCount(props) {
                     ticks: 7
                 },
                 color: {
-                    legend: true
+                    legend: true,
+                    columns: 5,
+                    width: 1000,
+                    scheme: "Sinebow"
                 },
                 marks: [
                     Plot.barY(foodData, {
-                        x: "dayString",
+                        x: "Date",
                         y: "Calories",
-                        stroke: "Black",
-                        fill: "Green",
+                        stroke: "FoodName",
+                        fill: "FoodName",
                         fillOpacity: .75,
                         title: (d) => `${d.FoodName} \n ${d.Calories}`,
                     })
                 ]
             }),
-            { fill: "Purple", opacity: 0.5, "stroke-width": "3px", stroke: "red" }
+            { fill: "Gray", opacity: 1, "stroke-width": "3px", stroke: "red" }
         )
         chartRef.current.append(chart);
-        console.log(chart)
-        return () => chart.remove();
+        return () => {chart.remove()}
     }, [foodData]);
 
 
     return (
-        <div ref={chartRef} />
+        <Stack alignSelf={"center"}>
+            <div ref={chartRef} />
+        </Stack>
     );
 }
 

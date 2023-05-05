@@ -1,48 +1,63 @@
 import React, {useEffect, useRef} from "react";
 import * as Plot from "@observablehq/plot";
-
-const updateDate = (item) => {
-    const date = new Date(item['LogDate']);
-
-    const dayString = (date.getMonth() + 1).toString() + "/" + (date.getDate()).toString();
-
-    return {...item, "dayString":dayString}
-}
+import {addMissingDates, updateDate} from "./DataManip";
+import addTooltips from "./Tooltip";
+import {Stack} from "@mui/material";
 function CarbCount(props) {
     const chartRef = useRef();
     const foodData = props['foodData'].map(item => updateDate(item));
+    const timeframe = props['timeframe']
+
+    const graphByDay = addMissingDates(foodData.reduce((acc, item) => {
+        const key = item.dayString;
+        if (!acc[key]) {
+            acc[key] = [];
+        }
+        acc[key].push(item);
+        return acc;
+    }, {}), timeframe, foodData);
+
+    console.log(foodData)
 
     useEffect(() => {
-        if (foodData === undefined) return;
-        const chart = Plot.plot({
-            y: {
-                grid: true
-            },
-            x: {
-                ticks: 7
-            },
-            color: {
-                legend: true
-            },
-            marks: [
-                Plot.barY(foodData, {
-                    x: "dayString",
-                    y: "Carbohydrates",
-                    stroke: "Black",
-                    fill: "Green",
-                    fillOpacity: .75,
-                    title: (d) => `${d.FoodName} \n ${d.Carbs}`,
-                })
-            ]
-        });
+        if (graphByDay === undefined) return;
+        const chart = addTooltips(
+            Plot.plot({
+                width: 1000,
+                y: {
+                    grid: true
+                },
+                x: {
+                    ticks: 7
+                },
+                color: {
+                    legend: true,
+                    columns: 5,
+                    width: 1000,
+                    scheme: "Sinebow"
+                },
+                marks: [
+                    Plot.barY(foodData, {
+                        x: "Date",
+                        y: "Carbohydrates",
+                        stroke: "FoodName",
+                        fill: "FoodName",
+                        fillOpacity: 1,
+                        title: (d) => `${d.FoodName} \n ${d.Carbohydrates}`,
+                    })
+                ]
+            }),
+            { fill: "Gray", opacity: 1, "stroke-width": "3px", stroke: "red" }
+        )
         chartRef.current.append(chart);
-        console.log(chart)
-        return () => chart.remove();
+        return () => {chart.remove()}
     }, [foodData]);
 
 
     return (
-        <div ref={chartRef} />
+        <Stack alignSelf={"center"}>
+            <div ref={chartRef} />
+        </Stack>
     );
 }
 

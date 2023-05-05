@@ -7,8 +7,6 @@ import ListItemText from "@mui/material/ListItemText";
 import PropTypes from "prop-types";
 import FoodSearch from "./FoodSearch/FoodSearch";
 
-const emails = ['username@gmail.com', 'user02@gmail.com'];
-
 function SimpleDialog(props) {
     const { onClose, selectedValue, open } = props;
 
@@ -36,7 +34,7 @@ SimpleDialog.propTypes = {
 
 export default function AddMeal() {
     const [open, setOpen] = useState(false);
-    const [selectedValue, setSelectedValue] = useState(emails[1]);
+    const [selectedValue, setSelectedValue] = useState([]);
     const [foodList, setFoodList] = useState(["Apple", "Burger", "Coke"])
     const handleClickOpen = () => {
         setOpen(true);
