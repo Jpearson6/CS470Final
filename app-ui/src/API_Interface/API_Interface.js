@@ -30,7 +30,7 @@ export default class APIInterface {
 
     
     async getUserInfo(Email,Password) {
-        return axiosAgent.get(`login/${Email}/${Password}`)
+        return axiosAgent.post(`login/${Email}/${Password}`)
             .then(userInfo => userInfo.data)
             .catch(error => (
                 {
@@ -57,7 +57,12 @@ export default class APIInterface {
           console.error(`Error adding user: ${error}`);
           throw error;
         }
-      }
+    }
+
+
+    async updateUser(id,profile){
+        return axiosAgent.post(`user/update/${profile.dob}/${profile.sex}/${profile.height}/${profile.weight}/${profile.activityLevel}/${id}`)
+    }
 
 
     async allUsers() {

@@ -1,11 +1,10 @@
 import React, {useState, useEffect, Fragment} from 'react';
 
-import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
-import {Link, Typography} from "@mui/material";
+import {Typography} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import API from './API_Interface/API_Interface'
 
@@ -19,10 +18,12 @@ export default function SignUp() {
     const [noitice, setNotice] = useState('');
     const [verifyUser, setVerifyUser] = useState(false);
     const [authFailed, setAuthFailed] = useState(false);
+    const navigate = useNavigate();
+    
 
 
     useEffect(()=>{
-        if (!verifyUser || email.length === 0 || name.length === 0, password.length === 0) return
+        if (!verifyUser || email.length === 0 || name.length === 0 || password.length === 0) return
         const api = new API();
         async function signUp(){
             api.addUser(email,name,password)
@@ -34,7 +35,7 @@ export default function SignUp() {
         }
         signUp()
     
-    },[signUp])
+    },[signUp,email,name, password, verifyUser, navigate])
 
 
     function handleClick(password,passConfirm) {
@@ -111,8 +112,7 @@ export default function SignUp() {
 
 
 
-    const navigate = useNavigate();
-    
+   
 
 
 
