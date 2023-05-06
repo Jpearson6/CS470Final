@@ -37,7 +37,7 @@ userRouter.get('/:Id', UserController.getUserById, err => console.log(`user by i
 userRouter.get('/macros/:Id', UserController.getUserMacros, err => console.log(`user macros by id ran into an error: ${err}`));
 userRouter.post('/macros/:Id/:Fat/:Carbs/:Protein', UserController.setUserMacros, err => console.log(`set user macros by id ran into an error: ${err}`));
 userRouter.post('/sign-up',UserController.addUser, err => console.log(`sign-up error: ${err}`))
-userRouter.post('/update/:dob/:Sex/:Height/:Weight:/ActivityLevel/:Id', UserController.updateUser, err => console.log(`Update error: ${err}`))
+userRouter.post('/update/:dob/:Sex/:Height/:Weight/:ActivityLevel/:Id', UserController.updateUser, err => console.log(`Update error: ${err}`))
 
 
 /*
