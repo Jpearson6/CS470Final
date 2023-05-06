@@ -23,7 +23,7 @@ const LoginController = require('../app/Controllers/LoginController.js');
 const loginRouter = require('koa-router')({
     prefix: '/login'
 });
-loginRouter.get('/:Email/:Password', LoginController.authorizeUser, (err) => console.log("login-route error:", err));
+loginRouter.post('/:Email/:Password', LoginController.authorizeUser, (err) => console.log("login-route error:", err));
 
 
 
@@ -36,6 +36,10 @@ userRouter.get('/all-users', UserController.allUsers, err => console.log(`allUse
 userRouter.get('/:Id', UserController.getUserById, err => console.log(`user by id ran into an error: ${err}`));
 userRouter.get('/macros/:Id', UserController.getUserMacros, err => console.log(`user macros by id ran into an error: ${err}`));
 userRouter.post('/macros/:Id/:Fat/:Carbs/:Protein', UserController.setUserMacros, err => console.log(`set user macros by id ran into an error: ${err}`));
+userRouter.post('/sign-up',UserController.addUser, err => console.log(`sign-up error: ${err}`))
+userRouter.post('/update/:dob/:Sex/:Height/:Weight/:ActivityLevel/:Id', UserController.updateUser, err => console.log(`Update error: ${err}`))
+
+
 /*
 |--------------------------------------------------------------------------
 | FoodLog router
@@ -53,8 +57,11 @@ foodLogRouter.get('/:NumDays/:UserId' , FoodLogController.allFoodByUserNumDays, 
 
 foodLogRouter.post('/:UserId/:FoodName/:Calories/:Protein/:Fat/:Carbohydrates' , FoodLogController.addFoodByUser, err => console.log(`addFoodByUser ran into an error: ${err}`));
 
-userRouter.get('/all-users', UserController.allUsers, err => console.log(`allUsers ran into an error: ${err}`))
-userRouter.post('/sign-up',UserController.addUser, err => console.log(`sign-up error: ${err}`))
+
+
+
+
+
 
 
 router.use(

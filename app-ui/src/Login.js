@@ -3,7 +3,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
-import {createTheme, Link, Typography} from "@mui/material";
+import { Link, Typography} from "@mui/material";
 import {useNavigate} from 'react-router-dom';
 import API from './API_Interface/API_Interface'
 
@@ -13,7 +13,7 @@ import API from './API_Interface/API_Interface'
 function Login({setUser}) {
     const [email, setEmail] = useState(''); //Email
     const [password, setPassword] = useState(''); //Password
-    const [noitice, setNotice] = useState('');
+    const [notice, setNotice] = useState('');
     const [verifyUser, setVerifyUser] = useState(false);
     const [authFailed, setAuthFailed] = useState(false);
     const navigate = useNavigate();
@@ -33,7 +33,7 @@ function Login({setUser}) {
         async function getUserInfo(){
             api.getUserInfo(email,password)
                 .then(userInfo => {
-                    console.log(`api returns user info: ${JSON.stringify(userInfo)}`)
+                 //   console.log(`api returns user info: ${JSON.stringify(userInfo)}`)
                     const user = userInfo.user;
                     if(userInfo.status === 'OK'){
                         
@@ -79,6 +79,7 @@ function Login({setUser}) {
     };
 
 
+
     return (
         <Fragment>
             <Box display="flex" justifyContent="center" alignItems="center" width="100%" mt={10}>
@@ -91,7 +92,7 @@ function Login({setUser}) {
             <Box display="flex" justifyContent="center" alignItems="center" width="100%" mt={2}>
 
                 <Typography variant="h5" sx={{ fontFamily: 'Monospace' }}>
-                    {noitice}
+                    {notice}
                 </Typography>
 
             </Box>

@@ -30,13 +30,18 @@ export default class APIInterface {
 
     
     async getUserInfo(Email,Password) {
-        return axiosAgent.get(`login/${Email}/${Password}`)
+        return axiosAgent.post(`login/${Email}/${Password}`)
             .then(userInfo => userInfo.data)
             .catch(error => (
                 {
                     error,
                     user: undefined
                  }));
+    }
+
+
+    async getUserById(id) {
+        return axiosAgent.get(`user/${id}`)
     }
 
 
@@ -52,7 +57,14 @@ export default class APIInterface {
           console.error(`Error adding user: ${error}`);
           throw error;
         }
-      }
+    }
+
+
+    async updateUser(id,profile){
+        console.log(`User profile in API :${JSON.stringify(profile)}`);
+        console.log(`User ID in API: ${id}`)
+        return axiosAgent.post(`user/update/${profile.dob}/${profile.sex}/${profile.height}/${profile.weight}/${profile.activityLevel}/${id}`)
+    }
 
 
     async allUsers() {
