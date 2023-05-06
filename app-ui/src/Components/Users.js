@@ -6,12 +6,9 @@ import {
   Button,
   InputLabel,
   MenuItem,
-  Select,
+  Select, Dialog, DialogTitle, DialogContent,
 } from "@mui/material";
 import API from "../API_Interface/API_Interface.js";
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
 import Pic from "../picture/Avt.js";
 import FormControl from "@mui/material/FormControl";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";

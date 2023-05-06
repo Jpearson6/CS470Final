@@ -34,7 +34,7 @@ const DisplayCurrentMeal = (props) => {
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: "100%" }} aria-label="Food table">
                 <TableHead>
-                    <TableRow display={'flex'} justifyContent={'space-between'}>
+                    <TableRow display={'flex'} justifycontent={'space-between'}>
                         <TableCell colSpan={3} key={"header"}>
                             <Typography key={"header"}>
                                 Current Meal to be added
@@ -142,7 +142,7 @@ const DisplayCurrentMeal = (props) => {
                             <Box display={"flex"} flexDirection={"row"} alignContent={"center"} justifyContent={"center"}>
                                 <TextField placeholder="Calories(g)" />
 
-                                <Button paddingTop={1} onClick={() => {
+                                <Button paddingtop={1} onClick={() => {
                                     if (!isNaN(calories) && !isNaN(protein) && !isNaN(carbs) && !isNaN(fat)) {
                                         tempList = [{
                                             "FoodName": foodName,

@@ -20,6 +20,7 @@ export default async function getDailyCalories(userId) {
 
     const api = new API();
     const user = await api.getUserById(userId);
+    console.log(user[0]);
     activityLevel = user[0]['ActivityLevel'];
     sex = user[0]['Sex'];
     weeklyWeightGoal = user[0]['LbsPerWeek'];
