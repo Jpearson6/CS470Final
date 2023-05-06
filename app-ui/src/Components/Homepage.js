@@ -1,15 +1,15 @@
 import { Fragment } from "react";
 import React from 'react';
 import getDailyCalories from "./DailyCalorieGoal";
-import {Button, CircularProgress, Grid, Typography} from "@mui/material";
+import { Button, CircularProgress, Grid, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import API from "../API_Interface/API_Interface";
 
 export default function Homepage(props) {
     const api = new API();
-    const { userId } = props;
+    const { userId, setSelectedItem } = props;
     let percentageComplete = 0;
-    async function getUserInfo(){
+    async function getUserInfo() {
         const calorieGoal = await getDailyCalories(userId);
         const macroGoal = await api.getMacros(userId);
         const calsConsumed = await api.todaysCaloriesByUser(userId);
@@ -24,7 +24,7 @@ export default function Homepage(props) {
         console.log(proteinConsumed);
     }
     getUserInfo();
-    
+
     let calGoal = 2200;
     percentageComplete = (2100 / calGoal) * 100;
 
@@ -51,8 +51,11 @@ export default function Homepage(props) {
                     Daily Summary
                 </Typography>
             </Box>
-            <Box display='flex' justifyContent='center' alignItems='center'>
-                <Button>
+            <Box display='flex' justifyContent='center' alignItems='center' >
+                <Button onClick={() => {
+                    setSelectedItem("Add Meal");
+                    console.log("here");
+                }}>
                     + Log a Meal
                 </Button>
             </Box>
@@ -81,7 +84,7 @@ export default function Homepage(props) {
 
                     <Box display='flex' justifyContent='center' alignItems='center' mt={3}>
 
-                        <CircularProgress size="15rem" variant="determinate" value={fatPercentageComplete} color='error'/>
+                        <CircularProgress size="15rem" variant="determinate" value={fatPercentageComplete} color='error' />
                         <Typography fontSize="20px" position='absolute'>{fatConsumed} / {fatGoal} g</Typography>
                     </Box>
                 </Grid>
@@ -94,7 +97,7 @@ export default function Homepage(props) {
 
                     <Box display='flex' justifyContent='center' alignItems='center' mt={3}>
 
-                        <CircularProgress size="15rem" variant="determinate" value={carbPercentageComplete} color='info'/>
+                        <CircularProgress size="15rem" variant="determinate" value={carbPercentageComplete} color='info' />
                         <Typography fontSize="20px" position='absolute'>{carbConsumed} / {carbGoal} g</Typography>
                     </Box>
                 </Grid>
@@ -107,7 +110,7 @@ export default function Homepage(props) {
 
                     <Box display='flex' justifyContent='center' alignItems='center' mt={3}>
 
-                        <CircularProgress size="15rem" variant="determinate" value={proteinPercentageComplete} color='success'/>
+                        <CircularProgress size="15rem" variant="determinate" value={proteinPercentageComplete} color='success' />
                         <Typography fontSize="20px" position='absolute'>{proteinConsumed} / {proteinGoal} g</Typography>
                     </Box>
                 </Grid>

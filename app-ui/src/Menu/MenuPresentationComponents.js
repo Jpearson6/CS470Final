@@ -10,11 +10,11 @@ import AddMeal from "../Components/AddMeal";
 import DescriptionIcon from '@mui/icons-material/Description';
 import FoodSearch from "../Components/FoodSearch/FoodSearch";
 
-const presentationComponents = (userId) => {
+const presentationComponents = (userId , setSelectedItem) => {
     return [
         {
             title: 'Homepage',
-            component: <Homepage userId={userId}/>,
+            component: <Homepage userId={userId} setSelectedItem={setSelectedItem}/>,
             icon: <HomeIcon />
         },
         {

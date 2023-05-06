@@ -98,11 +98,11 @@ const UserProfile = (props) => {
   const lbPerweek = user.LbsPerWeek;
   let status;
   if (lbPerweek === 0) {
-    status = "You are maintain";
+    status = "Maintain Current Weight";
   } else if (lbPerweek < 0) {
-    status = "You are losing weight";
+    status = "Gain Weight";
   } else {
-    status = "You are gaining weight";
+    status = "Lose Weight";
   }
 
   const handleUpdate = () => {
@@ -150,7 +150,7 @@ const UserProfile = (props) => {
         </Box>
 
         <Box sx={{ background: "white", top: "150px", position: "relative" }}>
-          <Typography variant="h6">Weekly Macros : {status}</Typography>
+          <Typography variant="h6">Weight Goal : {status}</Typography>
         </Box>
 
         <Box sx={{ background: "white", top: "180px", position: "relative" }}>

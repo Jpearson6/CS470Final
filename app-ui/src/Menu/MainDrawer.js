@@ -121,8 +121,8 @@ const PresentationListItems = (props) => {
         }
     </div>;
 };
-const findSelectedComponent = (selectedItem , userId) => {
-    const component = [...presentationComponents(userId)].filter(comp => comp.title === selectedItem);
+const findSelectedComponent = (selectedItem , userId , setSelectedItem) => {
+    const component = [...presentationComponents(userId , setSelectedItem)].filter(comp => comp.title === selectedItem);
     if(component.length === 1)
         return component[0];
 
@@ -202,7 +202,7 @@ export default function MainDrawer({title="Food Trace", Id, Name}) {
             </Drawer>
             <Main open={open}>
                 <DrawerHeader />
-                {findSelectedComponent(selectedItem , Id).component}
+                {findSelectedComponent(selectedItem , Id , setSelectedItem).component}
             </Main>
         </Box>
         </ThemeProvider>

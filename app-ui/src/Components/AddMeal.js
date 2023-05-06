@@ -35,9 +35,9 @@ const DisplayCurrentMeal = (props) => {
 
     const handleOpen = () => {
         setIsModalVisible(true);
-            setTimeout(() => {
-                setIsModalVisible(false);
-            }, 1500)
+        setTimeout(() => {
+            setIsModalVisible(false);
+        }, 1500)
     };
 
     useEffect(() => {
@@ -142,31 +142,22 @@ const DisplayCurrentMeal = (props) => {
                         <TableCell key={"customFood"} align="center" onChange={(event) => {
                             foodName = event.target.value;
                         }}>
-
                             <TextField label="Food Name" />
-
                         </TableCell>
                         <TableCell key={"customProtein"} align="center" onChange={(event) => {
                             protein = event.target.value;
                         }}>
-
                             <TextField label="Protein(g)" />
-
-
                         </TableCell>
                         <TableCell key={"customFat"} align="center" onChange={(event) => {
                             fat = event.target.value;
                         }}>
-
                             <TextField label="Fat(g)" />
-
                         </TableCell>
                         <TableCell key={"customCarbs"} align="center" onChange={(event) => {
                             carbs = event.target.value;
                         }}>
-
                             <TextField label="Carbs(g)" />
-
                         </TableCell>
                         <TableCell display={"flex"} flex-direction={"column"} key={"customCalories"} justifyContent="center" onChange={(event) => {
                             calories = event.target.value;
@@ -231,7 +222,6 @@ const DisplayCurrentMeal = (props) => {
                             </TableCell>
                         </TableRow>
                     }
-
                 </TableBody>
             </Table>
             <Dialog open={isModalVisible} PaperProps={{ sx: { position: "fixed", top: 10, left: "50vw", m: 0 } }}>
@@ -271,7 +261,7 @@ export default function AddMeal(props) {
                                 horizontal: 'center',
                             }}
                         >
-                            <Paper position={'absolute'} style={{ maxHeight: 350, height: 350, width: '73vw', overflow: 'auto' }}>
+                            <Paper position={'absolute'} style={{ maxHeight: 350, height: 350, width: '60vw', overflow: 'auto' }}>
                                 <FoodSearch userId={userId} addFoodList={addFoodList} setAddFoodList={setAddFoodList} />
                             </Paper>
 

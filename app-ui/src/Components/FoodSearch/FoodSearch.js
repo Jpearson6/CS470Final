@@ -76,7 +76,6 @@ function DisplayFood(props) {
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 }, cursor: "pointer" }}
                                     onClick={() => {
                                         tempSelectedFood = Object.keys(food['foodNutrients']).reduce((obj, i) => {
-                                            //console.log(i);
                                             if (["0", "1", "2", "3"].includes(i)) {
                                                 obj[i] = food['foodNutrients'][i]
                                             }
