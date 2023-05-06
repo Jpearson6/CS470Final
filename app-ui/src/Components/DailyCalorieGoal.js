@@ -19,8 +19,7 @@ export default async function getDailyCalories(userId) {
     let DailyCalorieGoal = 0, BMR = 0;
 
     const api = new API();
-    const user = await api.getUserById(userId);
-    console.log(user[0]);
+    const user = (await api.getUserById(userId)).data;
     activityLevel = user[0]['ActivityLevel'];
     sex = user[0]['Sex'];
     weeklyWeightGoal = user[0]['LbsPerWeek'];
@@ -29,24 +28,28 @@ export default async function getDailyCalories(userId) {
     age = user[0]['age'];
 
     if (sex == "Male") {
+
         BMR = (10 * weight) + (6.25 * height) - (5 * age) + 5
     } else {
         BMR = (10 * weight) + (6.25 * height) - (5 * age) - 161
     }
     if (activityLevel == 'Sedentary') {
+
         DailyCalorieGoal = BMR * 1.2;
     }
     else if (activityLevel == 'Lightly Active') {
         DailyCalorieGoal = BMR * 1.375;
     }
     else if (activityLevel == 'Moderately Active') {
+
         DailyCalorieGoal = BMR * 1.55;
     }
     else if (activityLevel == 'Very Active') {
+
         DailyCalorieGoal = BMR * 1.725;
     }
     if (weeklyWeightGoal == 0)
-        return (DailyCalorieGoal);
+        return (DailyCalorieGoal);  
     else if (weeklyWeightGoal == 0.5)
         return (DailyCalorieGoal + 250);
     else if (weeklyWeightGoal == 1)
@@ -55,7 +58,4 @@ export default async function getDailyCalories(userId) {
         return (DailyCalorieGoal - 250);
     else if (weeklyWeightGoal == -1)
         return (DailyCalorieGoal - 500);
-
-
-
 }

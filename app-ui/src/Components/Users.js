@@ -6,7 +6,10 @@ import {
   Button,
   InputLabel,
   MenuItem,
-  Select, Dialog, DialogTitle, DialogContent,
+  Select,
+  Dialog,
+  DialogTitle,
+  DialogContent
 } from "@mui/material";
 import API from "../API_Interface/API_Interface.js";
 import Pic from "../picture/Avt.js";

@@ -65,7 +65,7 @@ const addUser = async (ctx) => {
     return new Promise((resolve, reject) => {
         const query = `
         SELECT *
-        FROM User
+        FROM UserWithAge
         WHERE Id = ?
       `;
         dbConnection.query({
