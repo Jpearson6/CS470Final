@@ -1,5 +1,5 @@
-import {Dialog, DialogTitle, ListItemButton, Stack, Typography, Paper, Box} from "@mui/material";
-import {Fragment, useEffect, useState} from "react";
+import { Dialog, DialogTitle, ListItemButton, Stack, Typography, Paper, Box, TextField } from "@mui/material";
+import { Fragment, useEffect, useState } from "react";
 import dayjs, { Dayjs } from 'dayjs';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -14,135 +14,255 @@ import ListItemText from "@mui/material/ListItemText";
 import PropTypes from "prop-types";
 import FoodSearch from "./FoodSearch/FoodSearch";
 import BasicDatePicker from "./FoodSearch/DatePicker";
+import Popover from '@mui/material/Popover';
+import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
+import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
+import API from '../API_Interface/API_Interface';
 
 const emails = ['username@gmail.com', 'user02@gmail.com'];
 
-function SimpleDialog(props) {
-    const { onClose, selectedValue, open, userId, addFoodList, setAddFoodList } = props;
-
-    const handleClose = () => {
-        onClose(selectedValue);
-    };
-
-    const handleListItemClick = (value) => {
-        onClose(value);
-    };
-
-    return (
-        <Dialog onClose={handleClose} open={open} maxWidth={"md"}>
-            <DialogTitle>Food Search</DialogTitle>
-            <FoodSearch userId={userId} addFoodList={addFoodList} setAddFoodList={setAddFoodList} onClick = {handleListItemClick}/>
-        </Dialog>
-    );
-}
-
 const DisplayCurrentMeal = (props) => {
-    const { addFoodList , logDate , setLogDate } = props;
+    const { addFoodList, setAddFoodList, logDate, setLogDate, addFood } = props;
+    let tempList = [];
+    let sum = 0;
+    let foodName = "";
+    let protein = null;
+    let fat = null;
+    let carbs = null;
+    let calories = null;
+
 
     return (
         <TableContainer component={Paper}>
-        <Table sx={{minWidth: "100%"}} aria-label="Food table">
-            <TableHead>
-                <TableRow>
-                    <TableCell key={"header"}>
-                    <Typography key={"header"}>
-                        Current Meal to be added
-                    </Typography>
-                    </TableCell>
-                    <TableCell key={"date-picker"}>
-                    <BasicDatePicker logDate={logDate} setLogDate={setLogDate}/>
-                    </TableCell>                  
-                </TableRow>
-            </TableHead>
-            <TableBody>
-                {
-                    addFoodList.length > 0 ?
-                    addFoodList.map((food, idx) => {
-                        return(
-                        <TableRow
-                                sx={{'&:last-child td, &:last-child th': {border: 0}}}
-                        >
-                            <TableCell colSpan={2} key={idx}>
-                                {
-                                    food
-                                }
-                            </TableCell>
-                        </TableRow>
-                    )})
-                    :
-                    <TableRow
-                                sx={{'&:last-child td, &:last-child th': {border: 0}}}
-                        >
-                            <TableCell key={1}>
-                                
-                                    no food selected
-                                
-                            </TableCell>
-                    </TableRow>
-                }
-                {
-                    addFoodList.length > 0 &&
-                    <TableRow>
-                        <TableCell colSpan={2} display={"flex"} align={"center"}>
-                            <Button>
-                                Log Meal
-                            </Button>
+            <Table sx={{ minWidth: "100%" }} aria-label="Food table">
+                <TableHead>
+                    <TableRow display={'flex'} justifyContent={'space-between'}>
+                        <TableCell colSpan={3} key={"header"}>
+                            <Typography key={"header"}>
+                                Current Meal to be added
+                            </Typography>
+                        </TableCell>
+                        <TableCell colSpan={3} key={"date-picker"} align={"right"}>
+                            <BasicDatePicker logDate={logDate} setLogDate={setLogDate} />
                         </TableCell>
                     </TableRow>
-                }
-                
-            </TableBody>
-        </Table>
-    </TableContainer>
+                    <TableRow>
+                        <TableCell align="center">
+                            Food Name
+                        </TableCell>
+                        <TableCell align="center">
+                            Protein(g)
+                        </TableCell>
+                        <TableCell align="center">
+                            Fat(g)
+                        </TableCell>
+                        <TableCell align="center">
+                            Carbs(g)
+                        </TableCell>
+                        <TableCell align="center">
+                            Calories(cal)
+                        </TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {
+                        addFoodList.length > 0 &&
+                        addFoodList.map((food, idx) => {
+                            return (
+                                <TableRow
+                                    sx={{ '&:last-child td, &:last-child th': { border: 0 }, align: "center" }}
+                                >
+                                    <TableCell align="center" key={"nameAdd" + idx}>
+                                        {
+                                            food["FoodName"]
+                                        }
+                                    </TableCell>
+                                    <TableCell align="center" key={"ProteinAdd" + idx}>
+                                        {
+                                            food["Protein"]
+                                        }
+                                    </TableCell>
+                                    <TableCell align="center" key={"FatAdd" + idx}>
+                                        {
+                                            food["Fat"]
+                                        }
+                                    </TableCell>
+                                    <TableCell align="center" key={"CarbsAdd" + idx}>
+                                        {
+                                            food["Carbs"]
+                                        }
+                                    </TableCell>
+                                    <TableCell align="center" key={"CaloriesAdd" + idx}>
+                                        {
+                                            food["Calories"]
+                                        }
+                                    </TableCell>
+                                </TableRow>
+                            )
+                        })
+                    }
+                    <TableRow
+                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    >
+                        <TableCell key={"customFood"} align="center" onChange={(event) => {
+                            foodName = event.target.value;
+                            console.log(foodName);
+                        }}>
+
+                            <TextField placeholder="Food Name">
+
+                            </TextField>
+
+                        </TableCell>
+                        <TableCell key={"customProtein"} align="center" onChange={(event) => {
+                            protein = event.target.value;
+                            console.log(protein);
+                        }}>
+
+                            <TextField placeholder="Protein">
+
+                            </TextField>
+
+                        </TableCell>
+                        <TableCell key={"customFat"} align="center" onChange={(event) => {
+                            fat = event.target.value;
+                            console.log(fat);
+                        }}>
+
+                            <TextField placeholder="Fat">
+
+                            </TextField>
+
+                        </TableCell>
+                        <TableCell key={"customCarbs"} align="center" onChange={(event) => {
+                            carbs = event.target.value;
+                            console.log(carbs);
+                        }}>
+
+                            <TextField placeholder="Carbs">
+
+                            </TextField>
+
+                        </TableCell>
+                        <TableCell display={"flex"} flex-direction={"column"} key={"customCalories"} justifyContent="center" onChange={(event) => {
+                            calories = event.target.value;
+                            console.log(calories);
+                        }}>
+                            <Box display={"flex"} flexDirection={"row"} alignContent={"center"} justifyContent={"center"}>
+                                <TextField placeholder="Calories">
+
+                                </TextField>
+                                <Button paddingTop={1} onClick={() => {
+                                    if (!isNaN(calories) && !isNaN(protein) && !isNaN(carbs) && !isNaN(fat)) {
+                                        tempList = [{
+                                            "FoodName": foodName,
+                                            "Calories": calories,
+                                            "Protein": protein,
+                                            "Carbs": carbs,
+                                            "Fat": fat
+                                        }, ...addFoodList];
+                                        setAddFoodList(tempList);
+                                        console.log(tempList)
+                                    }
+                                }}>
+
+                                    <AddCircleRoundedIcon fontSize="large" />
+                                </Button>
+                            </Box>
+
+                        </TableCell>
+                    </TableRow>
+                    {
+                        addFoodList.length > 0 &&
+                        <TableRow>
+                            <TableCell align="center">
+                                Totals
+                            </TableCell>
+                            <TableCell align="center">
+                                protein
+                            </TableCell>
+                            <TableCell align="center">
+                                Totals
+                            </TableCell>
+                            <TableCell align="center">
+                                Totals
+                            </TableCell>
+                            <TableCell align="center">
+                                Totals
+                            </TableCell>
+                        </TableRow>
+                    }
+                    {
+                        addFoodList.length > 0 &&
+                        <TableRow>
+                            <TableCell key={"logfood"} colSpan={5} display={"flex"} align={"center"} onClick={() => {
+                                addFoodList.forEach(element => {
+                                    addFood(element["FoodName"], element["Calories"], element["Protein"], element["Carbs"], element["Fat"]);
+                                });
+                            }}>
+                                <Button>
+                                    Log Meal
+                                </Button>
+                            </TableCell>
+                        </TableRow>
+                    }
+
+                </TableBody>
+            </Table>
+        </TableContainer>
     )
 }
-
-SimpleDialog.propTypes = {
-    onClose: PropTypes.func.isRequired,
-    open: PropTypes.bool.isRequired,
-    selectedValue: PropTypes.string.isRequired,
-};
 
 export default function AddMeal(props) {
     const { userId } = props;
     const [open, setOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState(emails[1]);
     const [addFoodList, setAddFoodList] = useState([])
-    const [logDate , setLogDate] = useState(dayjs('2022-04-17'));
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
+    const [logDate, setLogDate] = useState(new Date().toLocaleDateString());
 
-    const handleClose = (value) => {
-        setOpen(false);
-        setSelectedValue(value);
-    };
-
-    useEffect(() =>{
+    useEffect(() => {
         console.log("log date is: ", logDate);
     }, [logDate])
     //console.log(logDate);
 
+    async function addFood(FoodName, Calories, Protein, Carbohydrates, Fat) {
+        const api = new API();
+        api.addFoodByUser(userId, logDate, FoodName, Calories, Protein, Carbohydrates, Fat);
+    }
+
     return <Fragment>
-        <Stack>
-            <DisplayCurrentMeal 
-                addFoodList={addFoodList} 
-                logDate={logDate} 
-                setLogDate={setLogDate}
-            />
-            <Button
-                variant="outlined" 
-                onClick={handleClickOpen}
-            >
-                Add Food to Current Meal
-            </Button>
-            <SimpleDialog
-                selectedValue={selectedValue}
-                open={open}
-                userId={userId}
+        <Stack align={"center"}>
+            <PopupState variant="popover" popupId="demo-popup-popover">
+                {(popupState) => (
+                    <div>
+                        <Button variant="contained" {...bindTrigger(popupState)}>
+                            Search Food Here
+                        </Button>
+                        <Popover
+                            {...bindPopover(popupState)}
+                            anchorOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'center',
+                            }}
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'center',
+                            }}
+                        >
+                            <Paper position={'absolute'} style={{ maxHeight: 350, height: 350, width: '60vw', overflow: 'auto' }}>
+                                <FoodSearch userId={userId} addFoodList={addFoodList} setAddFoodList={setAddFoodList} />
+                            </Paper>
+
+                        </Popover>
+                    </div>
+                )}
+            </PopupState>
+            <DisplayCurrentMeal
                 addFoodList={addFoodList}
                 setAddFoodList={setAddFoodList}
-                onClose={handleClose}
+                logDate={logDate}
+                setLogDate={setLogDate}
+                addFood={addFood}
             />
         </Stack>
     </Fragment>

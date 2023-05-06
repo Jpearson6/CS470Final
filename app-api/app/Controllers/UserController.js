@@ -179,7 +179,7 @@ const addUser = async (ctx) => {
   }
 
 
-  const setUserHeigth = async (ctx) => {
+  const setUserHeight = async (ctx) => {
     console.log('FoodLog food by date called.');
     return new Promise((resolve, reject) => {
         const query = `
@@ -209,7 +209,7 @@ const addUser = async (ctx) => {
   
   }
 
-  const setUserWeigth = async (ctx) => {
+  const setUserWeight = async (ctx) => {
     console.log('FoodLog food by date called.');
     return new Promise((resolve, reject) => {
         const query = `
@@ -331,8 +331,8 @@ module.exports = {
     getUserById,
     getUserMacros,
     setUserMacros,
-    setUserHeigth,
-    setUserWeigth,
+    setUserHeight,
+    setUserWeight,
     setUserActivityLevel,
     setUserWeeklyGoal,
     setUserWeightGoal,

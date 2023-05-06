@@ -59,18 +59,68 @@ export default class APIInterface {
         return axiosAgent.get(`user/all-users`);
     }
 
+    async getUserById(userId) {
+        try {
+            const response = await axiosAgent.get(`/user/${userId}`);
+            return response.data;
+          } catch (error) {
+            console.error(`Error adding user: ${error}`);
+            throw error;
+          }
+    }
+
+    async todaysCaloriesByUser(userId) {
+        try {
+            const response = await axiosAgent.get(`/foodlog/Calories/${userId}`);
+            return response.data;
+          } catch (error) {
+            console.error(`Error adding user: ${error}`);
+            throw error;
+          }
+    }
+
+    async todaysFatByUser(userId) {
+        try {
+            const response = await axiosAgent.get(`/foodlog/Fat/${userId}`);
+            return response.data;
+          } catch (error) {
+            console.error(`Error adding user: ${error}`);
+            throw error;
+          }
+    }
+
+    async todaysCarbsByUser(userId) {
+        try {
+            const response = await axiosAgent.get(`/foodlog/Carbs/${userId}`);
+            return response.data;
+          } catch (error) {
+            console.error(`Error adding user: ${error}`);
+            throw error;
+          }
+    }
+
+    async todaysProteinByUser(userId) {
+        try {
+            const response = await axiosAgent.get(`/foodlog/Protein/${userId}`);
+            return response.data;
+          } catch (error) {
+            console.error(`Error adding user: ${error}`);
+            throw error;
+          }
+    }
+
     async allFoodByUser(userId) {
         return axiosAgent.get(`foodlog/${userId}`);
     }
     async allFoodByUserTimeSpan(userId , NumDays) {
-        return axiosAgent.get(`foodlog/${NumDays}/${userId}`);
+        return axiosAgent.get(`foodlog/range/${NumDays}/${userId}`);
     }
     async searchFood(food) {
         return axios.get(`https://api.nal.usda.gov/fdc/v1/foods/search?api_key=${encodeURIComponent(params.api_key)}&query=${encodeURIComponent(food)}&dataType=${encodeURIComponent(params.dataType)}&pageSize=10`)
     }
 
-    async addFoodByUser(UserId, FoodName, Calories, Protein, Carbohydrates, Fat){
-        return axiosAgent.post(`foodlog/${UserId}/${FoodName}/${Calories}/${Protein}/${Carbohydrates}/${Fat}`)
+    async addFoodByUser(UserId, Date, FoodName, Calories, Protein, Carbohydrates, Fat){
+        return axiosAgent.post(`foodlog/${UserId}/${Date}/${FoodName}/${Calories}/${Protein}/${Carbohydrates}/${Fat}`)
     }
 
     async updateMacros(UserId, Fat, Carbs, Protein){
