@@ -2,9 +2,6 @@ import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 
 const addTooltips = (chart, styles) => {
 
-    console.log(chart);
-    console.log(styles);
-
     const stroke_styles = { stroke: "blue", "stroke-width": 3 };
     const fill_styles = { fill: "blue", opacity: 0.5 };
 

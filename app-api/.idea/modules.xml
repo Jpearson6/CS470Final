@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/app-api.iml" filepath="$PROJECT_DIR$/.idea/app-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/../app-ui/.idea/app-ui.iml" filepath="$PROJECT_DIR$/../app-ui/.idea/app-ui.iml" />
+      <module fileurl="file://$USER_HOME$/Downloads/project_4/project_4/draught-services-ui/.idea/draught-services-ui.iml" filepath="$USER_HOME$/Downloads/project_4/project_4/draught-services-ui/.idea/draught-services-ui.iml" />
     </modules>
   </component>
 </project>

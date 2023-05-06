@@ -1,7 +1,6 @@
 import {InputAdornment, InputLabel, MenuItem, Select, Stack, Typography} from "@mui/material";
 import React, {Fragment} from "react";
 import Box from "@mui/material/Box";
-import Divider from "@mui/material/Divider";
 import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
