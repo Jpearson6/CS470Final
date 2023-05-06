@@ -19,8 +19,6 @@ import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import API from '../API_Interface/API_Interface';
 
-const emails = ['username@gmail.com', 'user02@gmail.com'];
-
 const DisplayCurrentMeal = (props) => {
     const { addFoodList, setAddFoodList, logDate, setLogDate, addFood } = props;
     let tempList = [];
@@ -109,9 +107,7 @@ const DisplayCurrentMeal = (props) => {
                             console.log(foodName);
                         }}>
 
-                            <TextField placeholder="Food Name">
-
-                            </TextField>
+                            <TextField placeholder="Food Name" />
 
                         </TableCell>
                         <TableCell key={"customProtein"} align="center" onChange={(event) => {
@@ -119,9 +115,8 @@ const DisplayCurrentMeal = (props) => {
                             console.log(protein);
                         }}>
 
-                            <TextField placeholder="Protein">
+                            <TextField placeholder="Protein(g)" />
 
-                            </TextField>
 
                         </TableCell>
                         <TableCell key={"customFat"} align="center" onChange={(event) => {
@@ -129,9 +124,7 @@ const DisplayCurrentMeal = (props) => {
                             console.log(fat);
                         }}>
 
-                            <TextField placeholder="Fat">
-
-                            </TextField>
+                            <TextField placeholder="Fat(g)" />
 
                         </TableCell>
                         <TableCell key={"customCarbs"} align="center" onChange={(event) => {
@@ -139,9 +132,7 @@ const DisplayCurrentMeal = (props) => {
                             console.log(carbs);
                         }}>
 
-                            <TextField placeholder="Carbs">
-
-                            </TextField>
+                            <TextField placeholder="Carbs(g)" />
 
                         </TableCell>
                         <TableCell display={"flex"} flex-direction={"column"} key={"customCalories"} justifyContent="center" onChange={(event) => {
@@ -149,9 +140,8 @@ const DisplayCurrentMeal = (props) => {
                             console.log(calories);
                         }}>
                             <Box display={"flex"} flexDirection={"row"} alignContent={"center"} justifyContent={"center"}>
-                                <TextField placeholder="Calories">
+                                <TextField placeholder="Calories(g)" />
 
-                                </TextField>
                                 <Button paddingTop={1} onClick={() => {
                                     if (!isNaN(calories) && !isNaN(protein) && !isNaN(carbs) && !isNaN(fat)) {
                                         tempList = [{
@@ -215,10 +205,8 @@ const DisplayCurrentMeal = (props) => {
 
 export default function AddMeal(props) {
     const { userId } = props;
-    const [open, setOpen] = useState(false);
-    const [selectedValue, setSelectedValue] = useState(emails[1]);
     const [addFoodList, setAddFoodList] = useState([])
-    const [logDate, setLogDate] = useState(new Date().toLocaleDateString());
+    const [logDate, setLogDate] = useState(new Date().toISOString().split('T')[0]);
 
     useEffect(() => {
         console.log("log date is: ", logDate);

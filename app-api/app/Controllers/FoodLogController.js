@@ -166,7 +166,7 @@ const addFoodByUser = async (ctx) => {
                         `;
         dbConnection.query({
             sql: query,
-            values: [ctx.params.UserId , ctx.params.Date, ctx.params.FoodName, ctx.params.Calories, ctx.params.Protein, ctx.params.Carbohydrates, ctx.params.Fat]
+            values: [ctx.params.UserId, ctx.params.Date, ctx.params.FoodName, ctx.params.Calories, ctx.params.Protein, ctx.params.Carbohydrates, ctx.params.Fat]
         }, (error, tuples) => {
             if (error) {
                 console.log("Connection error in UserController::allUsers", error);
