@@ -1,34 +1,57 @@
-import { Dialog, DialogTitle, ListItemButton, Stack, Typography, Paper, Box, TextField } from "@mui/material";
+import { Dialog, Stack, Typography, Paper, TextField, Alert } from "@mui/material";
 import { Fragment, useEffect, useState } from "react";
-import dayjs, { Dayjs } from 'dayjs';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import List from "@mui/material/List";
 import Button from "@mui/material/Button";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import PropTypes from "prop-types";
 import FoodSearch from "./FoodSearch/FoodSearch";
 import BasicDatePicker from "./FoodSearch/DatePicker";
 import Popover from '@mui/material/Popover';
 import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
+import RemoveCircleRoundedIcon from '@mui/icons-material/RemoveCircleRounded';
 import API from '../API_Interface/API_Interface';
 
 const DisplayCurrentMeal = (props) => {
     const { addFoodList, setAddFoodList, logDate, setLogDate, addFood } = props;
     let tempList = [];
-    let sum = 0;
+    const [sumP, setSumP] = useState(0);
+    const [sumF, setSumF] = useState(0);
+    const [sumCb, setSumCb] = useState(0);
+    const [sumCl, setSumCl] = useState(0);
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    let sumProtein = 0;
+    let sumFat = 0;
+    let sumCarbs = 0;
+    let sumCalories = 0;
     let foodName = "";
     let protein = null;
     let fat = null;
     let carbs = null;
     let calories = null;
 
+    const handleOpen = () => {
+        setIsModalVisible(true);
+            setTimeout(() => {
+                setIsModalVisible(false);
+            }, 1500)
+    };
+
+    useEffect(() => {
+        addFoodList.forEach((element) => {
+            sumProtein += Number(element["Protein"]);
+            sumFat += Number(element["Fat"]);
+            sumCarbs += Number(element["Carbs"]);
+            sumCalories += Number(element["Calories"]);
+        })
+        setSumP(sumProtein);
+        setSumF(sumFat);
+        setSumCb(sumCarbs);
+        setSumCl(sumCalories);
+    }, [addFoodList])
 
     return (
         <TableContainer component={Paper}>
@@ -40,7 +63,7 @@ const DisplayCurrentMeal = (props) => {
                                 Current Meal to be added
                             </Typography>
                         </TableCell>
-                        <TableCell colSpan={3} key={"date-picker"} align={"right"}>
+                        <TableCell colSpan={4} key={"date-picker"} align={"right"}>
                             <BasicDatePicker logDate={logDate} setLogDate={setLogDate} />
                         </TableCell>
                     </TableRow>
@@ -59,6 +82,8 @@ const DisplayCurrentMeal = (props) => {
                         </TableCell>
                         <TableCell align="center">
                             Calories(cal)
+                        </TableCell>
+                        <TableCell align="center">
                         </TableCell>
                     </TableRow>
                 </TableHead>
@@ -93,6 +118,18 @@ const DisplayCurrentMeal = (props) => {
                                     <TableCell align="center" key={"CaloriesAdd" + idx}>
                                         {
                                             food["Calories"]
+
+                                        }
+                                    </TableCell>
+                                    <TableCell>
+                                        {
+                                            idx == 0 &&
+                                            <Button paddingtop={2} onClick={() => {
+                                                tempList = addFoodList.slice(1);
+                                                setAddFoodList(tempList);
+                                            }}>
+                                                <RemoveCircleRoundedIcon fontSize="large" />
+                                            </Button>
                                         }
                                     </TableCell>
                                 </TableRow>
@@ -104,62 +141,55 @@ const DisplayCurrentMeal = (props) => {
                     >
                         <TableCell key={"customFood"} align="center" onChange={(event) => {
                             foodName = event.target.value;
-                            console.log(foodName);
                         }}>
 
-                            <TextField placeholder="Food Name" />
+                            <TextField label="Food Name" />
 
                         </TableCell>
                         <TableCell key={"customProtein"} align="center" onChange={(event) => {
                             protein = event.target.value;
-                            console.log(protein);
                         }}>
 
-                            <TextField placeholder="Protein(g)" />
+                            <TextField label="Protein(g)" />
 
 
                         </TableCell>
                         <TableCell key={"customFat"} align="center" onChange={(event) => {
                             fat = event.target.value;
-                            console.log(fat);
                         }}>
 
-                            <TextField placeholder="Fat(g)" />
+                            <TextField label="Fat(g)" />
 
                         </TableCell>
                         <TableCell key={"customCarbs"} align="center" onChange={(event) => {
                             carbs = event.target.value;
-                            console.log(carbs);
                         }}>
 
-                            <TextField placeholder="Carbs(g)" />
+                            <TextField label="Carbs(g)" />
 
                         </TableCell>
                         <TableCell display={"flex"} flex-direction={"column"} key={"customCalories"} justifyContent="center" onChange={(event) => {
                             calories = event.target.value;
-                            console.log(calories);
                         }}>
-                            <Box display={"flex"} flexDirection={"row"} alignContent={"center"} justifyContent={"center"}>
-                                <TextField placeholder="Calories(g)" />
-
-                                <Button paddingtop={1} onClick={() => {
-                                    if (!isNaN(calories) && !isNaN(protein) && !isNaN(carbs) && !isNaN(fat)) {
-                                        tempList = [{
-                                            "FoodName": foodName,
-                                            "Calories": calories,
-                                            "Protein": protein,
-                                            "Carbs": carbs,
-                                            "Fat": fat
-                                        }, ...addFoodList];
-                                        setAddFoodList(tempList);
-                                        console.log(tempList)
-                                    }
-                                }}>
-
-                                    <AddCircleRoundedIcon fontSize="large" />
-                                </Button>
-                            </Box>
-
+                            <TextField label="Calories(g)" />
+                        </TableCell>
+                        <TableCell>
+                            <Button paddingtop={1} onClick={() => {
+                                if (!isNaN(calories) && !isNaN(protein) && !isNaN(carbs) && !isNaN(fat)
+                                    && foodName.length > 0 && calories != null && protein != null
+                                    && carbs != null && fat != null) {
+                                    tempList = [{
+                                        "FoodName": foodName,
+                                        "Calories": calories,
+                                        "Protein": protein,
+                                        "Carbs": carbs,
+                                        "Fat": fat
+                                    }, ...addFoodList];
+                                    setAddFoodList(tempList);
+                                }
+                            }}>
+                                <AddCircleRoundedIcon fontSize="large" />
+                            </Button>
                         </TableCell>
                     </TableRow>
                     {
@@ -169,16 +199,19 @@ const DisplayCurrentMeal = (props) => {
                                 Totals
                             </TableCell>
                             <TableCell align="center">
-                                protein
+                                {sumP}
                             </TableCell>
                             <TableCell align="center">
-                                Totals
+                                {sumF}
                             </TableCell>
                             <TableCell align="center">
-                                Totals
+                                {sumCb}
                             </TableCell>
                             <TableCell align="center">
-                                Totals
+                                {sumCl}
+                            </TableCell>
+                            <TableCell align="center">
+
                             </TableCell>
                         </TableRow>
                     }
@@ -189,6 +222,8 @@ const DisplayCurrentMeal = (props) => {
                                 addFoodList.forEach(element => {
                                     addFood(element["FoodName"], element["Calories"], element["Protein"], element["Carbs"], element["Fat"]);
                                 });
+                                setAddFoodList([]);
+                                handleOpen();
                             }}>
                                 <Button>
                                     Log Meal
@@ -199,19 +234,18 @@ const DisplayCurrentMeal = (props) => {
 
                 </TableBody>
             </Table>
+            <Dialog open={isModalVisible} PaperProps={{ sx: { position: "fixed", top: 10, left: "50vw", m: 0 } }}>
+                <Alert severity="success">Meal Has Been Added</Alert>
+            </Dialog>
         </TableContainer>
     )
 }
+
 
 export default function AddMeal(props) {
     const { userId } = props;
     const [addFoodList, setAddFoodList] = useState([])
     const [logDate, setLogDate] = useState(new Date().toISOString().split('T')[0]);
-
-    useEffect(() => {
-        console.log("log date is: ", logDate);
-    }, [logDate])
-    //console.log(logDate);
 
     async function addFood(FoodName, Calories, Protein, Carbohydrates, Fat) {
         const api = new API();
@@ -237,7 +271,7 @@ export default function AddMeal(props) {
                                 horizontal: 'center',
                             }}
                         >
-                            <Paper position={'absolute'} style={{ maxHeight: 350, height: 350, width: '60vw', overflow: 'auto' }}>
+                            <Paper position={'absolute'} style={{ maxHeight: 350, height: 350, width: '73vw', overflow: 'auto' }}>
                                 <FoodSearch userId={userId} addFoodList={addFoodList} setAddFoodList={setAddFoodList} />
                             </Paper>
 

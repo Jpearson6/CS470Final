@@ -83,7 +83,6 @@ function DisplayFood(props) {
                                             return obj;
                                         }, {});
                                         let tempSelectedFood1 = { foodName: food['description'], ...tempSelectedFood }
-                                        console.log(food);
                                         addFood(food['description'], tempSelectedFood['3']['value'], tempSelectedFood['0']['value'], tempSelectedFood['2']['value'], tempSelectedFood['1']['value'])
 
                                     }}
@@ -129,20 +128,10 @@ export default function FoodSearch(props) {
     const [foodList, setFoodList] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedFood, setSelectedFood] = useState([]);
-    console.log(userId);
-
-    console.log(addFoodList);
-
-    useEffect(() => {
-        if (foodList.length === 0)
-            return;
-        //console.log("foodList contains ", foodList);
-    }, [foodList]);
 
     async function searchFood(food) {
         const api = new API();
         const foodJSONString = await api.searchFood(food);
-        //console.log(`AddMeal from the API Call ${JSON.stringify(foodJSONString.data.foods)}`);
         setFoodList(foodJSONString.data.foods);
     }
 
@@ -154,9 +143,6 @@ export default function FoodSearch(props) {
             "Carbs": Carbohydrates,
             "Fat": Fat
         }, ...addFoodList];
-        console.log(tempList)
-        // const api = new API();
-        // api.addFoodByUser(userId, FoodName, Calories, Protein, Carbohydrates, Fat);
         setAddFoodList(tempList);
     }
 
