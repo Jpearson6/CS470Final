@@ -22,24 +22,46 @@ const userStyle = {
   position: "relative",
 };
 
-
-
 const UserProfile = (props) => {
-
   const [open, setOpen] = useState(false);
   const { userId } = props;
   const [user, setUser] = useState(null);
 
+  const fetchUser = async () => {
+    const api = new API();
+    try {
+      const userInfo = await api.getUserById(userId);
+      const userData = userInfo.data[0];
+
+      setUser(userData);
+      console.log(`User data: ${JSON.stringify(user)}`);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    if (!userId) return;
+    //const api = new API();
+    // không khơi tạo function ở đây nhé ah
+    // eslint-disable-next-line
+    fetchUser();
+  }, [userId]);
+
   //profile defaut
   const initProfile = {
-    dob: '',
+    dob: "",
     sex: "",
     height: 0,
     weight: 0,
-    activityLevel: '',
+    activityLevel: "Sedentary",
   };
 
   const [profile, setProfile] = useState(initProfile);
+
+  if (!user) {
+    return <div>Loading...</div>;
+  }
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -49,57 +71,26 @@ const UserProfile = (props) => {
     setOpen(false);
   };
 
-  const handleUpdate = () => {
-    // khúc này là anh đã có dữ liệu profile ở state rồi thì anh k cần phải khai báo lại chi
-    // anh chỉ cần gọi API để update thôi
-    // anh có thể console.log(profile) để xem dữ liệu của anh nó như thế nào
-    console.log(`User profile ${JSON.stringify(profile)}`);
-    // anh có thể gọi API ở đây
-
-    // đừng quên gọi API xong thì set lại setOpen(false) để đóng cái dialog
-    // và check tính hợp lệ của dữ liệu
-
-    // check valid
-    if (!profile.height || !profile.weight) return;
-    const api = new API();
-    api.updateUser(userId, profile);
-    // xong
-    // nhớ là phải đóng cái dialog lại
-    setOpen(false);
-    // setLoading nếu có
-    // set lại cái profile và user nếu có
-    fetchUser();
-    setProfile(initProfile);
-    handleClose();
-  };
-
-  const fetchUser = async () => {
-    const api = new API();
-    try {
-      const userInfo = await api.getUserById(userId);
-      const userData = userInfo.data[0];
-      setUser(userData);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    if (!userId) return;
-    const api = new API();
-    // không khơi tạo function ở đây nhé ah
-    fetchUser();
-  }, [userId]);
-
-  if (!user) {
-    return <div>Loading...</div>;
-  }
-
   const birthDate = new Date(user.dob);
+
   //console.log(`birthDay :${birthDate}`)
   const age = Math.floor(
     (Date.now() - birthDate.getTime()) / (1000 * 60 * 60 * 24 * 365)
   );
+
+  const handleDateChange = (newValue) => {
+    let tempDate = "";
+    tempDate += newValue["$y"];
+    tempDate += "-";
+    tempDate += newValue["$M"];
+    tempDate += "-";
+    tempDate += newValue["$D"];
+    setProfile({
+      ...profile,
+      dob: tempDate,
+    });
+  };
+
   const height = user.Height;
   const weight = user.Weight;
   const sex = user.Sex;
@@ -114,12 +105,15 @@ const UserProfile = (props) => {
     status = "You are gaining weight";
   }
 
-
-  const handleDateChange = (date) => {
-    setProfile({
-      ...profile,
-      dob: date
-    });
+  const handleUpdate = () => {
+    if (!profile.height || !profile.weight) return;
+    const api = new API();
+    console.log(`User profile ${JSON.stringify(profile)}`);
+    api.updateUser(userId, profile);
+    setOpen(false);
+    fetchUser();
+    setProfile(profile);
+    handleClose();
   };
 
   return (
@@ -161,7 +155,13 @@ const UserProfile = (props) => {
 
         <Box sx={{ background: "white", top: "180px", position: "relative" }}>
           <Button onClick={handleClickOpen}>Update</Button>
-          <Dialog open={open} onClose={handleClose} maxWidth={false}>
+
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            maxWidth={false}
+            disableEnforceFocus
+          >
             <DialogTitle>
               <Typography
                 align="center"
@@ -178,32 +178,33 @@ const UserProfile = (props) => {
                 justifyContent: "center",
               }}
             >
-              <Stack spacing={2}>
-
-              {/* <DatePicker
-                label="Date of birth"
-                style={{ width: 245 }}
-                value={profile.dob}
-                onChange={handleDateChange}
-                /> */}
-
-
-
+              <Stack spacing={2} alignItems={"center"}>
+                <Box style={{ width: 250 }}>
+                  <DatePicker
+                    width="250px"
+                    label="Date of birth"
+                    style={{ width: 245 }}
+                    onChange={(newValue) => {
+                      handleDateChange(newValue);
+                    }}
+                  />
+                </Box>
 
                 <FormControl>
-                  <InputLabel id="demo-simple-select-label">
-                    Sex
-                  </InputLabel>
+                  <InputLabel id="demo-simple-select-label">Sex</InputLabel>
                   <Select
                     label=""
                     style={{ width: 245 }}
-                    value={profile.sex}
-                    onChange={(e) =>
-                      setProfile({ ...profile, sex: e.target.value })
-                    }
+                    value={profile.sex || ""}
+                    onChange={(e) => {
+                      const sex = e.target.value;
+                      if (sex === "Male" || sex === "Female") {
+                        setProfile({ ...profile, sex });
+                      }
+                    }}
                   >
-                    <MenuItem value={true}>Male</MenuItem>
-                    <MenuItem value={false}>Female </MenuItem>
+                    <MenuItem value={"Male"}>Male</MenuItem>
+                    <MenuItem value={"Female"}>Female </MenuItem>
                   </Select>
                 </FormControl>
 
@@ -226,30 +227,25 @@ const UserProfile = (props) => {
                 />
 
                 <FormControl>
-                <InputLabel id="demo-simple-select-label">
-                    Activity Level
-                </InputLabel>
-                <Select
+                  <InputLabel>Activity Level</InputLabel>
+                  <Select
                     label="Activity Level"
                     style={{ width: 245 }}
-                    value={profile}
+                    value={profile.activityLevel || ""}
                     onChange={(e) =>
-                    setProfile({ ...profile, activityLevel: e.target.value })
+                      setProfile({ ...profile, activityLevel: e.target.value })
                     }
-                >
-                    <MenuItem value="sedentary">Sedentary</MenuItem>
-                    <MenuItem value="lightly active">Lightly Active</MenuItem>
-                    <MenuItem value="moderately active">
-                    Moderately Active
+                  >
+                    <MenuItem value="Sedentary">Sedentary</MenuItem>
+                    <MenuItem value="Lightly Active">Lightly Active</MenuItem>
+                    <MenuItem value="Moderately Active">
+                      Moderately Active
                     </MenuItem>
-                    <MenuItem value="very active">Very Active</MenuItem>
-                </Select>
+                    <MenuItem value="Very Active">Very Active</MenuItem>
+                  </Select>
                 </FormControl>
 
-                <Button
-                  onClick={handleUpdate && handleClose}
-                  style={{ textAlign: "center" }}
-                >
+                <Button onClick={handleUpdate} style={{ textAlign: "center" }}>
                   {" "}
                   Update{" "}
                 </Button>

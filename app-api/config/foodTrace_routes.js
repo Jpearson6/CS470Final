@@ -23,7 +23,7 @@ const LoginController = require('../app/Controllers/LoginController.js');
 const loginRouter = require('koa-router')({
     prefix: '/login'
 });
-loginRouter.get('/:Email/:Password', LoginController.authorizeUser, (err) => console.log("login-route error:", err));
+loginRouter.post('/:Email/:Password', LoginController.authorizeUser, (err) => console.log("login-route error:", err));
 
 
 

@@ -61,6 +61,8 @@ export default class APIInterface {
 
 
     async updateUser(id,profile){
+        console.log(`User profile in API :${JSON.stringify(profile)}`);
+        console.log(`User ID in API: ${id}`)
         return axiosAgent.post(`user/update/${profile.dob}/${profile.sex}/${profile.height}/${profile.weight}/${profile.activityLevel}/${id}`)
     }
 
