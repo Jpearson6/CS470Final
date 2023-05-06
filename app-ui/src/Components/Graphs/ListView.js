@@ -1,10 +1,20 @@
-import {Typography} from "@mui/material";
+import {Stack} from "@mui/material";
+import OneDayList from "./OneDayList";
+import {updateDate} from "./DataManip";
 
-function ListView(props) {
-    const attribute = props['attribute']
+export default function ListView(props) {
+    const foodData = props['foodData'].map((item) => updateDate(item))
 
-    return <Typography>
-        List View For {attribute} Here
-    </Typography>
+    const groupedData = foodData.reduce((acc, item) => {
+        const key = item.Date;
+        if (!acc[key]) {
+            acc[key] = [];
+        }
+        acc[key].push(item);
+        return acc;
+    }, []);
+
+    console.log(groupedData);
+
+    return <OneDayList foodData={foodData} />
 }
-export default ListView

@@ -9,5 +9,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="app-ui" />
+    <orderEntry type="module" module-name="draught-services-ui" />
   </component>
 </module>

@@ -42,7 +42,7 @@ function CarbCount(props) {
                         y: "Carbohydrates",
                         stroke: "FoodName",
                         fill: "FoodName",
-                        fillOpacity: 1,
+                        fillOpacity: .75,
                         title: (d) => `${d.FoodName} \n ${d.Carbohydrates}`,
                     })
                 ]

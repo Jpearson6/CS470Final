@@ -19,7 +19,7 @@ const addMissingDates = (days, timeframe, foodData) => {
                 Calories: 0,
                 Carbohydrates: 0,
                 Fat: 0,
-                FoodName: "",
+                FoodName: "Apple",
                 Protein: 0,
                 Date:dayString
             })

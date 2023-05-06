@@ -42,7 +42,7 @@ function ProteinCount(props) {
                         y: "Protein",
                         stroke: "FoodName",
                         fill: "FoodName",
-                        fillOpacity: 1,
+                        fillOpacity: .75,
                         title: (d) => `${d.FoodName} \n ${d.Protein}`,
                     })
                 ]

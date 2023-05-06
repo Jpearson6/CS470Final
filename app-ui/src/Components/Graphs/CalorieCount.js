@@ -2,8 +2,6 @@ import React, {Fragment, useEffect, useRef, useState} from "react";
 import * as Plot from "@observablehq/plot";
 import addTooltips from "./Tooltip"
 import {addMissingDates, updateDate} from "./DataManip";
-import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
-import FormControl from "@mui/material/FormControl";
 import {Stack} from "@mui/material";
 
 function CalorieCount(props) {
@@ -12,7 +10,7 @@ function CalorieCount(props) {
     const timeframe = props['timeframe'];
 
     const graphByDay = addMissingDates(foodData.reduce((acc, item) => {
-        const key = item.dayString;
+        const key = item.Date;
         if (!acc[key]) {
             acc[key] = [];
         }

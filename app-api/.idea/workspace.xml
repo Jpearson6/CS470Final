@@ -23,7 +23,11 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="PackageJsonUpdateNotifier">
+    <dismissed value="$USER_HOME$/Downloads/project_4/project_4/draught-services-ui/package.json" />
+  </component>
   <component name="ProjectId" id="2OinGaNwuEku2y2FTBhMvBEOhmX" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -56,6 +60,7 @@
       <workItem from="1682982216942" duration="362000" />
       <workItem from="1683154964606" duration="10512000" />
       <workItem from="1683261753562" duration="2917000" />
+      <workItem from="1683338518238" duration="4737000" />
     </task>
     <servers />
   </component>

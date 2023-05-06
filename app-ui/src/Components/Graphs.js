@@ -10,7 +10,7 @@ const findSelectedGraph = (selectedItem, foodData, timeframe, type) => {
     if (type === "List") {
         return {
             title: "List View",
-            component:<ListView attribute={selectedItem} />}
+            component:<ListView attribute={selectedItem} foodData={foodData} />}
     }
     const component = [...GraphList(foodData, timeframe)].filter(comp => comp.title === selectedItem);
     if(component.length === 1)
