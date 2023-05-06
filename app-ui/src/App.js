@@ -20,8 +20,6 @@ function App() {
           <Route path="/home" element={<MainDrawer {...user}/>}/>
           <Route path="/signUp" element={<SignUp/>} />
           <Route path="/signUp/signUpPage2" element ={<SignUpPage2/>}/>
-          <Route path="/home/weightGoals" element={<WeightGoals/>}/>
-          <Route path="/nutritionGoals" element={<Macros/>}/>
       </Routes>
   )
 }
