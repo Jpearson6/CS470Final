@@ -151,7 +151,37 @@ const addUser = async (ctx) => {
     });
   }
 
-  const setUserHeigth = async (ctx) => {
+  const setUserWeightGoal = async (ctx) => {
+    console.log('FoodLog food by date called.');
+    return new Promise((resolve, reject) => {
+        const query = `
+        Update User
+        Set LbsPerWeek = ?
+        WHERE Id = ?
+      `;
+        dbConnection.query({
+            sql: query,
+            values: [ctx.params.Weight, ctx.params.Id]
+        }, (error, tuples) => {
+            if (error) {
+                console.log("Connection error in UserController::allUsers", error);
+                return reject(error);
+            }
+            ctx.body = tuples;
+            ctx.status = 200;
+            return resolve();
+        });
+    }).catch(err => {
+        console.log("Database connection error in allUsers.", err);
+        // The UI side will have to look for the value of status and
+        // if it is not 200, act appropriately.
+        ctx.body = [];
+        ctx.status = 500;
+    });
+  }
+
+
+  const setUserHeight = async (ctx) => {
     console.log('FoodLog food by date called.');
     return new Promise((resolve, reject) => {
         const query = `
@@ -181,7 +211,7 @@ const addUser = async (ctx) => {
   
   }
 
-  const setUserWeigth = async (ctx) => {
+  const setUserWeight = async (ctx) => {
     console.log('FoodLog food by date called.');
     return new Promise((resolve, reject) => {
         const query = `
@@ -278,7 +308,7 @@ const addUser = async (ctx) => {
         Update User
         Set dob = ?, Sex = ?, Height = ?, Weight = ?, ActivityLevel = ?
         WHERE Id = ?
-      `;
+      ;`
         dbConnection.query({
             sql: query,
             values: [ctx.params.dob, ctx.params.Sex, ctx.params.Height, ctx.params.Weight, ctx.params.ActivityLevel, ctx.params.Id]
@@ -300,10 +330,34 @@ const addUser = async (ctx) => {
     });
   }
 
-
-
-
-  
+  const setUserDOB = async (ctx) => {
+    console.log('FoodLog food by date called.');
+    return new Promise((resolve, reject) => {
+        const query = `
+        Update User
+        Set dob = ?, 
+        WHERE Id = ?
+      ;`
+        dbConnection.query({
+            sql: query,
+            values: [ctx.params.dob, ctx.params.Id]
+        }, (error, tuples) => {
+            if (error) {
+                console.log("Connection error in UserController::allUsers", error);
+                return reject(error);
+            }
+            ctx.body = tuples;
+            ctx.status = 200;
+            return resolve();
+        });
+    }).catch(err => {
+        console.log("Database connection error in allUsers.", err);
+        // The UI side will have to look for the value of status and
+        // if it is not 200, act appropriately.
+        ctx.body = [];
+        ctx.status = 500;
+    });
+  }
 
 module.exports = {
     allUsers,
@@ -311,10 +365,11 @@ module.exports = {
     getUserById,
     getUserMacros,
     setUserMacros,
-    setUserHeigth,
-    setUserWeigth,
+    setUserHeight,
+    setUserWeight,
     setUserActivityLevel,
     setUserWeeklyGoal,
-    updateUser
-
+    updateUser,
+    setUserWeightGoal,
+    setUserDOB
 };

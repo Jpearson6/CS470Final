@@ -38,8 +38,8 @@ userRouter.get('/macros/:Id', UserController.getUserMacros, err => console.log(`
 userRouter.post('/macros/:Id/:Fat/:Carbs/:Protein', UserController.setUserMacros, err => console.log(`set user macros by id ran into an error: ${err}`));
 userRouter.post('/sign-up',UserController.addUser, err => console.log(`sign-up error: ${err}`))
 userRouter.post('/update/:dob/:Sex/:Height/:Weight/:ActivityLevel/:Id', UserController.updateUser, err => console.log(`Update error: ${err}`))
-
-
+userRouter.post('/wgoal/:Id/:Weight', UserController.setUserWeightGoal, err => console.log(`set user weight goal by id ran into an error: ${err}`));
+userRouter.post('/alevel/:Id/:Level', UserController.setUserActivityLevel, err => console.log(`set user activity level by id ran into an error: ${err}`));
 /*
 |--------------------------------------------------------------------------
 | FoodLog router
@@ -53,9 +53,13 @@ const foodLogRouter = require('koa-router')({
     prefix: '/foodlog'
 })
 foodLogRouter.get('/:UserId' , FoodLogController.allFoodByUser, err => console.log(`allFoodbyDate ran into an error: ${err}`));
-foodLogRouter.get('/:NumDays/:UserId' , FoodLogController.allFoodByUserNumDays, err => console.log(`allFoodbyDateNumDays ran into an error: ${err}`));
+foodLogRouter.get('/range/:NumDays/:UserId' , FoodLogController.allFoodByUserNumDays, err => console.log(`allFoodbyDateNumDays ran into an error: ${err}`));
+foodLogRouter.get('/Calories/:UserId' , FoodLogController.todaysCaloriesByUser, err => console.log(`todaysFoodByUser ran into an error: ${err}`));
+foodLogRouter.get('/Fat/:UserId' , FoodLogController.todaysFatByUser, err => console.log(`todaysFoodByUser ran into an error: ${err}`));
+foodLogRouter.get('/Carbs/:UserId' , FoodLogController.todaysCarbsByUser, err => console.log(`todaysFoodByUser ran into an error: ${err}`));
+foodLogRouter.get('/Protein/:UserId' , FoodLogController.todaysProteinByUser, err => console.log(`todaysFoodByUser ran into an error: ${err}`));
 
-foodLogRouter.post('/:UserId/:FoodName/:Calories/:Protein/:Fat/:Carbohydrates' , FoodLogController.addFoodByUser, err => console.log(`addFoodByUser ran into an error: ${err}`));
+foodLogRouter.post('/:UserId/:Date/:FoodName/:Calories/:Protein/:Fat/:Carbohydrates' , FoodLogController.addFoodByUser, err => console.log(`addFoodByUser ran into an error: ${err}`));
 
 
 
