@@ -5,21 +5,40 @@ import {useState, useRef, useEffect} from 'react';
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { useHistory } from "react-router-dom";
+import API from '../API_Interface/API_Interface'
 
 
-export default function Macros() {
-    const [updatedTotalCals, setUpdatedTotalCals] = useState("");
-    const [updatedFat, setUpdatedFat] = useState("");
-    const [updatedCarb, setUpdatedCarb] = useState("");
-    const [updatedProtein, setUpdatedProtein] = useState("");
+export default function Macros(props) {
+    const updateDisplayCallBack = props.updateDisplayCallBack;
+    const userId = props.userId;
+    const[macros, setMacros] = useState([]);
+
+    useEffect(() => {
+        const api = new API();
+        async function getMacros() {
+            const macrosJSONString = await api.getMacros(userId);
+            console.log(`macros from the DB ${JSON.stringify(macrosJSONString)}`);
+            setMacros(macrosJSONString.data);
+        }
+
+        getMacros();
+    }, []);
+
+    console.log(macros);
 
    const [totalCalories, setTotalCalories] = useState("2200");
-   const [fatPercentage, setFatPercentage] = useState("30");
-   const [carbPercentage, setCarbPercentage] = useState("40");
-   const [proteinPercentage, setProteinPercentage] = useState("30");
+   const [fatPercentage, setFatPercentage] = useState('20');
+   const [carbPercentage, setCarbPercentage] = useState('45');
+   const [proteinPercentage, setProteinPercentage] = useState('35');
 
-   let fatGrams = (fatPercentage/100) * totalCalories / 9;
+
+    const [updatedTotalCals, setUpdatedTotalCals] = useState(totalCalories);
+    const [updatedFat, setUpdatedFat] = useState(fatPercentage);
+    const [updatedCarb, setUpdatedCarb] = useState(carbPercentage);
+    const [updatedProtein, setUpdatedProtein] = useState(proteinPercentage);
+
+
+    let fatGrams = (fatPercentage/100) * totalCalories / 9;
    let carbGrams = (carbPercentage/100) * totalCalories / 4;
    let proteinGrams = (proteinPercentage/100) * totalCalories / 4;
 
@@ -31,9 +50,9 @@ export default function Macros() {
 
 
     const [data, setData] = useState([
-        {property: fatString, value: fatPercentage, color: 'blue'},
-        {property: carbString, value: carbPercentage, color: 'red'},
-        {property: proteinString, value: proteinPercentage, color: 'pink'}
+        {property: fatString, value: fatPercentage, color: 'red'},
+        {property: carbString, value: carbPercentage, color: 'blue'},
+        {property: proteinString, value: proteinPercentage, color: 'green'}
     ]);
     const svgRef = useRef();
 
@@ -60,7 +79,7 @@ export default function Macros() {
             .join('path')
             .attr('d', arcGenerator)
             .attr('fill', d => d.data.color)
-            .style('opacity', 0.7);
+            .style('opacity', 0.4);
 
 
 
@@ -90,27 +109,38 @@ export default function Macros() {
         setUpdatedProtein(event.target.value);
     };
 
+    const handleSave = () => {
+        //check if percentages add up to 100
+        let fat = Number(updatedFat);
+        let carb = Number(updatedCarb);
+        let protein = Number(updatedProtein);
 
-    function updateMacros() {
-        console.log(updatedTotalCals);
-        console.log(updatedFat);
-        console.log(updatedCarb);
-        console.log(updatedProtein);
+        const total = fat + carb + protein;
+        if(total === 100){
+            const api = new API();
+            api.updateMacros(userId, fat, carb, protein);
+            updateDisplayCallBack('overall');
+            return true;
+        }
 
-        setTotalCalories(updatedTotalCals);
-        setFatPercentage(updatedFat);
-        setCarbPercentage(updatedCarb);
-        setProteinPercentage(updatedProtein);
 
-        window.location.reload();
+        return true;
     }
 
 
-    return(
+
+
+    return (
         <Fragment>
-            <Stack direction='column'>
-                <Box display='flex' justifyContent='center' alignItems='center'>
-                    <Stack direction='row' spacing={2}>
+            <Box display='flex' justifyContent='center' alignItems='center'>
+                <Typography fontSize="40px">
+                    Update Your Nutritional Goals
+                </Typography>
+            </Box>
+            <Grid container spacing={0} columns={16}>
+                <Grid item xs={8}>
+                    <Box display='flex' justifyContent='center' alignItems='center' mt={10}>
+                    <Stack direction='column' spacing={2}>
                         <TextField
                             id="outlined-multiline-static"
                             label="Total calories"
@@ -158,15 +188,21 @@ export default function Macros() {
                                 endAdornment: <InputAdornment position="end">%</InputAdornment>,
                             }}
                         />
-                        <Button onClick={() => updateMacros()}>
+                        <Button onClick={handleSave}>
                             Save
                         </Button>
+                        <Button onClick={() => updateDisplayCallBack('overall')}>
+                            Cancel
+                        </Button>
                     </Stack>
-                </Box>
-                <Box display='flex' justifyContent='center' alignItems='center'>
+                    </Box>
+                </Grid>
+                <Grid item xs={8}>
+                    <Box display='flex' justifyContent='center' alignItems='center'>
                     <svg ref={svgRef}></svg>
-                </Box>
-            </Stack>
+                    </Box>
+                </Grid>
+            </Grid>
         </Fragment>
     )
 }

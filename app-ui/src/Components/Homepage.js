@@ -1,15 +1,31 @@
 import { CircularProgress, Typography } from "@mui/material";
-import { CircularProgressbar, CircularProgressbarWithChildren } from 'react-circular-progressbar';
-import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
-import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
 import { Fragment } from "react";
 import React from 'react';
-import Carousel from 'react-material-ui-carousel';
 import getDailyCalories from "./DailyCalorieGoal";
 import API from '../API_Interface/API_Interface';
+import {Button, CircularProgress, Grid, Typography} from "@mui/material";
+import Box from "@mui/material/Box";
+import {Fragment, useEffect, useState} from "react";
+import React from 'react';
+import API from "../API_Interface/API_Interface";
 
 
+export default function Homepage(props) {
+    const [macros, setMacros] = useState([]);
+    const userId = props.userId;
+
+    useEffect(() => {
+        const api = new API();
+        async function getMacros() {
+            const macrosJSONString = await api.getMacros(userId);
+            console.log(`macros from the DB ${JSON.stringify(macrosJSONString)}`);
+            setMacros(macrosJSONString.data);
+        }
+
+        getMacros();
+    }, []);
+
+    console.log(macros);
 
 export default function Homepage(props) {
     const api = new API();
@@ -49,64 +65,77 @@ export default function Homepage(props) {
     let proteinGoal = 200;
     let proteinPercentageComplete = (proteinConsumed / proteinGoal) * 100;
 
+
+
     return (
-        <div className="App">
-            <Carousel autoPlay={false} animation="slide" navButtonsAlwaysVisible={true}>
-                <div>
-                    <Box display='flex' justifyContent='center' alignItems='center'>
-                        <Typography fontSize="50px">
-                            Daily Summary:
+        <Fragment>
+            <Box display='flex' justifyContent='center' alignItems='center'>
+                <Typography fontSize="40px">
+                    Daily Summary
+                </Typography>
+            </Box>
+            <Box display='flex' justifyContent='center' alignItems='center'>
+                <Button>
+                    + Log a Meal
+                </Button>
+            </Box>
+            <Grid container spacing={0} columns={16}>
+                <Grid item xs={8}>
+                    <Box display='flex' justifyContent='center' alignItems='center' >
+                        <Typography fontSize="25px">
+                            Calories:
                         </Typography>
+
                     </Box>
 
-                    <Box display='flex' justifyContent='center' alignItems='center' mt={10}>
+                    <Box display='flex' justifyContent='center' alignItems='center' mt={3}>
 
-                        <CircularProgress size="30rem" variant="determinate" value={percentageComplete} />
-                        <Typography fontSize="35px" position='absolute'>{2100} / {calGoal} Calories</Typography>
+                        <CircularProgress size="15rem" variant="determinate" value={percentageComplete} />
+                        <Typography fontSize="20px" position='absolute'>{calsConsumed} / {calGoal} kCal</Typography>
                     </Box>
-                </div>
-                <div>
+
+                </Grid>
+                <Grid item xs={8}>
                     <Box display='flex' justifyContent='center' alignItems='center'>
-                        <Typography fontSize="50px">
+                        <Typography fontSize="25px">
                             Fat:
                         </Typography>
                     </Box>
 
-                    <Box display='flex' justifyContent='center' alignItems='center' mt={10}>
+                    <Box display='flex' justifyContent='center' alignItems='center' mt={3}>
 
-                        <CircularProgress size="30rem" variant="determinate" value={fatPercentageComplete} color='error' />
-                        <Typography fontSize="35px" position='absolute'>{fatConsumed} / {fatGoal} Grams</Typography>
+                        <CircularProgress size="15rem" variant="determinate" value={fatPercentageComplete} color='error'/>
+                        <Typography fontSize="20px" position='absolute'>{fatConsumed} / {fatGoal} g</Typography>
                     </Box>
-                </div>
-                <div>
-                    <Box display='flex' justifyContent='center' alignItems='center'>
-                        <Typography fontSize="50px">
+                </Grid>
+                <Grid item xs={8}>
+                    <Box display='flex' justifyContent='center' alignItems='center' mt={5}>
+                        <Typography fontSize="25px">
                             Carbohydrates:
                         </Typography>
                     </Box>
 
-                    <Box display='flex' justifyContent='center' alignItems='center' mt={10}>
+                    <Box display='flex' justifyContent='center' alignItems='center' mt={3}>
 
-                        <CircularProgress size="30rem" variant="determinate" value={carbPercentageComplete} color='info' />
-                        <Typography fontSize="35px" position='absolute'>{carbConsumed} / {carbGoal} Grams</Typography>
+                        <CircularProgress size="15rem" variant="determinate" value={carbPercentageComplete} color='info'/>
+                        <Typography fontSize="20px" position='absolute'>{carbConsumed} / {carbGoal} g</Typography>
                     </Box>
-                </div>
-                <div>
-                    <Box display='flex' justifyContent='center' alignItems='center'>
-                        <Typography fontSize="50px">
+                </Grid>
+                <Grid item xs={8}>
+                    <Box display='flex' justifyContent='center' alignItems='center' mt={5}>
+                        <Typography fontSize="25px">
                             Protein:
                         </Typography>
                     </Box>
 
-                    <Box display='flex' justifyContent='center' alignItems='center' mt={10}>
+                    <Box display='flex' justifyContent='center' alignItems='center' mt={3}>
 
-                        <CircularProgress size="30rem" variant="determinate" value={proteinPercentageComplete} color='info' />
-                        <Typography fontSize="35px" position='absolute'>{proteinConsumed} / {proteinGoal} Grams</Typography>
+                        <CircularProgress size="15rem" variant="determinate" value={proteinPercentageComplete} color='success'/>
+                        <Typography fontSize="20px" position='absolute'>{proteinConsumed} / {proteinGoal} g</Typography>
                     </Box>
-                </div>
-            </Carousel>
-        </div>
+                </Grid>
+            </Grid>
+        </Fragment>
     )
-
 
 }

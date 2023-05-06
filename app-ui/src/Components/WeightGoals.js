@@ -1,17 +1,31 @@
-import {InputAdornment, InputLabel, MenuItem, Select, Stack, Typography} from "@mui/material";
+import {Grid, InputAdornment, InputLabel, MenuItem, Select, Stack, Typography} from "@mui/material";
 import React, {Fragment} from "react";
 import Box from "@mui/material/Box";
 import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
-export default function WeightGoals() {
+export default function WeightGoals (props) {
+    const updateDisplayCallBack = props.updateDisplayCallBack;
+
+    function handleSave(){
+        updateDisplayCallBack('overall');
+    }
+
     return (
         <Fragment>
             <Box display='flex' justifyContent='center' alignItems='center'>
+                <Typography fontSize="40px">
+                    Update Your Weight Goals
+                </Typography>
+            </Box>
+            <Grid container spacing={0} columns={16}>
+                <Grid item xs={8}>
+            <Box display='flex' justifyContent='center' alignItems='center' mt={10}>
                 <Stack spacing={2}>
+
                     <TextField
-                        id="outlined-multiline-static"
+                        id="outline-multiline-static"
                         label = "Starting Weight"
                         placeholder=""
                         multiline
@@ -64,11 +78,21 @@ export default function WeightGoals() {
                             <MenuItem value="very active">Very Active</MenuItem>
                         </Select>
                     </FormControl>
-                    <Button>
+                    <Button onClick={handleSave}>
                         Save
+                    </Button>
+                    <Button onClick={() => updateDisplayCallBack('overall')}>
+                        Cancel
                     </Button>
                 </Stack>
             </Box>
+                </Grid>
+                <Grid item xs={8}>
+                    <Box display='flex' justifyContent='center' alignItems='center' mt={10}>
+                        <img src="https://lap-associates.com/wp-content/uploads/2021/01/goal-weight-1.jpg" width={400} height={400}  alt="" />
+                    </Box>
+                </Grid>
+            </Grid>
         </Fragment>
     )
 }
