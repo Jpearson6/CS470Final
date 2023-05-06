@@ -33,29 +33,29 @@ export default async function getDailyCalories(userId) {
     } else {
         BMR = (10 * weight) + (6.25 * height) - (5 * age) - 161
     }
-    if (activityLevel == 'Sedentary') {
+    if (activityLevel === 'Sedentary') {
 
         DailyCalorieGoal = BMR * 1.2;
     }
-    else if (activityLevel == 'Lightly Active') {
+    else if (activityLevel === 'Lightly Active') {
         DailyCalorieGoal = BMR * 1.375;
     }
-    else if (activityLevel == 'Moderately Active') {
+    else if (activityLevel === 'Moderately Active') {
 
         DailyCalorieGoal = BMR * 1.55;
     }
-    else if (activityLevel == 'Very Active') {
+    else if (activityLevel === 'Very Active') {
 
         DailyCalorieGoal = BMR * 1.725;
     }
-    if (weeklyWeightGoal == 0)
+    if (weeklyWeightGoal === 0)
         return (DailyCalorieGoal);  
-    else if (weeklyWeightGoal == 0.5)
+    else if (weeklyWeightGoal === 0.5)
         return (DailyCalorieGoal + 250);
     else if (weeklyWeightGoal == 1)
         return (DailyCalorieGoal + 500);
-    else if (weeklyWeightGoal == -0.5)
+    else if (weeklyWeightGoal === -0.5)
         return (DailyCalorieGoal - 250);
-    else if (weeklyWeightGoal == -1)
+    else if (weeklyWeightGoal === -1)
         return (DailyCalorieGoal - 500);
 }
