@@ -82,7 +82,7 @@ const UserProfile = (props) => {
     let tempDate = "";
     tempDate += newValue["$y"];
     tempDate += "-";
-    tempDate += newValue["$M"];
+    tempDate += newValue["$M"]+1;
     tempDate += "-";
     tempDate += newValue["$D"];
     setProfile({
