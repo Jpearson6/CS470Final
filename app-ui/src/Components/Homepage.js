@@ -7,7 +7,7 @@ import API from "../API_Interface/API_Interface";
 
 export default function Homepage(props) {
     const api = new API();
-    const { userId } = props;
+    const { userId, setSelectedItem } = props;
 
     const [calConsumed, setCalConsumed] = useState("");
     const [calGoal, setCalGoal] = useState("");
