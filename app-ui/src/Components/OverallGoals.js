@@ -6,14 +6,64 @@ import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import Paper from "@mui/material/Paper";
 import API from "../API_Interface/API_Interface";
+import getDailyCalories from "./DailyCalorieGoal";
 
 export default function OverallGoals(props) {
     const updateDisplayCallBack = props.updateDisplayCallBack;
     const userId = props.userId;
-    const [user, setUser] = useState([]);
+    const[macros, setMacros] = useState([]);
+    const [totalCalories, setTotalCalories] = useState("");
+    const [fatPercentage, setFatPercentage] = useState("");
+    const [carbPercentage, setCarbPercentage] = useState("");
+    const [proteinPercentage, setProteinPercentage] = useState("");
+    const [calGoal, setCalGoal] = useState("");
+
+    const[currWeight, setCurrWeight] = useState("");
+    const[goalWeight, setGoalWeight] = useState("");
+    const[weeklyGoal, setWeeklyGoal] = useState("");
+    const[activityLevel, setActivityLevel] =useState("");
+
+    useEffect(() => {
+        const api = new API();
+        async function getUserInfo() {
+            const macroGoal = (await api.getMacros(userId)).data;
+            const calorieGoal = await getDailyCalories(userId);
+            const allData = await api.getUserById(userId);
+            console.log(allData.data);
+            setFatPercentage(macroGoal[0]['MacroFat']);
+            setCarbPercentage(macroGoal[0]['MacroCarbs']);
+            setProteinPercentage(macroGoal[0]['MacroProtein']);
+            setMacros(macroGoal);
+            setCalGoal(Math.round(calorieGoal));
+
+            setCurrWeight(allData.data[0]['Weight']);
+            setGoalWeight(allData.data[0]['GoalWeight']);
+            setActivityLevel(allData.data[0]['ActivityLevel']);
+
+            if(allData.data[0]['LbsPerWeek'] === 0) {
+                setWeeklyGoal('Maintain Weight');
+            }
+            else if(allData.data[0]['LbsPerWeek'] === -0.5) {
+                setWeeklyGoal('Lose 0.23 kg / 0.5 lbs per week');
+            }
+            else if(allData.data[0]['LbsPerWeek'] === -1) {
+                setWeeklyGoal('Lose 0.45 kg / 1 lb per week');
+            }
+            else if(allData.data[0]['LbsPerWeek'] === 0.5) {
+                setWeeklyGoal('Gain 0.23 kg / 0.5 lbs per week');
+            }
+            else if(allData.data[0]['LbsPerWeek'] === 1) {
+                setWeeklyGoal('Gain 0.45 kg / 1 lb per week');
+            }
+
+        }
+
+        getUserInfo();
+    }, []);
 
 
     return(
+        macros.length > 0 &&
         <Fragment>
             <Stack direction='column'>
                 <Box display='flex' justifyContent='center' alignItems='center'>
@@ -45,10 +95,10 @@ export default function OverallGoals(props) {
                                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                         >
                                             <TableCell component="th" scope="row">
-                                                Starting Weight:
+                                                Current Weight:
                                             </TableCell>
                                             <TableCell component="th" scope="row">
-                                                200 lbs
+                                                {currWeight} kg / {Math.round(currWeight * 2.20462)} lbs
                                             </TableCell>
                                         </TableRow>
                                         <TableRow
@@ -58,7 +108,7 @@ export default function OverallGoals(props) {
                                                 Goal Weight:
                                             </TableCell>
                                             <TableCell component="th" scope="row">
-                                                185 lbs
+                                                {goalWeight} kg / {Math.round(goalWeight * 2.20462)} lbs
                                             </TableCell>
                                         </TableRow>
                                         <TableRow
@@ -68,7 +118,7 @@ export default function OverallGoals(props) {
                                                 Weekly Goal:
                                             </TableCell>
                                             <TableCell component="th" scope="row">
-                                                Lose 1 lb per week
+                                                {weeklyGoal}
                                             </TableCell>
                                         </TableRow>
                                         <TableRow
@@ -78,7 +128,7 @@ export default function OverallGoals(props) {
                                                 Activity Level:
                                             </TableCell>
                                             <TableCell component="th" scope="row">
-                                                Very Active
+                                                {activityLevel}
                                             </TableCell>
                                         </TableRow>
                                     </TableBody>
@@ -96,7 +146,7 @@ export default function OverallGoals(props) {
                                                 Daily Calorie Goal:
                                             </TableCell>
                                             <TableCell component="th" scope="row">
-                                                2200 calories
+                                                {calGoal} calories
                                             </TableCell>
                                         </TableRow>
                                         <TableRow
@@ -106,7 +156,7 @@ export default function OverallGoals(props) {
                                                 Fat:
                                             </TableCell>
                                             <TableCell component="th" scope="row">
-                                                30%
+                                                {fatPercentage}%
                                             </TableCell>
                                         </TableRow>
                                         <TableRow
@@ -116,7 +166,7 @@ export default function OverallGoals(props) {
                                                 Carbohydrates:
                                             </TableCell>
                                             <TableCell component="th" scope="row">
-                                                40%
+                                                {carbPercentage}%
                                             </TableCell>
                                         </TableRow>
                                         <TableRow
@@ -126,7 +176,7 @@ export default function OverallGoals(props) {
                                                 Protein:
                                             </TableCell>
                                             <TableCell component="th" scope="row">
-                                                30%
+                                                {proteinPercentage}%
                                             </TableCell>
                                         </TableRow>
                                     </TableBody>

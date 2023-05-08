@@ -38,8 +38,12 @@ userRouter.get('/macros/:Id', UserController.getUserMacros, err => console.log(`
 userRouter.post('/macros/:Id/:Fat/:Carbs/:Protein', UserController.setUserMacros, err => console.log(`set user macros by id ran into an error: ${err}`));
 userRouter.post('/sign-up',UserController.addUser, err => console.log(`sign-up error: ${err}`))
 userRouter.post('/update/:dob/:Sex/:Height/:Weight/:ActivityLevel/:Id', UserController.updateUser, err => console.log(`Update error: ${err}`))
-userRouter.post('/wgoal/:Id/:Weight', UserController.setUserWeightGoal, err => console.log(`set user weight goal by id ran into an error: ${err}`));
+userRouter.post('/weight-goal/:Id/:Weight', UserController.setUserWeightGoal, err => console.log(`set user weight goal by id ran into an error: ${err}`));
 userRouter.post('/alevel/:Id/:Level', UserController.setUserActivityLevel, err => console.log(`set user activity level by id ran into an error: ${err}`));
+userRouter.post('/week-goal/:Id/:WeeklyGoal', UserController.setUserWeeklyGoal, err => console.log(`set user weekly goal by id ran into an error ${err}`));
+userRouter.post('/curr-weight/:Id/:Weight', UserController.setUserWeight, err => console.log(`set user weight by id ran into an error ${err}`));
+userRouter.post('/wgoal/:Id/:CurrWeight/:GoalWeight/:WeeklyGoal/:ActivityLevel', UserController.updateWeightGoals, err => console.log(`update weight goals ran into an error: ${err}`));
+
 /*
 |--------------------------------------------------------------------------
 | FoodLog router
