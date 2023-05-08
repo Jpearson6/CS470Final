@@ -52,18 +52,18 @@ function DisplayFood(props) {
                 <TableHead>
                     <TableRow>
                         <TableCell>
-                            Food Name
+                            Food Name(Serving Size 100g)
                         </TableCell>
-                        <TableCell>
+                        <TableCell align="center">
                             Protein(g)
                         </TableCell>
-                        <TableCell>
+                        <TableCell align="center">
                             Fat(g)
                         </TableCell>
-                        <TableCell>
+                        <TableCell align="center">
                             Carbs(g)
                         </TableCell>
-                        <TableCell>
+                        <TableCell align="center">
                             Calories(cal)
                         </TableCell>
                     </TableRow>
@@ -81,6 +81,7 @@ function DisplayFood(props) {
                                             }
                                             return obj;
                                         }, {});
+                                        console.log(food);
                                         let tempSelectedFood1 = { foodName: food['description'], ...tempSelectedFood }
                                         addFood(food['description'], tempSelectedFood['3']['value'], tempSelectedFood['0']['value'], tempSelectedFood['2']['value'], tempSelectedFood['1']['value'])
 
@@ -91,22 +92,22 @@ function DisplayFood(props) {
                                             food['description']
                                         }
                                     </TableCell>
-                                    <TableCell key={"protein" + idx}>
+                                    <TableCell key={"protein" + idx} align="center">
                                         {
                                             food["foodNutrients"][0]["value"]
                                         }
                                     </TableCell>
-                                    <TableCell key={"fat" + idx}>
+                                    <TableCell key={"fat" + idx} align="center">
                                         {
                                             food["foodNutrients"][1]["value"]
                                         }
                                     </TableCell>
-                                    <TableCell key={"carbs" + idx}>
+                                    <TableCell key={"carbs" + idx} align="center">
                                         {
                                             food["foodNutrients"][2]["value"]
                                         }
                                     </TableCell>
-                                    <TableCell key={"cal" + idx}>
+                                    <TableCell key={"cal" + idx} align="center">
                                         {
                                             food["foodNutrients"][3]["value"]
                                         }

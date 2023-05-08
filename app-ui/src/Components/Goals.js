@@ -2,6 +2,7 @@ import React, {Fragment, useState, useMemo} from "react";
 import OverallGoals from './OverallGoals';
 import WeightGoals from './WeightGoals';
 import Macros from './Macros';
+import API from "../API_Interface/API_Interface"
 
 export default function Goals(props) {
     const {userId} = props;

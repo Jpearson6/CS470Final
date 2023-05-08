@@ -8,6 +8,10 @@ import Paper from "@mui/material/Paper";
 import API from "../API_Interface/API_Interface";
 
 export default function OverallGoals(props) {
+
+    console.log("here");
+    const api = new API();
+    api.updateActivityLevel(2 , "Moderately Active");
     const updateDisplayCallBack = props.updateDisplayCallBack;
     const userId = props.userId;
     const [user, setUser] = useState([]);

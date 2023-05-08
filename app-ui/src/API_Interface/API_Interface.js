@@ -128,6 +128,10 @@ export default class APIInterface {
   async updateMacros(UserId, Fat, Carbs, Protein) {
     return axiosAgent.post(`user/macros/${UserId}/${Fat}/${Carbs}/${Protein}`)
   }
+ 
+  async updateActivityLevel(UserId, Level) {
+    return axiosAgent.post(`user/alevel/${UserId}/${Level}`)
+  }
 
   async getMacros(UserId) {
     return axiosAgent.get(`user/macros/${UserId}`)

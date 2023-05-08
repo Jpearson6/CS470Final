@@ -186,7 +186,7 @@ const addUser = async (ctx) => {
     return new Promise((resolve, reject) => {
         const query = `
         Update User
-        Set Height = ?, 
+        Set Height = ? 
         WHERE Id = ?
       `;
         dbConnection.query({
@@ -216,7 +216,7 @@ const addUser = async (ctx) => {
     return new Promise((resolve, reject) => {
         const query = `
         Update User
-        Set Weight = ?, 
+        Set Weight = ? 
         WHERE Id = ?
       `;
         dbConnection.query({
@@ -245,12 +245,12 @@ const addUser = async (ctx) => {
     return new Promise((resolve, reject) => {
         const query = `
         Update User
-        Set ActivityLevel = ?, 
+        Set ActivityLevel = ?
         WHERE Id = ?
       `;
         dbConnection.query({
             sql: query,
-            values: [ctx.params.Height, ctx.params.Id]
+            values: [ctx.params.Level, ctx.params.Id]
         }, (error, tuples) => {
             if (error) {
                 console.log("Connection error in UserController::allUsers", error);
@@ -268,37 +268,6 @@ const addUser = async (ctx) => {
         ctx.status = 500;
     });
   }
-
-  const setUserWeeklyGoal = async (ctx) => {
-    console.log('FoodLog food by date called.');
-    return new Promise((resolve, reject) => {
-        const query = `
-        Update User
-        Set LbsPerWeek = ?, 
-        WHERE Id = ?
-      `;
-        dbConnection.query({
-            sql: query,
-            values: [ctx.params.Height, ctx.params.Id]
-        }, (error, tuples) => {
-            if (error) {
-                console.log("Connection error in UserController::allUsers", error);
-                return reject(error);
-            }
-            ctx.body = tuples;
-            ctx.status = 200;
-            return resolve();
-        });
-    }).catch(err => {
-        console.log("Database connection error in allUsers.", err);
-        // The UI side will have to look for the value of status and
-        // if it is not 200, act appropriately.
-        ctx.body = [];
-        ctx.status = 500;
-    });
-  }
-
-
 
 
   const updateUser = async (ctx) => {
@@ -335,7 +304,7 @@ const addUser = async (ctx) => {
     return new Promise((resolve, reject) => {
         const query = `
         Update User
-        Set dob = ?, 
+        Set dob = ? 
         WHERE Id = ?
       ;`
         dbConnection.query({
@@ -368,7 +337,6 @@ module.exports = {
     setUserHeight,
     setUserWeight,
     setUserActivityLevel,
-    setUserWeeklyGoal,
     updateUser,
     setUserWeightGoal,
     setUserDOB
