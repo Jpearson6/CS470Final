@@ -6,114 +6,129 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import API from '../API_Interface/API_Interface'
+import getDailyCalories from "./DailyCalorieGoal";
 
 
 export default function Macros(props) {
     const updateDisplayCallBack = props.updateDisplayCallBack;
     const userId = props.userId;
     const[macros, setMacros] = useState([]);
+    const [totalCalories, setTotalCalories] = useState("");
+    const [fatPercentage, setFatPercentage] = useState("");
+    const [carbPercentage, setCarbPercentage] = useState("");
+    const [proteinPercentage, setProteinPercentage] = useState("");
 
-    useEffect(() => {
-        const api = new API();
-        async function getMacros() {
-            const macrosJSONString = await api.getMacros(userId);
-            console.log(`macros from the DB ${JSON.stringify(macrosJSONString)}`);
-            setMacros(macrosJSONString.data);
-        }
-
-        getMacros();
-    }, []);
-
-    console.log(macros);
-
-   const [totalCalories, setTotalCalories] = useState("2200");
-   const [fatPercentage, setFatPercentage] = useState('20');
-   const [carbPercentage, setCarbPercentage] = useState('45');
-   const [proteinPercentage, setProteinPercentage] = useState('35');
-
-
-    const [updatedTotalCals, setUpdatedTotalCals] = useState(totalCalories);
-    const [updatedFat, setUpdatedFat] = useState(fatPercentage);
-    const [updatedCarb, setUpdatedCarb] = useState(carbPercentage);
-    const [updatedProtein, setUpdatedProtein] = useState(proteinPercentage);
-
-
-    let fatGrams = (fatPercentage/100) * totalCalories / 9;
-   let carbGrams = (carbPercentage/100) * totalCalories / 4;
-   let proteinGrams = (proteinPercentage/100) * totalCalories / 4;
-
-    let fatString = "Fat: " + Math.round(fatGrams) + ' g';
-    let carbString = "Carbs: " + Math.round(carbGrams) + ' g';
-    let proteinString = "Protein: " + Math.round(proteinGrams) + ' g';
-
-
-
-
+    const [saveError, setSaveError] = useState(false);
+    const [saveHelper, setSaveHelper] = useState("");
+/*
     const [data, setData] = useState([
         {property: fatString, value: fatPercentage, color: 'red'},
         {property: carbString, value: carbPercentage, color: 'blue'},
         {property: proteinString, value: proteinPercentage, color: 'green'}
     ]);
+
+ */
+
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        const api = new API();
+        async function getMacros() {
+            const macroGoal = (await api.getMacros(userId)).data;
+            const calorieGoal = await getDailyCalories(userId);
+            console.log(macroGoal);
+            console.log(macroGoal[0]['MacroFat']);
+            setTotalCalories(Math.round(calorieGoal));
+            setFatPercentage(macroGoal[0]['MacroFat']);
+            setCarbPercentage(macroGoal[0]['MacroCarbs']);
+            setProteinPercentage(macroGoal[0]['MacroProtein']);
+            setMacros(macroGoal);
+
+            let fatGrams = (macroGoal[0]['MacroFat']/100) * Math.round(calorieGoal) / 9;
+            let carbGrams = (macroGoal[0]['MacroCarbs']/100) *  Math.round(calorieGoal)/ 4;
+            let proteinGrams = (macroGoal[0]['MacroProtein']/100) * Math.round(calorieGoal) / 4;
+
+            let fatString = "Fat: " + Math.round(fatGrams) + ' g';
+            let carbString = "Carbs: " + Math.round(carbGrams) + ' g';
+            let proteinString = "Protein: " + Math.round(proteinGrams) + ' g';
+
+            const updatedData = [
+                {property: fatString, value: macroGoal[0]['MacroFat'], color: 'red'},
+                {property: carbString, value: macroGoal[0]['MacroCarbs'], color: 'blue'},
+                {property: proteinString, value: macroGoal[0]['MacroProtein'], color: 'green'}
+            ];
+
+            setData(updatedData);
+
+        }
+
+        getMacros();
+    }, []);
+
+    useEffect(() => {
+        if(macros > 0){
+            console.log(macros);
+        }
+    }, [macros])
+
+
+
     const svgRef = useRef();
 
     useEffect(() => {
-        // setting up svg container
-        const w = 500;
-        const h = 500;
-        const radius = w / 2;
-        const svg = d3.select(svgRef.current)
-            .attr('width', w)
-            .attr('height', h)
-            .style('overflow', 'visible')
-            .style('margin-top', '300px')
-            .style('margin-left', '450px');
+            if (macros.length > 0) {
+                console.log(data);
+                // setting up svg container
+                const w = 500;
+                const h = 500;
+                const radius = w / 2;
+                const svg = d3.select(svgRef.current)
+                    .attr('width', w)
+                    .attr('height', h)
+                    .style('overflow', 'visible')
+                    .style('margin-top', '300px')
+                    .style('margin-left', '450px');
 
-        // setting up chart
-        const formattedData = d3.pie().value(d => d.value)(data);
-        const arcGenerator = d3.arc().innerRadius(0).outerRadius(radius);
-        //const color = d3.scaleOrdinal().range(d3.schemeSet2);
+                // setting up chart
+                const formattedData = d3.pie().value(d => d.value)(data);
+                const arcGenerator = d3.arc().innerRadius(0).outerRadius(radius);
+                //const color = d3.scaleOrdinal().range(d3.schemeSet2);
 
-        //setting up svg data
-        svg.selectAll()
-            .data(formattedData)
-            .join('path')
-            .attr('d', arcGenerator)
-            .attr('fill', d => d.data.color)
-            .style('opacity', 0.4);
-
-
-
-        svg.selectAll()
-            .data(formattedData)
-            .join('text')
-                .text(d => d.data.property)
-                .attr('transform', d => `translate(${arcGenerator.centroid(d)})`)
-                .style('text-anchor', 'middle');
+                //setting up svg data
+                svg.selectAll()
+                    .data(formattedData)
+                    .join('path')
+                    .attr('d', arcGenerator)
+                    .attr('fill', d => d.data.color)
+                    .style('opacity', 0.4);
 
 
+                svg.selectAll()
+                    .data(formattedData)
+                    .join('text')
+                    .text(d => d.data.property)
+                    .attr('transform', d => `translate(${arcGenerator.centroid(d)})`)
+                    .style('text-anchor', 'middle');
+            }
     }, [data]);
 
-    const handleTotalCalsInputChange = event => {
-        setUpdatedTotalCals(event.target.value);
-    };
-
     const handleFatInputChange = event => {
-        setUpdatedFat(event.target.value);
+        setFatPercentage(event.target.value);
     };
 
     const handleCarbInputChange = event => {
-        setUpdatedCarb(event.target.value);
+        setCarbPercentage(event.target.value);
     };
 
     const handleProteinInputChange = event => {
-        setUpdatedProtein(event.target.value);
+        setProteinPercentage(event.target.value);
     };
 
     const handleSave = () => {
         //check if percentages add up to 100
-        let fat = Number(updatedFat);
-        let carb = Number(updatedCarb);
-        let protein = Number(updatedProtein);
+        let fat = Number(fatPercentage);
+        let carb = Number(carbPercentage);
+        let protein = Number(proteinPercentage);
 
         const total = fat + carb + protein;
         if(total === 100){
@@ -122,6 +137,8 @@ export default function Macros(props) {
             updateDisplayCallBack('overall');
             return true;
         }
+        setSaveError(true);
+        setSaveHelper("Macro total must equal 100%");
 
 
         return true;
@@ -131,6 +148,7 @@ export default function Macros(props) {
 
 
     return (
+        macros.length > 0 &&
         <Fragment>
             <Box display='flex' justifyContent='center' alignItems='center'>
                 <Typography fontSize="40px">
@@ -142,23 +160,24 @@ export default function Macros(props) {
                     <Box display='flex' justifyContent='center' alignItems='center' mt={10}>
                     <Stack direction='column' spacing={2}>
                         <TextField
-                            id="outlined-multiline-static"
+                            id="outlined-disabled"
                             label="Total calories"
                             defaultValue={totalCalories}
-                            multiline
-                            onChange={handleTotalCalsInputChange}
+                            disabled={true}
                             style={{width:200}}
                             InputProps={{
-                                endAdornment: <InputAdornment position="end">calories</InputAdornment>,
+                                endAdornment: <InputAdornment position="end">kCal</InputAdornment>,
                             }}
                         />
 
                         <TextField
+                            error={saveError}
                             id="outlined-multiline-static"
                             label="Fat"
                             defaultValue={fatPercentage}
                             multiline
                             onChange={handleFatInputChange}
+                            helperText={saveHelper}
                             style={{width:200}}
                             InputProps={{
                                 endAdornment: <InputAdornment position="end">%</InputAdornment>,
@@ -166,11 +185,13 @@ export default function Macros(props) {
                         />
 
                         <TextField
+                            error={saveError}
                             id="outlined-multiline-static"
                             label="Carbohydrates"
                             defaultValue={carbPercentage}
                             multiline
                             onChange={handleCarbInputChange}
+                            helperText={saveHelper}
                             style={{width:200}}
                             InputProps={{
                                 endAdornment: <InputAdornment position="end">%</InputAdornment>,
@@ -178,20 +199,22 @@ export default function Macros(props) {
                         />
 
                         <TextField
+                            error = {saveError}
                             id="outlined-multiline-static"
                             label="Protein"
                             defaultValue={proteinPercentage}
                             multiline
                             onChange={handleProteinInputChange}
+                            helperText={saveHelper}
                             style={{width:200}}
                             InputProps={{
                                 endAdornment: <InputAdornment position="end">%</InputAdornment>,
                             }}
                         />
-                        <Button onClick={handleSave}>
+                        <Button onClick={handleSave} variant = "outlined">
                             Save
                         </Button>
-                        <Button onClick={() => updateDisplayCallBack('overall')}>
+                        <Button onClick={() => updateDisplayCallBack('overall')} variant="outlined">
                             Cancel
                         </Button>
                     </Stack>
@@ -199,7 +222,7 @@ export default function Macros(props) {
                 </Grid>
                 <Grid item xs={8}>
                     <Box display='flex' justifyContent='center' alignItems='center'>
-                    <svg ref={svgRef}></svg>
+                     <svg ref={svgRef}></svg>
                     </Box>
                 </Grid>
             </Grid>

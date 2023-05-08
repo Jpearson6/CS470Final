@@ -45,6 +45,7 @@ export default class APIInterface {
     }
 
 
+
     async addUser(email, name, password) {
         try {
           const response = await axiosAgent.post('/user/sign-up', {
@@ -137,4 +138,23 @@ export default class APIInterface {
     return axiosAgent.get(`user/macros/${UserId}`)
   }
 
+  async updateActivityLevel(UserId, activityLevel){
+        return axiosAgent.post(`user/alevel/${UserId}/${activityLevel}`)
+  }
+
+  async updateWeeklyGoal(UserId, weeklyGoal){
+        return axiosAgent.post(`user/week-goal/${UserId}/${weeklyGoal}`)
+  }
+
+  async updateGoalWeight(UserId, goalWeight){
+        return axiosAgent.post(`user/weight-goal/${UserId}/${goalWeight}`)
+  }
+
+  async updateCurrWeight(UserId, currWeight){
+        return axiosAgent.post(`user/curr-weight/${UserId}/${currWeight}`)
+  }
+
+  async updateWeightGoals(UserId, currWeight, goalWeight, weeklyGoal, activityLevel){
+        return axiosAgent.post(`user/wgoal/${UserId}/${currWeight}/${goalWeight}/${weeklyGoal}/${activityLevel}`)
+  }
 }

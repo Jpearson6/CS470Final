@@ -33,7 +33,7 @@ function Login({setUser}) {
         async function getUserInfo(){
             api.getUserInfo(email,password)
                 .then(userInfo => {
-                 //   console.log(`api returns user info: ${JSON.stringify(userInfo)}`)
+                    console.log(`api returns user info: ${JSON.stringify(userInfo)}`)
                     const user = userInfo.user;
                     if(userInfo.status === 'OK'){
                         
