@@ -112,6 +112,7 @@ function Login({setUser}) {
 
             <Box display="flex" justifyContent="center" alignItems="center" width="100%" mt={1}>
                 <TextField
+                    type={"password"}
                     error={authFailed}
                     id="outlined-error-helper-text"
                     label="Password"
