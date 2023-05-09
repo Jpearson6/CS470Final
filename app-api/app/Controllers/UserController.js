@@ -398,5 +398,6 @@ module.exports = {
     updateUser,
     setUserWeightGoal,
     setUserDOB,
+    setUserWeeklyGoal,
     updateWeightGoals
 };

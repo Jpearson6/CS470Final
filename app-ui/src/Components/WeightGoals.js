@@ -45,13 +45,10 @@ export default function WeightGoals (props) {
     };
 
     const handleWeeklyGoalChange = (event: SelectChangeEvent) => {
-        console.log(event.target.value);
         setWeeklyGoal(event.target.value);
     };
 
     const handleActivityLevelChange = (event: SelectChangeEvent) => {
-        console.log(event.target.value);
-
         setActivityLevel(event.target.value);
     };
 

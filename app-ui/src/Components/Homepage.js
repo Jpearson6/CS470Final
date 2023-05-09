@@ -33,12 +33,6 @@ export default function Homepage(props) {
         const carbsConsumed = await api.todaysCarbsByUser(userId);
         const fatConsumed = await api.todaysFatByUser(userId);
         const proteinConsumed = await api.todaysProteinByUser(userId);
-        console.log(macroGoal.data);
-        console.log(calsConsumed);
-        console.log(calorieGoal);
-        console.log(carbsConsumed);
-        console.log(fatConsumed);
-        console.log(proteinConsumed);
 
         setCalConsumed(calsConsumed[0]['Calories']);
         setCalGoal(Math.round(calorieGoal));
@@ -88,7 +82,8 @@ export default function Homepage(props) {
 
 
     return (
-        <Fragment>
+        proteinGoal > 0 &&carbGoal > 0 && fatGoal > 0 && calGoal > 0 &&
+            <Fragment>
             <Box display='flex' justifyContent='center' alignItems='center'>
                 <Typography fontSize="40px">
                     Daily Summary
@@ -158,7 +153,8 @@ export default function Homepage(props) {
                     </Box>
                 </Grid>
             </Grid>
-        </Fragment>
+        </Fragment> 
+        
     )
 
 }

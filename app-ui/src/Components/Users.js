@@ -34,7 +34,7 @@ const UserProfile = (props) => {
       const userData = userInfo.data[0];
 
       setUser(userData);
-      console.log(`User data: ${JSON.stringify(user)}`);
+      console.log(`User data: ${user}`);
     } catch (error) {
       console.error(error);
     }
@@ -138,11 +138,11 @@ const UserProfile = (props) => {
         </Box>
 
         <Box sx={{ background: "white", top: "60px", position: "relative" }}>
-          <Typography variant="h6">Height: {height}</Typography>
+          <Typography variant="h6">Height: {height} cm / {Math.floor(height / 30.48)} ft {Math.round(((height%30.48)/30.48)*12)} in</Typography>
         </Box>
 
         <Box sx={{ background: "white", top: "90px", position: "relative" }}>
-          <Typography variant="h6">Weight: {weight}</Typography>
+          <Typography variant="h6">Weight: {weight} kg / {Math.round(weight * 2.20462)} lbs</Typography>
         </Box>
 
         <Box sx={{ background: "white", top: "120px", position: "relative" }}>
@@ -209,18 +209,18 @@ const UserProfile = (props) => {
                 </FormControl>
 
                 <TextField
-                  label="Height"
+                  label="Height(kg)"
                   style={{ width: 245 }}
-                  value={profile.height}
+                  placeholder={profile.height}
                   onChange={(e) =>
                     setProfile({ ...profile, height: e.target.value })
                   }
                 />
 
                 <TextField
-                  label="Weight"
+                  label="Weight(kg)"
                   style={{ width: 245 }}
-                  value={profile.weight}
+                  placeholder={profile.weight}
                   onChange={(e) =>
                     setProfile({ ...profile, weight: e.target.value })
                   }

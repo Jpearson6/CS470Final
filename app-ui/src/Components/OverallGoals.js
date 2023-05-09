@@ -9,10 +9,6 @@ import API from "../API_Interface/API_Interface";
 import getDailyCalories from "./DailyCalorieGoal";
 
 export default function OverallGoals(props) {
-
-    console.log("here");
-    const api = new API();
-    api.updateActivityLevel(2 , "Moderately Active");
     const updateDisplayCallBack = props.updateDisplayCallBack;
     const userId = props.userId;
     const[macros, setMacros] = useState([]);
@@ -33,7 +29,6 @@ export default function OverallGoals(props) {
             const macroGoal = (await api.getMacros(userId)).data;
             const calorieGoal = await getDailyCalories(userId);
             const allData = await api.getUserById(userId);
-            console.log(allData.data);
             setFatPercentage(macroGoal[0]['MacroFat']);
             setCarbPercentage(macroGoal[0]['MacroCarbs']);
             setProteinPercentage(macroGoal[0]['MacroProtein']);
