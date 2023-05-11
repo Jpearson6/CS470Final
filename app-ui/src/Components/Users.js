@@ -209,7 +209,7 @@ const UserProfile = (props) => {
                 </FormControl>
 
                 <TextField
-                  label="Height(kg)"
+                  label="Height(cm)"
                   style={{ width: 245 }}
                   placeholder={profile.height}
                   onChange={(e) =>
