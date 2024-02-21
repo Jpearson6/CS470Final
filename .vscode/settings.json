@@ -2,16 +2,17 @@
     "sqltools.connections": [
         {
             "mysqlOptions": {
-                "authProtocol": "default"
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
             },
             "previewLimit": 50,
-            "server": "sql9.freemysqlhosting.net",
-            "port": 3306,
+            "server": "ndl.h.filess.io",
+            "port": 3307,
             "driver": "MySQL",
             "name": "Food Trace",
-            "database": "sql9612955",
-            "username": "sql9612955",
-            "password": "rdtXFs97uG",
+            "database": "foodTrace_pooldeeply",
+            "username": "foodTrace_pooldeeply",
+            "password": "c385298034f8cb04d12d305571c3b80c27f94cb8",
             "connectionTimeout": 10
         }
     ]

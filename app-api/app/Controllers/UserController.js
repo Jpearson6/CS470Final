@@ -35,11 +35,11 @@ const allUsers = async (ctx) => {
 
 
 const addUser = async (ctx) => {
-  console.log('Adding new user to database.');
+    console.log('Adding new user to database.');
 
-  const { Email, Name, Password } = ctx.request.body;
+    const { Email, Name, Password } = ctx.request.body;
 
-  const query = `
+    const query = `
     INSERT 
       INTO 
           User 
@@ -47,20 +47,20 @@ const addUser = async (ctx) => {
     VALUES (?, ?, ?);
   `;
 
-  const values = [Email, Name, Password];
+    const values = [Email, Name, Password];
 
-  try {
-    await dbConnection.query(query, values);
-    ctx.status = 201;
-    ctx.body = { message: 'User created successfully.' };
-  } catch (error) {
-    console.log("Connection error in UserController::addUser", error);
-    ctx.status = 500;
-    ctx.body = { message: 'Failed to create user.' };
-  }
+    try {
+        await dbConnection.query(query, values);
+        ctx.status = 201;
+        ctx.body = { message: 'User created successfully.' };
+    } catch (error) {
+        console.log("Connection error in UserController::addUser", error);
+        ctx.status = 500;
+        ctx.body = { message: 'Failed to create user.' };
+    }
 }
 
-  const getUserById = async (ctx) => {
+const getUserById = async (ctx) => {
     console.log('FoodLog food by date called.');
     return new Promise((resolve, reject) => {
         const query = `
@@ -87,9 +87,9 @@ const addUser = async (ctx) => {
         ctx.body = [];
         ctx.status = 500;
     });
-  }
+}
 
-  const getUserMacros = async (ctx) => {
+const getUserMacros = async (ctx) => {
     console.log('FoodLog food by date called.');
     return new Promise((resolve, reject) => {
         const query = `
@@ -116,9 +116,9 @@ const addUser = async (ctx) => {
         ctx.body = [];
         ctx.status = 500;
     });
-  }
+}
 
-  const setUserMacros = async (ctx) => {
+const setUserMacros = async (ctx) => {
     console.log('FoodLog food by date called.');
     return new Promise((resolve, reject) => {
         const query = `
@@ -147,9 +147,9 @@ const addUser = async (ctx) => {
         ctx.body = [];
         ctx.status = 500;
     });
-  }
+}
 
-  const setUserWeightGoal = async (ctx) => {
+const setUserWeightGoal = async (ctx) => {
     console.log('FoodLog food by date called.');
     return new Promise((resolve, reject) => {
         const query = `
@@ -176,10 +176,10 @@ const addUser = async (ctx) => {
         ctx.body = [];
         ctx.status = 500;
     });
-  }
+}
 
 
-  const setUserHeight = async (ctx) => {
+const setUserHeight = async (ctx) => {
     console.log('FoodLog food by date called.');
     return new Promise((resolve, reject) => {
         const query = `
@@ -206,10 +206,10 @@ const addUser = async (ctx) => {
         ctx.body = [];
         ctx.status = 500;
     });
-  
-  }
 
-  const setUserWeight = async (ctx) => {
+}
+
+const setUserWeight = async (ctx) => {
     console.log('FoodLog food by date called.');
     return new Promise((resolve, reject) => {
         const query = `
@@ -236,9 +236,9 @@ const addUser = async (ctx) => {
         ctx.body = [];
         ctx.status = 500;
     });
-  }
+}
 
-  const setUserActivityLevel = async (ctx) => {
+const setUserActivityLevel = async (ctx) => {
     console.log('FoodLog food by date called.');
     return new Promise((resolve, reject) => {
         const query = `
@@ -265,9 +265,9 @@ const addUser = async (ctx) => {
         ctx.body = [];
         ctx.status = 500;
     });
-  }
+}
 
-  const setUserWeeklyGoal = async (ctx) => {
+const setUserWeeklyGoal = async (ctx) => {
     console.log('FoodLog food by date called.');
     return new Promise((resolve, reject) => {
         const query = `
@@ -294,14 +294,16 @@ const addUser = async (ctx) => {
         ctx.body = [];
         ctx.status = 500;
     });
-  }
+}
 
 
 
 
-  const updateUser = async (ctx) => {
+const updateUser = async (ctx) => {
     console.log('User Update by id called.');
     return new Promise((resolve, reject) => {
+        const { dob, sex, height, weight, activityLevel } = ctx.request.body;
+        const userId = ctx.params.id;
         const query = `
         Update User
         Set dob = ?, Sex = ?, Height = ?, Weight = ?, ActivityLevel = ?
@@ -309,7 +311,7 @@ const addUser = async (ctx) => {
       ;`
         dbConnection.query({
             sql: query,
-            values: [ctx.params.dob, ctx.params.Sex, ctx.params.Height, ctx.params.Weight, ctx.params.ActivityLevel, ctx.params.Id]
+            values: [dob, sex, height, weight, activityLevel, userId]
         }, (error, tuples) => {
             if (error) {
                 console.log("Connection error in UserController::updateUser", error);
@@ -326,9 +328,9 @@ const addUser = async (ctx) => {
         ctx.body = [];
         ctx.status = 500;
     });
-  }
+}
 
-  const setUserDOB = async (ctx) => {
+const setUserDOB = async (ctx) => {
     console.log('FoodLog food by date called.');
     return new Promise((resolve, reject) => {
         const query = `
@@ -355,7 +357,7 @@ const addUser = async (ctx) => {
         ctx.body = [];
         ctx.status = 500;
     });
-  }
+}
 
 const updateWeightGoals = async (ctx) => {
     console.log('updateWeightGoals called.');

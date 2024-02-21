@@ -1,6 +1,7 @@
 const Koa = require('koa');
 const app = new Koa();
 const bodyParser = require('koa-bodyparser');
+const JWT = require('./app/Middleware/VerifyJWT.js')
 const http = require('http');
 
 // Load environment variables (or .env if local environment)
